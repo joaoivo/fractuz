@@ -12,4 +12,4 @@ services:
       - SA_PASSWORD=A1b2c3d4$
       - MSSQL_PID=Express
     volumes:
-      - /dev/sda2/Docker/volumes/fractuz:/var/opt/mssql/data
+      - /media/joaoivo/Docker/volumes/sqlServer:/var/opt/mssql/data
