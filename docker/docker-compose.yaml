@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  sqlServer:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlServerFractuz
+    hostname: sqlServer00
+    user: root
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=A1b2c3d4$
+      - MSSQL_PID=Express
+    volumes:
+      - /dev/sda2/Docker/volumes/fractuz:/var/opt/mssql/data
