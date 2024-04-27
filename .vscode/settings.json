@@ -1,4 +1,21 @@
 {
 	"editor.tabSize": 3,
-	"editor.insertSpaces": false
+	"editor.insertSpaces": false,
+	"sqltools.connections": [
+		{
+			"mssqlOptions": {
+				"appName": "SQLTools",
+				"useUTC": true,
+				"encrypt": true
+			},
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 1433,
+			"driver": "MSSQL",
+			"name": "dockerSqlServer",
+			"username": "sa",
+			"password": "A1b2c3d4$",
+			"database": "master"
+		}
+	]
 }
