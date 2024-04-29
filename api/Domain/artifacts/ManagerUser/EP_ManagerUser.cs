@@ -15,7 +15,11 @@ public class EP_ManagerUser:IEndPoint{
 	}
 
 	public static IResult UserAPI_Get([FromBody] dynamic requestBody,HttpContext httpContext, ApplicationDbContext context){
-		return Results.Ok("requestGetBody");
+		try{
+			return ApiRoutePressets.returnResults(new EN_Return());
+		}catch(Exception ex){
+			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+		}
 	}
 	public static IResult UserAPI_Post([FromBody] dynamic requestBody,HttpContext httpContext, ApplicationDbContext context){
 		return Results.Ok("requestPostBody");
