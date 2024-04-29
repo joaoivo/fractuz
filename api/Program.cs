@@ -1,15 +1,15 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Fractuz.Domain.ContextDb;
+using Fractuz.Domain.Users.EndPoints;
+using Fractuz.System.Defaults.EndPoint;
 
-app.MapGet("/", () => new {
-	 Name="nome do produto"
-	,description="descrição"
-	,price=10.00
-});
-app.MapPost("/",()=>"post");
-app.MapPut("/",()=>"post");
-app.MapDelete("/",()=>"post");
-app.MapGet("/header",(HttpResponse response)=>
-	response.Headers.Add("[nome do response]","[valor do response]"));
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["Database:Default"]);
+WebApplication app = builder.Build();
+if(app.Environment.IsDevelopment()){
+	Console.WriteLine("ATENÇÃO! Sistema rodando em Configuração Desenvolvimento");
+}else{
+	Console.WriteLine("Não é Configuração de Desenvolvimento");
+}
+ApiRouteLoader.LoadAPI(app,new EP_ManagerUser());
 
 app.Run();
