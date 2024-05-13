@@ -7,6 +7,7 @@ CREATE OR ALTER PROCEDURE pr_ManagerUsers_sel
 	,@pParticMail			NVARCHAR (150) 	= NULL
 	,@pIsAdm					BIT					= NULL
 
+	,@pColumnsOrderBy		NVARCHAR(MAX)		= NULL
 	,@pPageNumber			INT					= NULL 	OUTPUT
 	,@pPageRowCount		INT					= NULL 	OUTPUT
 
@@ -29,30 +30,50 @@ DECLARE @query nvarchar(max)='
 			,[SystemLastUpdateUser]
 	FROM [fractuz].[dbo].[tbManagerUsers]'
 
+
+
+	----- where
 	DECLARE @where nvarchar(max)=null
 
-	IF @guid IS NOT NULL SET @where = CONCAT(' ([SystemIDX]=''',@guid,''') ')
+	IF @guid IS NOT NULL SET @where = CONCAT('\n\t ([SystemIDX]=''',@guid,''') ')
 
 	IF @pParticName IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
 		SET @where = CONCAT(@where,'([ParticName] = ''',@pParticName,''')')
 		END
 
 	IF @pParticMail IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
 		SET @where = CONCAT(@where,'([ParticMail] = ''',@pParticMail,''')')
 		END
 
 	IF @pIsAdm IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
 		SET @where = CONCAT(@where,'([IsAdm] = ''',@pIsAdm,''')')
 		END
 	
 	IF @where IS NOT NULL set @query = CONCAT(@query , ' where ',@where)
 
+	----- order by	
+	IF @pColumnsOrderBy IS NOT NULL 
+		BEGIN
+		SET @query = CONCAT(@query,'\n ORDER BY ',@pColumnsOrderBy)
+		END
+
+	------- paginação
+	IF @pPageRowCount IS NOT NULL 
+		BEGIN
+		SET @query = CONCAT(@query,'\n LIMIT ',@pPageRowCount)
+		END
+			
+	IF @pPageNumber IS NOT NULL 
+		BEGIN
+		SET @query = CONCAT(@query,'\n OFFSET ', (@pPageNumber - 1) *@pPageRowCount)
+		END
+	
 	--exec(@query)
 	set @rQuery = @query
 	EXEC sp_executesql @query

@@ -6,9 +6,9 @@ CREATE TABLE [dbo].[tbManagerUsers] (
     [IsAdm]                BIT              CONSTRAINT [DEFAULT_tbManagerUsers_IsAdm] DEFAULT 0 NOT NULL,
     [SystemActive]         BIT              CONSTRAINT [DEFAULT_tbManagerUsers_SystemActive] DEFAULT 1 NOT NULL,
     [SystemCreationDt]     DATETIME         CONSTRAINT [DEFAULT_tbManagerUsers_SystemCreationDt] DEFAULT getDate() NOT NULL,
-    [SystemCreationUser]   INT              NOT NULL,
+    [SystemCreationUser]   UNIQUEIDENTIFIER NOT NULL,
     [SystemLastUpdateDt]   DATETIME         NULL,
-    [SystemLastUpdateUser] INT              NULL,
+    [SystemLastUpdateUser] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_tbManagerUsers] PRIMARY KEY CLUSTERED ([SystemIDX] ASC)
 );
 

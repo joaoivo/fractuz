@@ -1,9 +1,8 @@
-using Fractuz.Domain.ContextDb;
 using Fractuz.Domain.Users.EndPoints;
 using Fractuz.System.Defaults.EndPoint;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["Database:Default"]);
+
 builder.Services.AddCors(options =>{
     options.AddDefaultPolicy(builder =>    {
         builder.AllowAnyOrigin()
@@ -18,6 +17,6 @@ if(app.Environment.IsDevelopment()){
 }else{
 	Console.WriteLine("Não é Configuração de Desenvolvimento");
 }
-ApiRoutePressets.LoadAPI(app,new EP_ManagerUser());
+ApiRoutePressets.LoadAPI(app,new EP_ManagerUser(builder.Configuration));
 
 app.Run();
