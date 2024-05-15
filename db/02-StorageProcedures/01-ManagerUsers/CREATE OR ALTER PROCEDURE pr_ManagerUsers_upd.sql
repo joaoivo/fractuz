@@ -21,8 +21,12 @@ SET NOCOUNT ON;
 DECLARE @ErrorState INT;
 BEGIN TRY
 	BEGIN TRANSACTION;
-	SET @rIsOK =0
+	SET @rIsOK =0;
 
+	IF @pParticPass is not null
+		BEGIN
+		set @pParticPass = HASHBYTES('SHA2_256', CONVERT(VARBINARY(MAX), @pParticPass))
+		END
 	UPDATE [fractuz].[dbo].[tbManagerUsers]
 		SET
 			 [ParticName]				= isNull(@pParticName,[ParticName])

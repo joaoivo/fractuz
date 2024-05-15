@@ -1,3 +1,7 @@
+use fractuz
+go
+
+
 CREATE TABLE [dbo].[tbManagerUsers] (
     [SystemIDX]            UNIQUEIDENTIFIER NOT NULL,
     [ParticName]           NVARCHAR (150)   NOT NULL,

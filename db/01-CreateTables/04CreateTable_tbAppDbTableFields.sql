@@ -1,3 +1,6 @@
+use fractuz
+go
+
 CREATE TABLE [dbo].[tbAppDbTableFields] (
     [SystemIDX]              UNIQUEIDENTIFIER NOT NULL,
     [FieldTable]             UNIQUEIDENTIFIER NOT NULL,

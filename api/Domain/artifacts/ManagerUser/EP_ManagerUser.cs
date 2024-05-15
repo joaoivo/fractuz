@@ -5,6 +5,7 @@ using Fractuz.Domain.Users.BussinesPlan;
 using Fractuz.Domain.Users.Entities;
 
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Fractuz.Domain.Users.EndPoints;
 public class EP_ManagerUser:IEndPoint{
@@ -19,7 +20,7 @@ public class EP_ManagerUser:IEndPoint{
 		};
 	}
 
-	public IResult UserAPI_Get([FromBody] dynamic requestBody){
+	public IResult UserAPI_Get([FromBody] dynamic? requestBody=null){
 		try{
 			List<EN_ManagerUser>? managerUser_lst = BP_ManagerUser.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = managerUser_lst});
@@ -29,6 +30,10 @@ public class EP_ManagerUser:IEndPoint{
 	}
 	public IResult UserAPI_Post([FromBody] EN_ManagerUser managerUser){
 		try{
+			// Console.Write(managerUser);
+			// JsonSerializerOptions jsonOptions =new JsonSerializerOptions { WriteIndented = true, IgnoreReadOnlyFields =true, AllowTrailingCommas =false };
+			// string data = JsonSerializer.Serialize<EN_ManagerUser>(managerUser,jsonOptions);
+			// Console.Write(data);
 			return ApiRoutePressets.returnResults(BP_ManagerUser.Insert(Config,managerUser));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});

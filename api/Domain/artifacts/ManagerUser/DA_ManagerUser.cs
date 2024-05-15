@@ -20,10 +20,10 @@ public static class DA_ManagerUser{
 		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);
 		parameters.Add("@pPageRowCount"		, pageRowCount		, DbType.Int32		, ParameterDirection.Output);
 
-		parameters.Add("@rTotalRowCount"		,null					, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@rSeachRowCount"		,null					, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@pSearchPageCount"	,null					, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@rQuery"				,null					, DbType.String	, ParameterDirection.Output);
+		parameters.Add("@rTotalRowCount"		, null				, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@rSeachRowCount"		, null				, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@pSearchPageCount"	, null				, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@rQuery"				, null				, DbType.String	, ParameterDirection.Output,4000);
 
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			route_lst = db.Query<EN_ManagerUser>("[dbo].[pr_ManagerUsers_sel]",parameters);
@@ -60,7 +60,7 @@ public static class DA_ManagerUser{
 
 		EN_Return route_return = new EN_Return();
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
-			db.Execute("[dbo].[pr_routes_ins]",parameters);
+			db.Execute("[dbo].[pr_ManagerUsers_ins]",parameters);
 			route_return.id = parameters.Get<Guid?>("@rGuid");
 			route_return.description = parameters.Get<string>("@rProcessMessage");
 
@@ -90,7 +90,7 @@ public static class DA_ManagerUser{
 
 		EN_Return route_return = new EN_Return();
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
-			db.Execute("[dbo].[pr_routes_upd]",parameters);
+			db.Execute("[dbo].[pr_ManagerUsers_upd]",parameters);
 			route_return.description = parameters.Get<string>("@rProcessMessage");
 
 			route_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
@@ -112,7 +112,7 @@ public static class DA_ManagerUser{
 
 		EN_Return route_return = new EN_Return();
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
-			db.Execute("[dbo].[pr_routes_del]",parameters);
+			db.Execute("[dbo].[pr_ManagerUsers_del]",parameters);
 			route_return.description = parameters.Get<string>("@rProcessMessage");
 
 			route_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");

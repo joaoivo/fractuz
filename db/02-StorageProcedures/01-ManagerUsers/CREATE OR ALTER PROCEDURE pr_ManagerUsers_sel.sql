@@ -2,7 +2,7 @@ USE fractuz
 GO
 -- exec pr_ManagerUsers_sel
 CREATE OR ALTER PROCEDURE pr_ManagerUsers_sel
-	 @guid 					uniqueidentifier 	= NULL
+	 @pGuid 					uniqueidentifier 	= NULL
 	,@pParticName			NVARCHAR (150) 	= NULL
 	,@pParticMail			NVARCHAR (150) 	= NULL
 	,@pIsAdm					BIT					= NULL
@@ -35,7 +35,7 @@ DECLARE @query nvarchar(max)='
 	----- where
 	DECLARE @where nvarchar(max)=null
 
-	IF @guid IS NOT NULL SET @where = CONCAT('\n\t ([SystemIDX]=''',@guid,''') ')
+	IF @pGuid IS NOT NULL SET @where = CONCAT('\n\t ([SystemIDX]=''',@pGuid,''') ')
 
 	IF @pParticName IS NOT NULL 
 		BEGIN

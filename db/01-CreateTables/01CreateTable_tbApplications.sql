@@ -1,3 +1,6 @@
+use fractuz
+go
+
 CREATE TABLE [dbo].[tbApplications] (
     [SystemIdx]            UNIQUEIDENTIFIER NOT NULL,
     [Name]                 NVARCHAR (200)   NOT NULL,

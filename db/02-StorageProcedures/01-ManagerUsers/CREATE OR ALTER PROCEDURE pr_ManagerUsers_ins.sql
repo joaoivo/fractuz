@@ -24,9 +24,9 @@ BEGIN TRY
 	SET @rIsOK =0
 
 	INSERT INTO [fractuz].[dbo].[tbManagerUsers](
-		[SystemIDX]	,[ParticName]	,[ParticMail]	,[ParticPass]	,[IsAdm]	,[SystemCreationUser] 
+		[SystemIDX]	,[ParticName]	,[ParticMail]	,[ParticPass]									,[IsAdm]	,[SystemCreationUser] 
 	) VALUES(
-		@rGuid		,@pParticName	,@pParticMail	,@pParticPass	,@pIsAdm	,@pSystemCreationUser
+		@rGuid		,@pParticName	,@pParticMail	,HASHBYTES('SHA2_256', @pParticPass)	,@pIsAdm	,@pSystemCreationUser
 	)
 
 	--- Verificar se houve erro durante a atualização
