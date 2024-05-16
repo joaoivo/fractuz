@@ -50,7 +50,7 @@ public static class DA_ManagerUser{
 		parameters.Add("@pIsAdm"					, ManagerUser.IsAdm					, DbType.Boolean	, ParameterDirection.Input);
 
 		parameters.Add("@pSystemActive"			, ManagerUser.SystemActive			, DbType.Boolean	, ParameterDirection.Input);
-		parameters.Add("@pSystemCreationUser"	, ManagerUser.SystemCreationUser	, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pSystemCreationUser"	, ManagerUser.SystemCreationUser	, DbType.Guid		, ParameterDirection.Input);
 
 		parameters.Add("@rGuid"						, null									, DbType.Guid		, ParameterDirection.Output);
 		parameters.Add("@rIsOK"						, null									, DbType.Boolean	, ParameterDirection.Output);
@@ -81,7 +81,7 @@ public static class DA_ManagerUser{
 		parameters.Add("@pIsAdm"					, ManagerUser.IsAdm						, DbType.Boolean	, ParameterDirection.Input);
 
 		parameters.Add("@pSystemActive"			, ManagerUser.SystemActive				, DbType.Boolean	, ParameterDirection.Input);
-		parameters.Add("@pSystemLastUpdateUser", ManagerUser.SystemLastUpdateUser	, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pSystemLastUpdateUser", ManagerUser.SystemLastUpdateUser	, DbType.Guid		, ParameterDirection.Input);
 
 		parameters.Add("@rIsOK"						, null										, DbType.Boolean	, ParameterDirection.Output);
 		parameters.Add("@rRowsAffected"			, null										, DbType.Int32		, ParameterDirection.Output);
