@@ -1,16 +1,14 @@
-
 using Fractuz.System.Defaults.EndPoint;
 
-using Fractuz.Domain.Users.BussinesPlan;
-using Fractuz.Domain.Users.Entities;
-
+using Fractuz.Domain.AppDataBase.BussinesPlan;
+using Fractuz.Domain.AppDataBase.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
-namespace Fractuz.Domain.Users.EndPoints;
-public class EP_ManagerUser:IEndPoint{
-	public EP_ManagerUser(IConfiguration config) : base(config){}
-	public override string Route (){ return @"/Admin/Users";}
+namespace Fractuz.Domain.AppDataBase.EndPoints;
+public class EP_AppDataBase:IEndPoint{
+	public EP_AppDataBase(IConfiguration config) : base(config){}
+	public override string Route (){ return @"/AppDataBases";}
 	public override List<apiMethodParam> Methods(){
 		return new List<apiMethodParam>{
 			 new apiMethodParam{handle=UserAPI_Get 	, httpMethods=new HttpMethod[]{HttpMethod.Get }}
@@ -22,29 +20,29 @@ public class EP_ManagerUser:IEndPoint{
 
 	public IResult UserAPI_Get([FromBody] dynamic? requestBody=null){
 		try{
-			List<EN_ManagerUser>? managerUser_lst = BP_ManagerUser.Select(Config);
-			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = managerUser_lst});
+			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config);
+			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst});
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
-	public IResult UserAPI_Post([FromBody] EN_ManagerUser managerUser){
+	public IResult UserAPI_Post([FromBody] EN_AppDataBase application){
 		try{
-			return ApiRoutePressets.returnResults(BP_ManagerUser.Insert(Config,managerUser));
+			return ApiRoutePressets.returnResults(BP_AppDataBase.Insert(Config,application));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
-	public IResult UserAPI_Put([FromBody] EN_ManagerUser managerUser){
+	public IResult UserAPI_Put([FromBody] EN_AppDataBase application){
 		try{
-			return ApiRoutePressets.returnResults(BP_ManagerUser.Update(Config,managerUser));
+			return ApiRoutePressets.returnResults(BP_AppDataBase.Update(Config,application));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 	public IResult UserAPI_Delete([FromBody] Guid SystemIDX){
 		try{
-			return ApiRoutePressets.returnResults(BP_ManagerUser.Delete(Config,SystemIDX));
+			return ApiRoutePressets.returnResults(BP_AppDataBase.Delete(Config,SystemIDX));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

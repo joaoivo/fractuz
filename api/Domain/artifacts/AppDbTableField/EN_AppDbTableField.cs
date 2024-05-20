@@ -1,5 +1,5 @@
 
-namespace Fractuz.Domain.AppDbTableField.Entities;
+namespace Fractuz.Domain.AppDbTableFields.Entities;
 public class EN_AppDbTableField: EN_DefaultEntity{
 	public Guid? FieldTable {get; set;}=null;
 	public string? FieldName {get; set;}=null;
