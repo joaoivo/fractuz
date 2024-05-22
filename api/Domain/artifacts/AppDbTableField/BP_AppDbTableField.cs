@@ -4,8 +4,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Fractuz.Domain.AppDbTableFields.BussinesPlan;
 public static class BP_AppDbTableField{
-	public static List<EN_AppDbTableField>? Select(IConfiguration config, Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
+	public static List<EN_AppDbTableField>? Select(IConfiguration config
+		,Guid? guid=null ,Guid? fieldTable=null,string? fieldName=null,string? fieldDescription =null
+		,String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		int? totalRowCount=null;
 		int? seachRowCount=null;
@@ -13,14 +14,15 @@ public static class BP_AppDbTableField{
 		string? query = null;
 
 		return (List<EN_AppDbTableField>?)DA_AppDbTableField.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query , ref pageNumber , ref pageRowCount, columnsOrderBy
-		,guid, particName, particMail	,isAdm );
+		,guid, fieldTable, fieldName	,fieldDescription );
 	}
 	public static List<EN_AppDbTableField>? Select(IConfiguration config,out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query
-		,Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
+		,Guid? guid=null ,Guid? fieldTable=null,string? fieldName=null,string? fieldDescription =null
+		,Boolean? isAdm =null
+		,String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		List<EN_AppDbTableField>? route_lst = (List<EN_AppDbTableField>?)DA_AppDbTableField.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
-			,guid, particName, particMail,isAdm );
+			,guid, fieldTable, fieldName,fieldDescription );
 		return route_lst;
 	}
 

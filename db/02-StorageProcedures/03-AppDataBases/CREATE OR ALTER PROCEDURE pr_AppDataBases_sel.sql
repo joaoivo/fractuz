@@ -3,9 +3,9 @@ GO
 -- exec pr_ManagerUsers_sel
 CREATE OR ALTER PROCEDURE pr_AppDataBases_sel
 	 @pGuid 					uniqueidentifier 	= NULL
-	,@pName					NVARCHAR (200) 	= NULL
-	,@pDescription			NVARCHAR (max) 	= NULL
-	,@pIsAdm					BIT					= NULL
+	,@pApplication			uniqueidentifier	= NULL
+	,@pDatabaseName		NVARCHAR (max) 	= NULL
+	,@pBuildOrder			INT					= NULL
 
 	,@pColumnsOrderBy		NVARCHAR(MAX)		= NULL
 	,@pPageNumber			INT					= NULL 	OUTPUT
@@ -29,25 +29,29 @@ DECLARE @query nvarchar(max)='
 			,[SystemLastUpdateUser]
 	FROM [fractuz].[dbo].[tbAppDataBases]'
 
-
-
 	----- where
 	DECLARE @where nvarchar(max)=null
 
 	IF @pGuid IS NOT NULL SET @where = CONCAT('\n\t ([SystemIDX]=''',@pGuid,''') ')
 
-	IF @pName IS NOT NULL 
+	IF @pApplication IS NOT NULL 
 		BEGIN
 		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
-		SET @where = CONCAT(@where,'([Name] = ''',@pName,''')')
+		SET @where = CONCAT(@where,'([Application] = ''',@pApplication,''')')
 		END
 
-	IF @pDescription IS NOT NULL 
+	IF @pDatabaseName IS NOT NULL 
 		BEGIN
 		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
-		SET @where = CONCAT(@where,'([Description] = ''',@pDescription,''')')
+		SET @where = CONCAT(@where,'([DatabaseName] = ''',@pDatabaseName,''')')
 		END
-	
+
+	IF @pBuildOrder IS NOT NULL 
+		BEGIN
+		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
+		SET @where = CONCAT(@where,'([BuildOrder] = ''',@pBuildOrder,''')')
+		END
+
 	IF @where IS NOT NULL set @query = CONCAT(@query , ' where ',@where)
 
 	----- order by	

@@ -3,8 +3,9 @@ using Fractuz.Domain.AppDataBase.Entities;
 
 namespace Fractuz.Domain.AppDataBase.BussinesPlan;
 public static class BP_AppDataBase{
-	public static List<EN_AppDataBase>? Select(IConfiguration config, Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
+	public static List<EN_AppDataBase>? Select(IConfiguration config
+		, Guid? guid=null,Guid? application=null,string? databaseName=null	,int? buildOrder =null
+		, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		int? totalRowCount=null;
 		int? seachRowCount=null;
@@ -12,14 +13,14 @@ public static class BP_AppDataBase{
 		string? query = null;
 
 		return (List<EN_AppDataBase>?)DA_AppDataBase.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query , ref pageNumber , ref pageRowCount, columnsOrderBy
-		,guid, particName, particMail	,isAdm );
+		,guid, application, databaseName	,buildOrder );
 	}
 	public static List<EN_AppDataBase>? Select(IConfiguration config,out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query
-		,Guid? guid=null,string? particName=null,string? particMail=null
+		, Guid? guid=null,Guid? application=null,string? databaseName=null	,int? buildOrder =null
 		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		List<EN_AppDataBase>? route_lst = (List<EN_AppDataBase>?)DA_AppDataBase.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
-			,guid, particName, particMail,isAdm );
+			,guid, application, databaseName	,buildOrder );
 		return route_lst;
 	}
 

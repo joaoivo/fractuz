@@ -1,20 +1,19 @@
 using System.Data;
 using Dapper;
-using Fractuz.Domain.AppDbTable.Entities;
+using Fractuz.Domain.AppDbTables.Entities;
 using Microsoft.Data.SqlClient;
 
-namespace Fractuz.Domain.AppDbTable.DataAccess;
+namespace Fractuz.Domain.AppDbTables.DataAccess;
 public static class DA_AppDbTable{
 	public static IEnumerable<EN_AppDbTable> Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,string? particName=null,string? particMail=null
+		,Guid? guid=null,Guid? tableDatabase=null,string? tableName=null
 		,Boolean? isAdm =null){
 
 		IEnumerable<EN_AppDbTable> route_lst = new List<EN_AppDbTable>();
 		DynamicParameters parameters = new DynamicParameters();
 		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pParticName"			, particName		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"			, particMail		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pIsAdm"				, isAdm				, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pTableDatabase"		, tableDatabase	, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pTableName"			, tableName			, DbType.String	, ParameterDirection.Input,050);
 
 		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy	, DbType.String	, ParameterDirection.Input,4000);
 		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);
@@ -44,12 +43,13 @@ public static class DA_AppDbTable{
 
 		AppDbTable.SystemActive= AppDbTable.SystemActive==null?true:AppDbTable.SystemActive;
 
-/*
-		parameters.Add("@pParticName"				, AppDbTable.ParticName			, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"				, AppDbTable.ParticMail			, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticPass"				, AppDbTable.ParticPass			, DbType.String	, ParameterDirection.Input,300);
-		parameters.Add("@pIsAdm"					, AppDbTable.IsAdm					, DbType.Boolean	, ParameterDirection.Input);
-*/
+		parameters.Add("@pTableDatabase"			, AppDbTable.TableDatabase			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pTableBuiltOrder"		, AppDbTable.TableBuiltOrder		, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pTableName"				, AppDbTable.TableName				, DbType.String	, ParameterDirection.Input,050);
+		parameters.Add("@pTableDescription"		, AppDbTable.TableDescription		, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pFieldPrefix"			, AppDbTable.FieldPrefix			, DbType.String	, ParameterDirection.Input,010);
+		parameters.Add("@pTableHistory"			, AppDbTable.TableHistory			, DbType.Boolean	, ParameterDirection.Input);
+
 		parameters.Add("@pSystemActive"			, AppDbTable.SystemActive			, DbType.Boolean	, ParameterDirection.Input);
 		parameters.Add("@pSystemCreationUser"	, AppDbTable.SystemCreationUser	, DbType.Guid		, ParameterDirection.Input);
 
@@ -74,13 +74,15 @@ public static class DA_AppDbTable{
 	public static EN_Return Update(IConfiguration config,EN_AppDbTable AppDbTable){
 		IEnumerable<EN_AppDbTable> route_lst = new List<EN_AppDbTable>();
 		DynamicParameters parameters = new DynamicParameters();
-/*
-		parameters.Add("@rGuid"						, AppDbTable.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pParticName"				, AppDbTable.ParticName				, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"				, AppDbTable.ParticMail				, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticPass"				, AppDbTable.ParticPass				, DbType.String	, ParameterDirection.Input,300);
-		parameters.Add("@pIsAdm"					, AppDbTable.IsAdm						, DbType.Boolean	, ParameterDirection.Input);
-*/
+
+		parameters.Add("@pGuid"						, AppDbTable.SystemActive			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pTableDatabase"			, AppDbTable.TableDatabase			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pTableBuiltOrder"		, AppDbTable.TableBuiltOrder		, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pTableName"				, AppDbTable.TableName				, DbType.String	, ParameterDirection.Input,050);
+		parameters.Add("@pTableDescription"		, AppDbTable.TableDescription		, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pFieldPrefix"			, AppDbTable.FieldPrefix			, DbType.String	, ParameterDirection.Input,010);
+		parameters.Add("@pTableHistory"			, AppDbTable.TableHistory			, DbType.Boolean	, ParameterDirection.Input);
+
 		parameters.Add("@pSystemActive"			, AppDbTable.SystemActive				, DbType.Boolean	, ParameterDirection.Input);
 		parameters.Add("@pSystemLastUpdateUser", AppDbTable.SystemLastUpdateUser	, DbType.Guid		, ParameterDirection.Input);
 

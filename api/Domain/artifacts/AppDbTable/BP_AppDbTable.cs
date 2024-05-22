@@ -1,11 +1,12 @@
-using Fractuz.Domain.AppDbTable.DataAccess;
+using Fractuz.Domain.AppDbTables.DataAccess;
 using Microsoft.CodeAnalysis;
-using Fractuz.Domain.AppDbTable.Entities;
+using Fractuz.Domain.AppDbTables.Entities;
 
-namespace Fractuz.Domain.AppDbTable.BussinesPlan;
+namespace Fractuz.Domain.AppDbTables.BussinesPlan;
 public static class BP_AppDbTable{
-	public static List<EN_AppDbTable>? Select(IConfiguration config, Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
+	public static List<EN_AppDbTable>? Select(IConfiguration config
+		,Guid? guid=null,Guid? tableDatabase=null,string? tableName=null
+		,String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		int? totalRowCount=null;
 		int? seachRowCount=null;
@@ -13,14 +14,14 @@ public static class BP_AppDbTable{
 		string? query = null;
 
 		return (List<EN_AppDbTable>?)DA_AppDbTable.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query , ref pageNumber , ref pageRowCount, columnsOrderBy
-		,guid, particName, particMail	,isAdm );
+		,guid, tableDatabase, tableName);
 	}
 	public static List<EN_AppDbTable>? Select(IConfiguration config,out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query
-		,Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
+		,Guid? guid=null,Guid? tableDatabase=null,string? tableName=null
+		, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		List<EN_AppDbTable>? route_lst = (List<EN_AppDbTable>?)DA_AppDbTable.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
-			,guid, particName, particMail,isAdm );
+			,guid, tableDatabase, tableName );
 		return route_lst;
 	}
 

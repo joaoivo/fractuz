@@ -6,15 +6,16 @@ using Microsoft.Data.SqlClient;
 namespace Fractuz.Domain.AppDbTableFields.DataAccess;
 public static class DA_AppDbTableField{
 	public static IEnumerable<EN_AppDbTableField> Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null){
+		,Guid? guid=null,Guid? fieldTable=null,string? fieldName=null
+		,string? fieldDescription =null){
 
 		IEnumerable<EN_AppDbTableField> route_lst = new List<EN_AppDbTableField>();
 		DynamicParameters parameters = new DynamicParameters();
 		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pParticName"			, particName		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"			, particMail		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pIsAdm"				, isAdm				, DbType.Boolean	, ParameterDirection.Input);
+
+		parameters.Add("@pFieldTable"			, fieldTable		, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pFieldName"			, fieldName			, DbType.String	, ParameterDirection.Input,100);
+		parameters.Add("@pFieldDescription"	, fieldDescription, DbType.String	, ParameterDirection.Input,100);
 
 		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy	, DbType.String	, ParameterDirection.Input,4000);
 		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);
@@ -44,12 +45,20 @@ public static class DA_AppDbTableField{
 
 		AppDbTableField.SystemActive= AppDbTableField.SystemActive==null?true:AppDbTableField.SystemActive;
 
-/*
-		parameters.Add("@pParticName"				, AppDbTableField.ParticName			, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"				, AppDbTableField.ParticMail			, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticPass"				, AppDbTableField.ParticPass			, DbType.String	, ParameterDirection.Input,300);
-		parameters.Add("@pIsAdm"					, AppDbTableField.IsAdm					, DbType.Boolean	, ParameterDirection.Input);
-*/
+		parameters.Add("@pFieldTable"					, AppDbTableField.FieldTable					, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pFieldName"					, AppDbTableField.FieldName					, DbType.String	, ParameterDirection.Input,100);
+		parameters.Add("@pFieldDescription"			, AppDbTableField.FieldDescription			, DbType.String	, ParameterDirection.Input,100);
+		parameters.Add("@pFieldDbDataType"			, AppDbTableField.FieldDbDataType			, DbType.String	, ParameterDirection.Input,010);
+		parameters.Add("@pFieldDbDataSize"			, AppDbTableField.FieldDbDataSize			, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pFieldDbDataSizeDecimel"	, AppDbTableField.FieldDbDataSizeDecimel	, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pIsPrimaryKey"				, AppDbTableField.IsPrimaryKey				, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pIsAllowNull"				, AppDbTableField.IsAllowNull					, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pIsUnique"					, AppDbTableField.IsUnique						, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pFieldDefaultValue"		, AppDbTableField.FieldDefaultValue			, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pConstraintField"			, AppDbTableField.ConstraintField			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pAppDataType"				, AppDbTableField.AppDataType					, DbType.String	, ParameterDirection.Input,003);
+		parameters.Add("@pAppDataNickname"			, AppDbTableField.AppDataNickname			, DbType.String	, ParameterDirection.Input,200);
+
 		parameters.Add("@pSystemActive"			, AppDbTableField.SystemActive			, DbType.Boolean	, ParameterDirection.Input);
 		parameters.Add("@pSystemCreationUser"	, AppDbTableField.SystemCreationUser	, DbType.Guid		, ParameterDirection.Input);
 
@@ -74,13 +83,22 @@ public static class DA_AppDbTableField{
 	public static EN_Return Update(IConfiguration config,EN_AppDbTableField AppDbTableField){
 		IEnumerable<EN_AppDbTableField> route_lst = new List<EN_AppDbTableField>();
 		DynamicParameters parameters = new DynamicParameters();
-/*
+
 		parameters.Add("@rGuid"						, AppDbTableField.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pParticName"				, AppDbTableField.ParticName				, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"				, AppDbTableField.ParticMail				, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticPass"				, AppDbTableField.ParticPass				, DbType.String	, ParameterDirection.Input,300);
-		parameters.Add("@pIsAdm"					, AppDbTableField.IsAdm						, DbType.Boolean	, ParameterDirection.Input);
-*/
+		parameters.Add("@pFieldTable"					, AppDbTableField.FieldTable					, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pFieldName"					, AppDbTableField.FieldName					, DbType.String	, ParameterDirection.Input,100);
+		parameters.Add("@pFieldDescription"			, AppDbTableField.FieldDescription			, DbType.String	, ParameterDirection.Input,100);
+		parameters.Add("@pFieldDbDataType"			, AppDbTableField.FieldDbDataType			, DbType.String	, ParameterDirection.Input,010);
+		parameters.Add("@pFieldDbDataSize"			, AppDbTableField.FieldDbDataSize			, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pFieldDbDataSizeDecimel"	, AppDbTableField.FieldDbDataSizeDecimel	, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pIsPrimaryKey"				, AppDbTableField.IsPrimaryKey				, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pIsAllowNull"				, AppDbTableField.IsAllowNull					, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pIsUnique"					, AppDbTableField.IsUnique						, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pFieldDefaultValue"		, AppDbTableField.FieldDefaultValue			, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pConstraintField"			, AppDbTableField.ConstraintField			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pAppDataType"				, AppDbTableField.AppDataType					, DbType.String	, ParameterDirection.Input,003);
+		parameters.Add("@pAppDataNickname"			, AppDbTableField.AppDataNickname			, DbType.String	, ParameterDirection.Input,200);
+
 		parameters.Add("@pSystemActive"			, AppDbTableField.SystemActive				, DbType.Boolean	, ParameterDirection.Input);
 		parameters.Add("@pSystemLastUpdateUser", AppDbTableField.SystemLastUpdateUser	, DbType.Guid		, ParameterDirection.Input);
 

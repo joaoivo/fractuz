@@ -5,7 +5,6 @@ CREATE OR ALTER PROCEDURE pr_Applications_sel
 	 @pGuid 					uniqueidentifier 	= NULL
 	,@pName					NVARCHAR (200) 	= NULL
 	,@pDescription			NVARCHAR (max) 	= NULL
-	,@pIsAdm					BIT					= NULL
 
 	,@pColumnsOrderBy		NVARCHAR(MAX)		= NULL
 	,@pPageNumber			INT					= NULL 	OUTPUT
@@ -27,8 +26,6 @@ DECLARE @query nvarchar(max)='
 			,[SystemLastUpdateDt]
 			,[SystemLastUpdateUser]
 	FROM [fractuz].[dbo].[tbManagerUsers]'
-
-
 
 	----- where
 	DECLARE @where nvarchar(max)=null

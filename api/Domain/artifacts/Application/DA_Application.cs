@@ -6,15 +6,12 @@ using Microsoft.Data.SqlClient;
 namespace Fractuz.Domain.Applications.DataAccess;
 public static class DA_Application{
 	public static IEnumerable<EN_Application> Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,string? particName=null,string? particMail=null
-		,Boolean? isAdm =null){
+		,Guid? guid=null,string? name=null){
 
 		IEnumerable<EN_Application> route_lst = new List<EN_Application>();
 		DynamicParameters parameters = new DynamicParameters();
 		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pParticName"			, particName		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"			, particMail		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pIsAdm"				, isAdm				, DbType.Boolean	, ParameterDirection.Input);
+		parameters.Add("@pName"					, name				, DbType.String	, ParameterDirection.Input,200);
 
 		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy	, DbType.String	, ParameterDirection.Input,4000);
 		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);
@@ -44,12 +41,9 @@ public static class DA_Application{
 
 		Application.SystemActive= Application.SystemActive==null?true:Application.SystemActive;
 
-/*
-		parameters.Add("@pParticName"				, Application.ParticName			, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"				, Application.ParticMail			, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticPass"				, Application.ParticPass			, DbType.String	, ParameterDirection.Input,300);
-		parameters.Add("@pIsAdm"					, Application.IsAdm					, DbType.Boolean	, ParameterDirection.Input);
-*/
+		parameters.Add("@pName"						, Application.Name					, DbType.String	, ParameterDirection.Input,150);
+		parameters.Add("@pDescription"			, Application.Description			, DbType.String	, ParameterDirection.Input,150);
+
 		parameters.Add("@pSystemActive"			, Application.SystemActive			, DbType.Boolean	, ParameterDirection.Input);
 		parameters.Add("@pSystemCreationUser"	, Application.SystemCreationUser	, DbType.Guid		, ParameterDirection.Input);
 
@@ -74,13 +68,11 @@ public static class DA_Application{
 	public static EN_Return Update(IConfiguration config,EN_Application Application){
 		IEnumerable<EN_Application> route_lst = new List<EN_Application>();
 		DynamicParameters parameters = new DynamicParameters();
-/*
+
 		parameters.Add("@rGuid"						, Application.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pParticName"				, Application.ParticName				, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticMail"				, Application.ParticMail				, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pParticPass"				, Application.ParticPass				, DbType.String	, ParameterDirection.Input,300);
-		parameters.Add("@pIsAdm"					, Application.IsAdm						, DbType.Boolean	, ParameterDirection.Input);
-*/
+		parameters.Add("@pName"						, Application.Name						, DbType.String	, ParameterDirection.Input,150);
+		parameters.Add("@pDescription"			, Application.Description				, DbType.String	, ParameterDirection.Input,150);
+
 		parameters.Add("@pSystemActive"			, Application.SystemActive				, DbType.Boolean	, ParameterDirection.Input);
 		parameters.Add("@pSystemLastUpdateUser", Application.SystemLastUpdateUser	, DbType.Guid		, ParameterDirection.Input);
 

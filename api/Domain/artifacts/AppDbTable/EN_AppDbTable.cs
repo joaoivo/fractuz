@@ -1,4 +1,4 @@
-namespace Fractuz.Domain.AppDbTable.Entities;
+namespace Fractuz.Domain.AppDbTables.Entities;
 public class EN_AppDbTable: EN_DefaultEntity{
 	public Guid? TableDatabase {get; set;}=null;
 	public int? TableBuiltOrder {get; set;}=null;
