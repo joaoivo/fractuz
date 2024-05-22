@@ -1,9 +1,12 @@
+using System.Text;
 using Fractuz.Domain.AppDataBase.EndPoints;
 using Fractuz.Domain.AppDbTableFields.EndPoints;
 using Fractuz.Domain.AppDbTables.EndPoints;
 using Fractuz.Domain.Applications.EndPoints;
 using Fractuz.Domain.Users.EndPoints;
 using Fractuz.System.Defaults.EndPoint;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,24 @@ builder.Services.AddCors(options =>{
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
+});
+
+builder.Services.AddAuthentication(cfg => {
+	cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+	cfg.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x => {
+	x.RequireHttpsMetadata = false;
+	x.SaveToken = false;
+	x.TokenValidationParameters = new TokenValidationParameters {
+		ValidateIssuerSigningKey = true,
+		IssuerSigningKey = new SymmetricSecurityKey(
+			Encoding.UTF8.GetBytes(builder.Configuration["JWT_Secret"])
+		),
+		ValidateIssuer = false,
+		ValidateAudience = false,
+		ClockSkew = TimeSpan.Zero
+   };
 });
 
 WebApplication app = builder.Build();

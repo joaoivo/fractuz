@@ -11,8 +11,11 @@ public static class ApiRoutePressets{
 		//app.MapMethods(EP_Product.Route,new [] {HttpMethods.Get.ToString()},EP_Product.getProduct);
 		foreach(apiMethodParam apiEndPoint in endPoint.Methods()){
 			if(apiEndPoint.handle==null){continue;}
-			Console.WriteLine("Mapeando EndPoint: "+endPoint.Route()+(apiEndPoint.routeComplement==null?"":apiEndPoint.routeComplement)+ "  ("+String.Join(", ", apiEndPoint.httpMethodsStringList)+")");
-			app.MapMethods(endPoint.Route()+(apiEndPoint.routeComplement==null?"":apiEndPoint.routeComplement),apiEndPoint.httpMethodsStringList,apiEndPoint.handle);
+			Console.Write("Mapeando EndPoint: "+endPoint.Route()+(apiEndPoint.routeComplement==null?"":apiEndPoint.routeComplement)+ "  ("+String.Join(", ", apiEndPoint.httpMethodsStringList)+")");
+			app.MapMethods(endPoint.Route()+(apiEndPoint.routeComplement==null?"":apiEndPoint.routeComplement)
+				,apiEndPoint.httpMethodsStringList
+				,apiEndPoint.handle);
+			Console.WriteLine(" -OK");
 		}
 	}
 

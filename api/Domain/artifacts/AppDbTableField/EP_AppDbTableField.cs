@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fractuz.Domain.AppDbTableFields.EndPoints;
 public class EP_AppDbTableField:IEndPoint{
 	public EP_AppDbTableField(IConfiguration config) : base(config){}
-	public override string Route (){ return @"/AppDbTableFields";}
+	public override string Route (){ return @"/AppDbTableField";}
 	public override List<apiMethodParam> Methods(){
 		return new List<apiMethodParam>{
 			 new apiMethodParam{handle=AppDbTableFieldAPI_Get 	, httpMethods=new HttpMethod[]{HttpMethod.Get }}

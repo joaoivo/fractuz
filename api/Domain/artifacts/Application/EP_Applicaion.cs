@@ -7,7 +7,7 @@ using Fractuz.Domain.Applications.BussinesPlan;
 namespace Fractuz.Domain.Applications.EndPoints;
 public class EP_Application:IEndPoint{
 	public EP_Application(IConfiguration config) : base(config){}
-	public override string Route (){ return @"/Applications";}
+	public override string Route (){ return @"/Application";}
 	public override List<apiMethodParam> Methods(){
 		return new List<apiMethodParam>{
 			 new apiMethodParam{handle=ApplicationAPI_Get 		, httpMethods=new HttpMethod[]{HttpMethod.Get }}

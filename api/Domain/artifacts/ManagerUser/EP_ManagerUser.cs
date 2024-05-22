@@ -10,7 +10,7 @@ using System.Text.Json;
 namespace Fractuz.Domain.Users.EndPoints;
 public class EP_ManagerUser:IEndPoint{
 	public EP_ManagerUser(IConfiguration config) : base(config){}
-	public override string Route (){ return @"/Admin/Users";}
+	public override string Route (){ return @"/Admin/User";}
 	public override List<apiMethodParam> Methods(){
 		return new List<apiMethodParam>{
 			 new apiMethodParam{handle=UserAPI_Get 	, httpMethods=new HttpMethod[]{HttpMethod.Get }}
