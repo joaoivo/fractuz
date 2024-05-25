@@ -1,5 +1,10 @@
 # fractuz MVPer basic kit to increase dev speed 
 
+# Inittial configs
+
+## Git
+
+You can make some usefull configuration in git before start to use. Just follow [git configuration](/docs/git/general%20config.md)
 
 # Components
 

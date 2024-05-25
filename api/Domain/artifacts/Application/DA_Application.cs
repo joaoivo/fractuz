@@ -6,12 +6,13 @@ using Microsoft.Data.SqlClient;
 namespace Fractuz.Domain.Applications.DataAccess;
 public static class DA_Application{
 	public static IEnumerable<EN_Application> Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,string? name=null){
+		,Guid? guid=null,string? name=null,string? description=null){
 
 		IEnumerable<EN_Application> route_lst = new List<EN_Application>();
 		DynamicParameters parameters = new DynamicParameters();
 		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pName"					, name				, DbType.String	, ParameterDirection.Input,200);
+		parameters.Add("@pDescription"		, description		, DbType.String	, ParameterDirection.Input,4000);
 
 		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy	, DbType.String	, ParameterDirection.Input,4000);
 		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);

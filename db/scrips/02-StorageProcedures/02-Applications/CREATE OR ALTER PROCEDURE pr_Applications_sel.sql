@@ -25,7 +25,7 @@ DECLARE @query nvarchar(max)='
 			,[SystemCreationUser]
 			,[SystemLastUpdateDt]
 			,[SystemLastUpdateUser]
-	FROM [fractuz].[dbo].[tbManagerUsers]'
+	FROM [fractuz].[dbo].[tbApplications]'
 
 	----- where
 	DECLARE @where nvarchar(max)=null

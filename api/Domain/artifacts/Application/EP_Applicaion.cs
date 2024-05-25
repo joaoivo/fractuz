@@ -20,7 +20,7 @@ public class EP_Application:IEndPoint{
 	public IResult ApplicationAPI_Get([FromBody] dynamic? requestBody=null){
 		try{
 			List<EN_Application>? application_lst = BP_Application.Select(Config);
-			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst});
+			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Aplicações", dataList = application_lst});
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
