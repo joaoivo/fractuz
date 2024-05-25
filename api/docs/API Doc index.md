@@ -11,4 +11,4 @@ It can be developed in windows or linux system.
 
 ### Walkabout of installation
 
-Follow [[00-instalation]] instruction to up the dev environment
+Follow [00-instalation](/api/docs/Scripts/00-instalation.md) instruction to up the dev environment

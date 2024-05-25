@@ -11,8 +11,12 @@
             "id": "566c1a5ecbbfb2bd",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "api/docs/API Doc index.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "api/docs/API Doc index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "api/docs/API Doc index.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "api/docs/API Doc index.md"
+              }
             }
           }
         ]
@@ -140,8 +148,9 @@
   },
   "active": "566c1a5ecbbfb2bd",
   "lastOpenFiles": [
-    "README.md",
+    "api/docs/Scripts/00-instalation.md",
     "api/docs/API Doc index.md",
+    "README.md",
     "Arq/DBase_Tools.xlsm",
     "Arq",
     "db/docs",
