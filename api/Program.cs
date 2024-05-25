@@ -5,10 +5,11 @@ using Fractuz.Domain.AppDbTables.EndPoints;
 using Fractuz.Domain.Applications.EndPoints;
 using Fractuz.Domain.Users.EndPoints;
 using Fractuz.System.Defaults.EndPoint;
+using Fractuz.System.Login.EndPoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>{
     options.AddDefaultPolicy(builder =>    {
@@ -28,13 +29,14 @@ builder.Services.AddAuthentication(cfg => {
 	x.TokenValidationParameters = new TokenValidationParameters {
 		ValidateIssuerSigningKey = true,
 		IssuerSigningKey = new SymmetricSecurityKey(
-			Encoding.UTF8.GetBytes(builder.Configuration["JWT_Secret"])
+			Encoding.UTF8.GetBytes(builder.Configuration["ApplicationSettings:JWT_Secret"])
 		),
 		ValidateIssuer = false,
 		ValidateAudience = false,
 		ClockSkew = TimeSpan.Zero
    };
 });
+builder.Services.AddAuthorization();
 
 WebApplication app = builder.Build();
 if(app.Environment.IsDevelopment()){
@@ -42,10 +44,14 @@ if(app.Environment.IsDevelopment()){
 }else{
 	Console.WriteLine("Não é Configuração de Desenvolvimento");
 }
+ApiRoutePressets.LoadAPI(app,new EP_Login(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_ManagerUser(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_Application(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_AppDataBase(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_AppDbTable(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_AppDbTableField(builder.Configuration));
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

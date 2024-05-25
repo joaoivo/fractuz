@@ -4,6 +4,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Fractuz.Domain.Users.BussinesPlan;
 public static class BP_ManagerUser{
+		public static List<EN_ManagerUser>? Login(IConfiguration config,string? particMail=null,string? particPass=null){
+		return (List<EN_ManagerUser>?)DA_ManagerUser.Login(config,particMail,particPass);
+	}
 	public static List<EN_ManagerUser>? Select(IConfiguration config, Guid? guid=null,string? particName=null,string? particMail=null
 		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
@@ -19,9 +22,9 @@ public static class BP_ManagerUser{
 		,Guid? guid=null,string? particName=null,string? particMail=null
 		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
-		List<EN_ManagerUser>? route_lst = (List<EN_ManagerUser>?)DA_ManagerUser.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
+		List<EN_ManagerUser>? managerUser_lst = (List<EN_ManagerUser>?)DA_ManagerUser.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
 			,guid, particName, particMail,isAdm );
-		return route_lst;
+		return managerUser_lst;
 	}
 
 	public static EN_Return Insert(IConfiguration config,EN_ManagerUser ManagerUser){

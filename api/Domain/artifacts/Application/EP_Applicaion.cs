@@ -3,6 +3,7 @@ using Fractuz.System.Defaults.EndPoint;
 using Microsoft.AspNetCore.Mvc;
 using Fractuz.Domain.Applications.Entities;
 using Fractuz.Domain.Applications.BussinesPlan;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fractuz.Domain.Applications.EndPoints;
 public class EP_Application:IEndPoint{
@@ -16,7 +17,7 @@ public class EP_Application:IEndPoint{
 			,new apiMethodParam{handle=ApplicationAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete}}
 		};
 	}
-
+	[Authorize]
 	public IResult ApplicationAPI_Get([FromBody] dynamic? requestBody=null){
 		try{
 			List<EN_Application>? application_lst = BP_Application.Select(Config);
@@ -25,6 +26,7 @@ public class EP_Application:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+	[Authorize]
 	public IResult ApplicationAPI_Post([FromBody] EN_Application application){
 		try{
 			return ApiRoutePressets.returnResults(BP_Application.Insert(Config,application));
@@ -32,6 +34,8 @@ public class EP_Application:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult ApplicationAPI_Put([FromBody] EN_Application application){
 		try{
 			return ApiRoutePressets.returnResults(BP_Application.Update(Config,application));
@@ -39,6 +43,8 @@ public class EP_Application:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult ApplicationAPI_Delete([FromBody] Guid SystemIDX){
 		try{
 			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,SystemIDX));

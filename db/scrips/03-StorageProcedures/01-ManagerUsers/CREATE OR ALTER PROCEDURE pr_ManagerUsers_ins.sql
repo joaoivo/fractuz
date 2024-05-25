@@ -23,10 +23,12 @@ BEGIN TRY
 	SET @rGuid = newid()
 	SET @rIsOK =0
 
+	DECLARE @passwordHash VARCHAR(64) = dbo.GenerateAlphaNumericHash(@pParticPass);
+
 	INSERT INTO [fractuz].[dbo].[tbManagerUsers](
-		[SystemIDX]	,[ParticName]	,[ParticMail]	,[ParticPass]									,[IsAdm]	,[SystemCreationUser] 
+		[SystemIDX]	,[ParticName]	,[ParticMail]	,[ParticPass]		,[IsAdm]	,[SystemCreationUser] 
 	) VALUES(
-		@rGuid		,@pParticName	,@pParticMail	,HASHBYTES('SHA2_256', @pParticPass)	,@pIsAdm	,@pSystemCreationUser
+		@rGuid		,@pParticName	,@pParticMail	,@passwordHash	,@pIsAdm	,@pSystemCreationUser
 	)
 
 	--- Verificar se houve erro durante a atualização

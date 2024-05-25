@@ -20,9 +20,9 @@ public static class BP_AppDbTable{
 		,Guid? guid=null,Guid? tableDatabase=null,string? tableName=null
 		, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
-		List<EN_AppDbTable>? route_lst = (List<EN_AppDbTable>?)DA_AppDbTable.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
+		List<EN_AppDbTable>? appDbTable_lst = (List<EN_AppDbTable>?)DA_AppDbTable.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
 			,guid, tableDatabase, tableName );
-		return route_lst;
+		return appDbTable_lst;
 	}
 
 	public static EN_Return Insert(IConfiguration config,EN_AppDbTable AppDbTable){

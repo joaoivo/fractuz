@@ -12,3 +12,5 @@ It can be developed in windows or linux system.
 ### Walkabout of installation
 
 Follow [00-instalation](/api/docs/Scripts/00-instalation.md) instruction to up the dev environment
+
+Follow [00-Configuration](/api/docs/configuration/00-Initial%20configurations.md) instruction to set your local settings profile

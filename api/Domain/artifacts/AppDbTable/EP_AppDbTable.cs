@@ -3,6 +3,7 @@ using Fractuz.System.Defaults.EndPoint;
 using Fractuz.Domain.AppDbTables.BussinesPlan;
 using Fractuz.Domain.AppDbTables.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fractuz.Domain.AppDbTables.EndPoints;
 public class EP_AppDbTable:IEndPoint{
@@ -17,6 +18,7 @@ public class EP_AppDbTable:IEndPoint{
 		};
 	}
 
+	[Authorize]
 	public IResult AppDbTableAPI_Get([FromBody] dynamic? requestBody=null){
 		try{
 			List<EN_AppDbTable>? application_lst = BP_AppDbTable.Select(Config);
@@ -25,6 +27,8 @@ public class EP_AppDbTable:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDbTableAPI_Post([FromBody] EN_AppDbTable application){
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Insert(Config,application));
@@ -32,6 +36,8 @@ public class EP_AppDbTable:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDbTableAPI_Put([FromBody] EN_AppDbTable application){
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Update(Config,application));
@@ -39,6 +45,8 @@ public class EP_AppDbTable:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDbTableAPI_Delete([FromBody] Guid SystemIDX){
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX));

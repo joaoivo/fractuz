@@ -15,8 +15,8 @@ public static class BP_Application{
 	public static List<EN_Application>? Select(IConfiguration config,out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query
 		,Guid? guid=null,string? name=null,string? description=null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
-		List<EN_Application>? route_lst = (List<EN_Application>?)DA_Application.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy,guid, name,description);
-		return route_lst;
+		List<EN_Application>? application_lst = (List<EN_Application>?)DA_Application.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy,guid, name,description);
+		return application_lst;
 	}
 
 	public static EN_Return Insert(IConfiguration config,EN_Application Application){

@@ -21,7 +21,6 @@ DECLARE @query nvarchar(max)='
 	SELECT [SystemIDX]
 			,[ParticName]
 			,[ParticMail]
-			,[ParticPass]
 			,[IsAdm]
 			,[SystemActive]
 			,[SystemCreationDt]

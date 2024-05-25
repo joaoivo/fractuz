@@ -6,6 +6,7 @@ using Fractuz.Domain.Users.Entities;
 
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fractuz.Domain.Users.EndPoints;
 public class EP_ManagerUser:IEndPoint{
@@ -20,6 +21,7 @@ public class EP_ManagerUser:IEndPoint{
 		};
 	}
 
+
 	public IResult UserAPI_Get([FromBody] dynamic? requestBody=null){
 		try{
 			List<EN_ManagerUser>? managerUser_lst = BP_ManagerUser.Select(Config);
@@ -28,6 +30,7 @@ public class EP_ManagerUser:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
 	public IResult UserAPI_Post([FromBody] EN_ManagerUser managerUser){
 		try{
 			return ApiRoutePressets.returnResults(BP_ManagerUser.Insert(Config,managerUser));
@@ -35,6 +38,7 @@ public class EP_ManagerUser:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
 	public IResult UserAPI_Put([FromBody] EN_ManagerUser managerUser){
 		try{
 			return ApiRoutePressets.returnResults(BP_ManagerUser.Update(Config,managerUser));
@@ -42,6 +46,7 @@ public class EP_ManagerUser:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
 	public IResult UserAPI_Delete([FromBody] Guid SystemIDX){
 		try{
 			return ApiRoutePressets.returnResults(BP_ManagerUser.Delete(Config,SystemIDX));

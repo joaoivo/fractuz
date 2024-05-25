@@ -9,7 +9,7 @@ public static class DA_AppDbTableField{
 		,Guid? guid=null,Guid? fieldTable=null,string? fieldName=null
 		,string? fieldDescription =null){
 
-		IEnumerable<EN_AppDbTableField> route_lst = new List<EN_AppDbTableField>();
+		IEnumerable<EN_AppDbTableField> appDbTableField_lst = new List<EN_AppDbTableField>();
 		DynamicParameters parameters = new DynamicParameters();
 		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
 
@@ -27,7 +27,7 @@ public static class DA_AppDbTableField{
 		parameters.Add("@rQuery"				, null				, DbType.String	, ParameterDirection.Output,4000);
 
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
-			route_lst = db.Query<EN_AppDbTableField>("[dbo].[pr_AppDbTableFields_sel]",parameters);
+			appDbTableField_lst = db.Query<EN_AppDbTableField>("[dbo].[pr_AppDbTableFields_sel]",parameters);
 		}
 
 		pageNumber =0;
@@ -36,11 +36,11 @@ public static class DA_AppDbTableField{
 		seachRowCount=0;
 		searchPageCount=0;
 		query="";
-		return route_lst;
+		return appDbTableField_lst;
 	}
 
 	public static EN_Return Insert(IConfiguration config,EN_AppDbTableField AppDbTableField){
-		IEnumerable<EN_AppDbTableField> route_lst = new List<EN_AppDbTableField>();
+		IEnumerable<EN_AppDbTableField> appDbTableField_lst = new List<EN_AppDbTableField>();
 		DynamicParameters parameters = new DynamicParameters();
 
 		AppDbTableField.SystemActive= AppDbTableField.SystemActive==null?true:AppDbTableField.SystemActive;
@@ -68,20 +68,20 @@ public static class DA_AppDbTableField{
 		parameters.Add("@rProcessMessage"		, null									, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null									, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return route_return = new EN_Return();
+		EN_Return appDbTableField_return = new EN_Return();
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTableFields_ins]",parameters);
-			route_return.id = parameters.Get<Guid?>("@rGuid");
-			route_return.description = parameters.Get<string>("@rProcessMessage");
+			appDbTableField_return.id = parameters.Get<Guid?>("@rGuid");
+			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
-			route_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
-			route_return.code= parameters.Get<int>("@rProcessCode");
+			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
+			appDbTableField_return.code= parameters.Get<int>("@rProcessCode");
 		}
-		return route_return;
+		return appDbTableField_return;
 	}
 
 	public static EN_Return Update(IConfiguration config,EN_AppDbTableField AppDbTableField){
-		IEnumerable<EN_AppDbTableField> route_lst = new List<EN_AppDbTableField>();
+		IEnumerable<EN_AppDbTableField> appDbTableField_lst = new List<EN_AppDbTableField>();
 		DynamicParameters parameters = new DynamicParameters();
 
 		parameters.Add("@rGuid"						, AppDbTableField.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
@@ -107,19 +107,19 @@ public static class DA_AppDbTableField{
 		parameters.Add("@rProcessMessage"		, null										, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null										, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return route_return = new EN_Return();
+		EN_Return appDbTableField_return = new EN_Return();
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTableFields_upd]",parameters);
-			route_return.description = parameters.Get<string>("@rProcessMessage");
+			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
-			route_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
-			route_return.code= parameters.Get<int>("@rProcessCode");
+			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
+			appDbTableField_return.code= parameters.Get<int>("@rProcessCode");
 		}
-		return route_return;
+		return appDbTableField_return;
 	}
 
 	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
-		IEnumerable<EN_AppDbTableField> route_lst = new List<EN_AppDbTableField>();
+		IEnumerable<EN_AppDbTableField> appDbTableField_lst = new List<EN_AppDbTableField>();
 		DynamicParameters parameters = new DynamicParameters();
 
 		parameters.Add("@rGuid"						, SystemIDX									, DbType.Guid		, ParameterDirection.Input);
@@ -129,14 +129,14 @@ public static class DA_AppDbTableField{
 		parameters.Add("@rProcessMessage"		, null										, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null										, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return route_return = new EN_Return();
+		EN_Return appDbTableField_return = new EN_Return();
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTableFields_del]",parameters);
-			route_return.description = parameters.Get<string>("@rProcessMessage");
+			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
-			route_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
-			route_return.code= parameters.Get<int>("@rProcessCode");
+			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
+			appDbTableField_return.code= parameters.Get<int>("@rProcessCode");
 		}
-		return route_return;
+		return appDbTableField_return;
 	}
 }

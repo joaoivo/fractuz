@@ -3,6 +3,7 @@ using Fractuz.System.Defaults.EndPoint;
 using Fractuz.Domain.AppDataBase.BussinesPlan;
 using Fractuz.Domain.AppDataBase.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fractuz.Domain.AppDataBase.EndPoints;
 public class EP_AppDataBase:IEndPoint{
@@ -30,6 +31,8 @@ public class EP_AppDataBase:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDataBasesAPI_Get([FromRoute] Guid guid){
 		try{
 			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,guid);
@@ -38,6 +41,8 @@ public class EP_AppDataBase:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDataBasesAPI_Post([FromBody] EN_AppDataBase application){
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Insert(Config,application));
@@ -45,6 +50,8 @@ public class EP_AppDataBase:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDataBasesAPI_Put([FromBody] EN_AppDataBase application){
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Update(Config,application));
@@ -52,6 +59,8 @@ public class EP_AppDataBase:IEndPoint{
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
+
+	[Authorize]
 	public IResult AppDataBasesAPI_Delete([FromBody] Guid SystemIDX){
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Delete(Config,SystemIDX));

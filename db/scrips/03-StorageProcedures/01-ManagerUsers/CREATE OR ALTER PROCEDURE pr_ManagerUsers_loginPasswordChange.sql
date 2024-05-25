@@ -1,13 +1,10 @@
 USE fractuz
 GO
-CREATE OR ALTER PROCEDURE pr_ManagerUsers_upd
-	 @pGuid 						uniqueidentifier 	= NULL 
-	,@pParticName				NVARCHAR (150) 	= NULL
-	,@pParticMail				NVARCHAR (150) 	= NULL
-	,@pParticPass				NVARCHAR (300) 	= NULL
-	,@pIsAdm						BIT					= NULL
+CREATE OR ALTER PROCEDURE pr_ManagerUsers_loginPasswordChange
+	 @pGuid 						uniqueidentifier
+	,@pParticPassOld			NVARCHAR (300)
+	,@pParticPassNew			NVARCHAR (300)
 	
-	,@pSystemActive			BIT					= 1
 	,@pSystemLastUpdateUser	uniqueidentifier 	= NULL
 
 	,@rIsOK 						BIT 					= 1 		OUTPUT
@@ -23,21 +20,15 @@ BEGIN TRY
 	BEGIN TRANSACTION;
 	SET @rIsOK =0;
 
-	IF @pParticPass is not null
-		BEGIN
-		set @pParticPass = HASHBYTES('SHA2_256', CONVERT(VARBINARY(MAX), @pParticPass))
-		END
 	UPDATE [fractuz].[dbo].[tbManagerUsers]
 		SET
-			 [ParticName]				= isNull(@pParticName,[ParticName])
-			,[ParticMail]				= isNull(@pParticMail,[ParticMail])
-			,[ParticPass]				= isNull(@pParticPass,[ParticPass])
-			,[IsAdm]						= isNull(@pIsAdm,[IsAdm])
-			,[SystemActive] 			= isNull(@pSystemActive,[SystemActive])
+			 [ParticPass]				= dbo.GenerateAlphaNumericHash( @pParticPassNew)
 			,[SystemLastUpdateDt] 	= GETDATE()
 			,[SystemLastUpdateUser] = @pSystemLastUpdateUser
 		WHERE
-			[SystemIDX] = @pGuid
+					[SystemIDX] 	= @pGuid
+			and 	[ParticPass] 	= dbo.GenerateAlphaNumericHash( @pParticPassOld)
+			and 	[SystemActive] = 1
 
 	--- Verificar se houve erro durante a atualização
 	IF @@ERROR <> 0
