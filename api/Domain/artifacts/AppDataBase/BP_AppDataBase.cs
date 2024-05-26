@@ -1,5 +1,6 @@
 using Fractuz.Domain.AppDataBase.DataAccess;
 using Fractuz.Domain.AppDataBase.Entities;
+using Fractuz.Domain.Users.Entities;
 
 namespace Fractuz.Domain.AppDataBase.BussinesPlan;
 public static class BP_AppDataBase{
@@ -24,13 +25,13 @@ public static class BP_AppDataBase{
 		return appDataBase_lst;
 	}
 
-	public static EN_Return Insert(IConfiguration config,EN_AppDataBase AppDataBase){
-		return DA_AppDataBase.Insert(config,AppDataBase);
+	public static EN_Return Insert(IConfiguration config,EN_AppDataBase AppDataBase,EN_ManagerUser userAuthor){
+		return DA_AppDataBase.Insert(config,AppDataBase,userAuthor);
 	}
-	public static EN_Return Update(IConfiguration config,EN_AppDataBase AppDataBase){
-		return DA_AppDataBase.Update(config,AppDataBase);
+	public static EN_Return Update(IConfiguration config,EN_AppDataBase AppDataBase,EN_ManagerUser userAuthor){
+		return DA_AppDataBase.Update(config,AppDataBase,userAuthor);
 	}
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
-		return DA_AppDataBase.Delete(config,SystemIDX);
+	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+		return DA_AppDataBase.Delete(config,SystemIDX,userAuthor);
 	}
 }

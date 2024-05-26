@@ -1,6 +1,7 @@
 using System.Data;
 using Dapper;
 using Fractuz.Domain.AppDbTables.Entities;
+using Fractuz.Domain.Users.Entities;
 using Microsoft.Data.SqlClient;
 
 namespace Fractuz.Domain.AppDbTables.DataAccess;
@@ -37,7 +38,8 @@ public static class DA_AppDbTable{
 		return appDbTable_lst;
 	}
 
-	public static EN_Return Insert(IConfiguration config,EN_AppDbTable AppDbTable){
+	public static EN_Return Insert(IConfiguration config,EN_AppDbTable AppDbTable,EN_ManagerUser userAuthor){
+		EN_Return appDbTable_return = new EN_Return();
 		IEnumerable<EN_AppDbTable> appDbTable_lst = new List<EN_AppDbTable>();
 		DynamicParameters parameters = new DynamicParameters();
 
@@ -59,7 +61,9 @@ public static class DA_AppDbTable{
 		parameters.Add("@rProcessMessage"		, null									, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null									, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return appDbTable_return = new EN_Return();
+		appDbTable_return.authorName = userAuthor.SystemCreationUserName;
+		appDbTable_return.authorMail = userAuthor.SystemCreationUserMail;
+
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTables_ins]",parameters);
 			appDbTable_return.id = parameters.Get<Guid?>("@rGuid");
@@ -71,7 +75,8 @@ public static class DA_AppDbTable{
 		return appDbTable_return;
 	}
 
-	public static EN_Return Update(IConfiguration config,EN_AppDbTable AppDbTable){
+	public static EN_Return Update(IConfiguration config,EN_AppDbTable AppDbTable,EN_ManagerUser userAuthor){
+		EN_Return appDbTable_return = new EN_Return();
 		IEnumerable<EN_AppDbTable> appDbTable_lst = new List<EN_AppDbTable>();
 		DynamicParameters parameters = new DynamicParameters();
 
@@ -91,7 +96,9 @@ public static class DA_AppDbTable{
 		parameters.Add("@rProcessMessage"		, null										, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null										, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return appDbTable_return = new EN_Return();
+		appDbTable_return.authorName = userAuthor.SystemCreationUserName;
+		appDbTable_return.authorMail = userAuthor.SystemCreationUserMail;
+
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTables_upd]",parameters);
 			appDbTable_return.description = parameters.Get<string>("@rProcessMessage");
@@ -102,7 +109,8 @@ public static class DA_AppDbTable{
 		return appDbTable_return;
 	}
 
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
+	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+		EN_Return appDbTable_return = new EN_Return();
 		IEnumerable<EN_AppDbTable> appDbTable_lst = new List<EN_AppDbTable>();
 		DynamicParameters parameters = new DynamicParameters();
 
@@ -113,7 +121,9 @@ public static class DA_AppDbTable{
 		parameters.Add("@rProcessMessage"		, null										, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null										, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return appDbTable_return = new EN_Return();
+		appDbTable_return.authorName = userAuthor.SystemCreationUserName;
+		appDbTable_return.authorMail = userAuthor.SystemCreationUserMail;
+
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTables_del]",parameters);
 			appDbTable_return.description = parameters.Get<string>("@rProcessMessage");

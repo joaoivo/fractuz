@@ -1,6 +1,7 @@
 using Fractuz.Domain.AppDbTables.DataAccess;
 using Microsoft.CodeAnalysis;
 using Fractuz.Domain.AppDbTables.Entities;
+using Fractuz.Domain.Users.Entities;
 
 namespace Fractuz.Domain.AppDbTables.BussinesPlan;
 public static class BP_AppDbTable{
@@ -25,13 +26,13 @@ public static class BP_AppDbTable{
 		return appDbTable_lst;
 	}
 
-	public static EN_Return Insert(IConfiguration config,EN_AppDbTable AppDbTable){
-		return DA_AppDbTable.Insert(config,AppDbTable);
+	public static EN_Return Insert(IConfiguration config,EN_AppDbTable AppDbTable,EN_ManagerUser userAuthor){
+		return DA_AppDbTable.Insert(config,AppDbTable,userAuthor);
 	}
-	public static EN_Return Update(IConfiguration config,EN_AppDbTable AppDbTable){
-		return DA_AppDbTable.Update(config,AppDbTable);
+	public static EN_Return Update(IConfiguration config,EN_AppDbTable AppDbTable,EN_ManagerUser userAuthor){
+		return DA_AppDbTable.Update(config,AppDbTable,userAuthor);
 	}
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
-		return DA_AppDbTable.Delete(config,SystemIDX);
+	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+		return DA_AppDbTable.Delete(config,SystemIDX,userAuthor);
 	}
 }

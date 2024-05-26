@@ -27,13 +27,13 @@ public static class BP_ManagerUser{
 		return managerUser_lst;
 	}
 
-	public static EN_Return Insert(IConfiguration config,EN_ManagerUser ManagerUser){
-		return DA_ManagerUser.Insert(config,ManagerUser);
+	public static EN_Return Insert(IConfiguration config,EN_ManagerUser ManagerUser,EN_ManagerUser userAuthor){
+		return DA_ManagerUser.Insert(config,ManagerUser,userAuthor);
 	}
-	public static EN_Return Update(IConfiguration config,EN_ManagerUser ManagerUser){
-		return DA_ManagerUser.Update(config,ManagerUser);
+	public static EN_Return Update(IConfiguration config,EN_ManagerUser ManagerUser,EN_ManagerUser userAuthor){
+		return DA_ManagerUser.Update(config,ManagerUser,userAuthor);
 	}
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
-		return DA_ManagerUser.Delete(config,SystemIDX);
+	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+		return DA_ManagerUser.Delete(config,SystemIDX, userAuthor);
 	}
 }

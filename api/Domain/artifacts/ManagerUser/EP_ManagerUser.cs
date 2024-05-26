@@ -5,9 +5,7 @@ using Fractuz.Domain.Users.BussinesPlan;
 using Fractuz.Domain.Users.Entities;
 
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
 using api.System.jwt;
 
 namespace Fractuz.Domain.Users.EndPoints;
@@ -35,27 +33,27 @@ public class EP_ManagerUser:IEndPoint{
 	}
 
 	[Authorize]
-	public IResult UserAPI_Post([FromBody] EN_ManagerUser managerUser){
+	public IResult UserAPI_Post([FromBody] EN_ManagerUser managerUser,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_ManagerUser.Insert(Config,managerUser));
+			return ApiRoutePressets.returnResults(BP_ManagerUser.Insert(Config,managerUser,JWTTokensManager.GetUserByBearerToken(request)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
 	[Authorize]
-	public IResult UserAPI_Put([FromBody] EN_ManagerUser managerUser){
+	public IResult UserAPI_Put([FromBody] EN_ManagerUser managerUser,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_ManagerUser.Update(Config,managerUser));
+			return ApiRoutePressets.returnResults(BP_ManagerUser.Update(Config,managerUser,JWTTokensManager.GetUserByBearerToken(request)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
 	[Authorize]
-	public IResult UserAPI_Delete([FromBody] Guid SystemIDX){
+	public IResult UserAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_ManagerUser.Delete(Config,SystemIDX));
+			return ApiRoutePressets.returnResults(BP_ManagerUser.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

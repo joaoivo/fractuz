@@ -54,7 +54,8 @@ public static class DA_ManagerUser{
 		return managerUser_lst;
 	}
 
-	public static EN_Return Insert(IConfiguration config,EN_ManagerUser ManagerUser){
+	public static EN_Return Insert(IConfiguration config,EN_ManagerUser ManagerUser,EN_ManagerUser userAuthor){
+		EN_Return managerUser_return = new EN_Return();
 		DynamicParameters parameters = new DynamicParameters();
 		ManagerUser.SystemActive= ManagerUser.SystemActive==null?true:ManagerUser.SystemActive;
 
@@ -72,7 +73,9 @@ public static class DA_ManagerUser{
 		parameters.Add("@rProcessMessage"		, null									, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null									, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return managerUser_return = new EN_Return();
+		managerUser_return.authorName = userAuthor.SystemCreationUserName;
+		managerUser_return.authorMail = userAuthor.SystemCreationUserMail;
+
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_ManagerUsers_ins]",parameters);
 			managerUser_return.id = parameters.Get<Guid?>("@rGuid");
@@ -84,7 +87,8 @@ public static class DA_ManagerUser{
 		return managerUser_return;
 	}
 
-	public static EN_Return Update(IConfiguration config,EN_ManagerUser ManagerUser){
+	public static EN_Return Update(IConfiguration config,EN_ManagerUser ManagerUser,EN_ManagerUser userAuthor){
+		EN_Return managerUser_return = new EN_Return();
 		DynamicParameters parameters = new DynamicParameters();
 
 		parameters.Add("@rGuid"						, ManagerUser.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
@@ -100,7 +104,8 @@ public static class DA_ManagerUser{
 		parameters.Add("@rProcessMessage"		, null										, DbType.String	, ParameterDirection.Output,4000);
 		parameters.Add("@rProcessCode"			, null										, DbType.Int32		, ParameterDirection.Output);
 
-		EN_Return managerUser_return = new EN_Return();
+		managerUser_return.authorName = userAuthor.SystemCreationUserName;
+		managerUser_return.authorMail = userAuthor.SystemCreationUserMail;
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_ManagerUsers_upd]",parameters);
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
@@ -111,17 +116,21 @@ public static class DA_ManagerUser{
 		return managerUser_return;
 	}
 
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
+	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
 		DynamicParameters parameters = new DynamicParameters();
-
-		parameters.Add("@rGuid"						, SystemIDX									, DbType.Guid		, ParameterDirection.Input);
-
-		parameters.Add("@rIsOK"						, null										, DbType.Boolean	, ParameterDirection.Output);
-		parameters.Add("@rRowsAffected"			, null										, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@rProcessMessage"		, null										, DbType.String	, ParameterDirection.Output,4000);
-		parameters.Add("@rProcessCode"			, null										, DbType.Int32		, ParameterDirection.Output);
-
 		EN_Return managerUser_return = new EN_Return();
+
+		parameters.Add("@rGuid"						, SystemIDX							, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pSystemDeleteUser"	, userAuthor.SystemIDX	, DbType.Guid		, ParameterDirection.Input);
+
+		parameters.Add("@rIsOK"						, null								, DbType.Boolean	, ParameterDirection.Output);
+		parameters.Add("@rRowsAffected"			, null								, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@rProcessMessage"		, null								, DbType.String	, ParameterDirection.Output,4000);
+		parameters.Add("@rProcessCode"			, null								, DbType.Int32		, ParameterDirection.Output);
+
+		managerUser_return.authorName = userAuthor.SystemCreationUserName;
+		managerUser_return.authorMail = userAuthor.SystemCreationUserMail;
+
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_ManagerUsers_del]",parameters);
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");

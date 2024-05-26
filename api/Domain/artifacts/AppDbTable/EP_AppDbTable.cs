@@ -4,6 +4,8 @@ using Fractuz.Domain.AppDbTables.BussinesPlan;
 using Fractuz.Domain.AppDbTables.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Fractuz.Domain.Users.Entities;
+using api.System.jwt;
 
 namespace Fractuz.Domain.AppDbTables.EndPoints;
 public class EP_AppDbTable:IEndPoint{
@@ -19,37 +21,38 @@ public class EP_AppDbTable:IEndPoint{
 	}
 
 	[Authorize]
-	public IResult AppDbTableAPI_Get([FromBody] dynamic? requestBody=null){
+	public IResult AppDbTableAPI_Get(HttpRequest request){
 		try{
+			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request);
 			List<EN_AppDbTable>? application_lst = BP_AppDbTable.Select(Config);
-			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst});
+			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
 	[Authorize]
-	public IResult AppDbTableAPI_Post([FromBody] EN_AppDbTable application){
+	public IResult AppDbTableAPI_Post([FromBody] EN_AppDbTable application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTable.Insert(Config,application));
+			return ApiRoutePressets.returnResults(BP_AppDbTable.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
 	[Authorize]
-	public IResult AppDbTableAPI_Put([FromBody] EN_AppDbTable application){
+	public IResult AppDbTableAPI_Put([FromBody] EN_AppDbTable application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTable.Update(Config,application));
+			return ApiRoutePressets.returnResults(BP_AppDbTable.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
 	[Authorize]
-	public IResult AppDbTableAPI_Delete([FromBody] Guid SystemIDX){
+	public IResult AppDbTableAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX));
+			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

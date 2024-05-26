@@ -1,6 +1,7 @@
 using Fractuz.Domain.AppDbTableFields.Entities;
 using Fractuz.Domain.AppDbTableFields.DataAccess;
 using Microsoft.CodeAnalysis;
+using Fractuz.Domain.Users.Entities;
 
 namespace Fractuz.Domain.AppDbTableFields.BussinesPlan;
 public static class BP_AppDbTableField{
@@ -26,13 +27,13 @@ public static class BP_AppDbTableField{
 		return appDbTableField_lst;
 	}
 
-	public static EN_Return Insert(IConfiguration config,EN_AppDbTableField AppDbTableField){
-		return DA_AppDbTableField.Insert(config,AppDbTableField);
+	public static EN_Return Insert(IConfiguration config,EN_AppDbTableField AppDbTableField,EN_ManagerUser userAuthor){
+		return DA_AppDbTableField.Insert(config,AppDbTableField,userAuthor);
 	}
-	public static EN_Return Update(IConfiguration config,EN_AppDbTableField AppDbTableField){
-		return DA_AppDbTableField.Update(config,AppDbTableField);
+	public static EN_Return Update(IConfiguration config,EN_AppDbTableField AppDbTableField,EN_ManagerUser userAuthor){
+		return DA_AppDbTableField.Update(config,AppDbTableField,userAuthor);
 	}
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX){
-		return DA_AppDbTableField.Delete(config,SystemIDX);
+	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+		return DA_AppDbTableField.Delete(config,SystemIDX,userAuthor);
 	}
 }
