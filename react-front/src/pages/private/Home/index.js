@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 
-class PageNotFound extends Component{
+class Home extends Component{
 	render(){
 		return(
 			<div>
-				Page Not Found
-
-				<Link to="/dashboad">Go to dashboard</Link>
+				fractus Home
+				<Link to="/">Index</Link>
+				<Link to="/Login">login</Link>
 			</div>
 		);
 	}
 }
 
-export default PageNotFound;
+export default Home;
