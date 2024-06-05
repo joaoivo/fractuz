@@ -1,12 +1,15 @@
 // auth.js
 import React, { createContext, useContext, useState } from 'react';
-import {Navigate } from 'react-router-dom';
+import {Navigate,useLocation } from 'react-router-dom';
+
+import { routesPublicPages } from '../../pages/routes';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [userLoged, setUserLoged] = useState({});
+	const location = useLocation();
 
 	const login = () => {
 		// lógica de login
@@ -17,11 +20,14 @@ export function AuthProvider({ children }) {
 		// lógica de logout
 		setIsAuthenticated(false);
 		setUserLoged({});
-		<Navigate to="/Login" />
+		console.log(location.pathname);
+		if(routesPublicPages.Login.path !== location.pathname){
+			<Navigate to={routesPublicPages.Login.path} />
+		}
 	};
 
 	return (
-		<AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+		<AuthContext.Provider value={{ isAuthenticated,userLoged , login, logout, setUserLoged}}>
 			{children}
 		</AuthContext.Provider>
 	);
