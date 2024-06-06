@@ -6,9 +6,10 @@ import {
 	Routes
 } from 'react-router-dom';
 
-// internal Tools
+// System Internal Tools
 import { DevEnvAssist } from './system/DevEnvAssist';
-import { AuthProvider } from './system/auth';
+import { ContextAuthProvider		} from './system/Contexts/Auth';
+import { ContextConsoleProvider	} from './system/Contexts/Console';
 
 import { getRoutesForPrivatePages, getRoutesForPublicPages, getRoutesForSystemPages } from './pages/routes';
 
@@ -19,14 +20,16 @@ root.render(
 	<DevEnvAssist>
 		
 		<BrowserRouter>
-			<AuthProvider>
-				<Routes>
-					{getRoutesForPublicPages()}
-					{getRoutesForPrivatePages()}
-					{getRoutesForSystemPages()}					
-				</Routes>
-			</AuthProvider>
+			<ContextConsoleProvider>
+				<ContextAuthProvider>
+					<Routes>
+						{getRoutesForPublicPages()}
+						{getRoutesForPrivatePages()}
+						{getRoutesForSystemPages()}
+					</Routes>
+				</ContextAuthProvider>
+			</ContextConsoleProvider>
 		</BrowserRouter>
 		
-  	</DevEnvAssist>
+	</DevEnvAssist>
 );

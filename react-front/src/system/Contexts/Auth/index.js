@@ -2,11 +2,11 @@
 import React, { createContext, useContext, useState } from 'react';
 import {Navigate,useLocation } from 'react-router-dom';
 
-import { routesPublicPages } from '../../pages/routes';
+import { routesPublicPages } from '../../../pages/routes';
 
-const AuthContext = createContext();
+const ContextAuth = createContext();
 
-export function AuthProvider({ children }) {
+export function ContextAuthProvider({ children }) {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [userLoged, setUserLoged] = useState({});
 	const location = useLocation();
@@ -27,12 +27,12 @@ export function AuthProvider({ children }) {
 	};
 
 	return (
-		<AuthContext.Provider value={{ isAuthenticated,userLoged , login, logout, setUserLoged}}>
+		<ContextAuth.Provider value={{ isAuthenticated,userLoged , login, logout, setUserLoged}}>
 			{children}
-		</AuthContext.Provider>
+		</ContextAuth.Provider>
 	);
 }
 
-export function useAuth() {
-	return useContext(AuthContext);
+export function useContextAuth() {
+	return useContext(ContextAuth);
 }

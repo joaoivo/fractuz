@@ -1,10 +1,12 @@
 // components/Footer.jsx
 import React from 'react';
+import ConsoleLog from '../../resources/ConsoleLog';
 
 function Footer() {
 	return (
-		<footer style={{ padding: '10px', backgroundColor: '#f8f9fa', borderTop: '1px solid #dee2e6', position: 'fixed', bottom: 0, width: '100%' }}>
-			<p>&copy; 2024 Empresa. Todos os direitos reservados.</p>
+		<footer>
+			{<ConsoleLog/>}
+			<div className='copyRight'>&copy; 2024 Empresa. Todos os direitos reservados.</div>
 		</footer>
 	);
 }

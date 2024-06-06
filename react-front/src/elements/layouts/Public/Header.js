@@ -5,7 +5,7 @@ import { routesPublicPages } from '../../../pages/routes';
 
 function Header() {
 	return (
-		<header style={{ padding: '10px', backgroundColor: '#f8f9fa', borderBottom: '1px solid #dee2e6' }}>
+		<header>
 			<h1>Header Público</h1>
 			<nav>
 				<Link to={routesPublicPages.Index.path}>{routesPublicPages.Index.name}</Link> 

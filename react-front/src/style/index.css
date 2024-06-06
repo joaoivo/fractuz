@@ -1,3 +1,7 @@
+* {
+	margin: 0px;
+	box-sizing: border-box;
+}
 article.body{
 	width: 99vw;
 	height: 50vh;
@@ -5,4 +9,26 @@ article.body{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+header{
+	padding: 10px;
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #dee2e6;
+	box-sizing: border-box;
+}
+footer{
+	padding: 0px 10px;
+	background-color: rgb(248, 249, 250);
+	border-top: 1px solid rgb(222, 226, 230);
+	position: fixed;
+	bottom: 0px;
+	width: 100vw;
+	box-sizing: border-box;
+}
+div.copyRight{
+	width: 100%;
+	box-sizing: border-box;
+	font-size:11px;
+	padding: 0px;
+	text-align: right;
 }

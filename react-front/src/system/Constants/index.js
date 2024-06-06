@@ -1,9 +1,9 @@
 
 /// General
 export const environment_types= {
-	prod:3
+	 prod:3
 	,stag:2
-	,dev:1
+	,dev :1
 }
 
 /// environment config

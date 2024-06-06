@@ -17,7 +17,7 @@ import Home 			from '../../pages/private/Home';
 import PageNotFound 	from '../../pages/system/PageNotFound';
 
 
-import { useAuth } from '../../system/auth';
+import { useContextAuth } from '../../system/Contexts/Auth';
 
 export const routesPublicPages = {
 	 Index:{ path:"/"			, app:Index ,name:"Página Inicial"}
@@ -35,7 +35,7 @@ export const routesSystemPages = {
 };
 
 function PrivateRoute() {
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated } = useContextAuth();
 	return isAuthenticated ? <LayoutPrivate><Outlet /></LayoutPrivate> : <Navigate to={routesPublicPages.Login.path} />;
 }
 
@@ -46,7 +46,7 @@ export function getRoutes(rout,LayoutComponent){
 				Object.entries(rout).map(([key, rt]) => (
 					<Route key={key} path={rt.path} element={<article className='body'><rt.app /></article>} />
 				))
-			}							
+			}
 		</Route>
 	);
 }
