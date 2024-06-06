@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import { useState} from 'react';
 import { useContextConsole } from "../../../system/Contexts/Console";
 
 import './consoleLog.css';
@@ -13,6 +13,7 @@ export default function ConsoleLog() {
 		}else{
 			return(
 				<table>
+					<tbody>
 					{	histories.slice().reverse().map((hist,index)=>(
 							<tr key={index}>
 								<td>{hist.dateTime} &#62;&#62;</td>
@@ -20,6 +21,7 @@ export default function ConsoleLog() {
 							</tr>
 						))
 					}
+					</tbody>
 				</table>
 			);
 		}

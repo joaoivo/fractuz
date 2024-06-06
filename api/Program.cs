@@ -11,13 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>{
-    options.AddDefaultPolicy(builder =>    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
 
 builder.Services.AddAuthentication(cfg => {
 	cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,12 +31,22 @@ builder.Services.AddAuthentication(cfg => {
 });
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>{
+	options.AddDefaultPolicy(builder =>{
+		builder.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader();
+	});
+});
+
 WebApplication app = builder.Build();
 if(app.Environment.IsDevelopment()){
 	Console.WriteLine("ATENÇÃO! Sistema rodando em Configuração Desenvolvimento");
 }else{
 	Console.WriteLine("Não é Configuração de Desenvolvimento");
 }
+
+app.UseCors();
 ApiRoutePressets.LoadAPI(app,new EP_Login(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_ManagerUser(builder.Configuration));
 ApiRoutePressets.LoadAPI(app,new EP_Application(builder.Configuration));

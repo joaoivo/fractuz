@@ -1,6 +1,5 @@
 // auth.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import {Navigate,useLocation } from 'react-router-dom';
+import { createContext, useContext, useState } from 'react';
 
 const ContextConsole = createContext({});
 

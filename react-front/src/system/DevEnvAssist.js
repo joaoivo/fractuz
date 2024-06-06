@@ -1,4 +1,4 @@
-import React,{ StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { config, environment_types } from "./Constants";
 
 function StrictModeOn({children}) {

@@ -4,7 +4,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Fractuz.Domain.Users.BussinesPlan;
 public static class BP_ManagerUser{
-		public static List<EN_ManagerUser>? Login(IConfiguration config,string? particMail=null,string? particPass=null){
+
+	public static List<EN_ManagerUser>? Login(IConfiguration config,string? particMail=null,string? particPass=null){
 		return (List<EN_ManagerUser>?)DA_ManagerUser.Login(config,particMail,particPass);
 	}
 	public static List<EN_ManagerUser>? Select(IConfiguration config, Guid? guid=null,string? particName=null,string? particMail=null

@@ -1,4 +1,3 @@
-
 /// General
 export const environment_types= {
 	 prod:3
@@ -9,8 +8,7 @@ export const environment_types= {
 /// environment config
 const prod = {
 	urls: {
-		 PUBLIC_API_URL: "http://localhost:3000"
-		,USERS_API_URL	: "http://localhost:3000"
+		 PUBLIC_API_URL: "http://localhost:5096"
 	}
 	,environment:{
 		type:environment_types.prod
@@ -18,8 +16,7 @@ const prod = {
 };
 const dev = {
 	urls: {
-		PUBLIC_API_URL: "http://localhost:3000"
-	  ,USERS_API_URL	: "http://localhost:3000"
+		PUBLIC_API_URL: "http://localhost:5096"
 	}
 	,environment:{
 		type:environment_types.dev
@@ -27,8 +24,7 @@ const dev = {
 };
 const staging = {
 	urls: {
-		PUBLIC_API_URL: "http://localhost:3000"
-	  ,USERS_API_URL	: "http://localhost:3000"
+		PUBLIC_API_URL: "http://localhost:5096"
 	}
 	,environment:{
 		type:environment_types.stag
