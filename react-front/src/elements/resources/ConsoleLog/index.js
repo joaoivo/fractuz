@@ -5,9 +5,10 @@ import './consoleLog.css';
 
 export default function ConsoleLog() {
 	const [inputValue, setInputValue] = useState('');
-	const { histories, addHistoryLog} = useContextConsole();
+	const { getHistoryLog, addHistoryLog} = useContextConsole();
 
 	const getHistoriesTable=()=>{
+		const histories = getHistoryLog();
 		if(!histories || histories.length<=0){
 			return(<div><i>Bem Vindo!</i></div>);
 		}else{

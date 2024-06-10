@@ -1,4 +1,4 @@
-import {	Route, Outlet,Navigate,useLocation} from 'react-router-dom';
+import {	Route, Outlet,useLocation} from 'react-router-dom';
 
 // Funcções de Layout
 import LayoutPrivate from '../../elements/layouts/Private'
@@ -16,9 +16,9 @@ import Home 			from '../../pages/private/Home';
 //system Pages
 import PageNotFound 	from '../../pages/system/PageNotFound';
 
-
 import { useContextAuth } from '../../system/Contexts/Auth';
 import { useContextConsole } from '../../system/Contexts/Console';
+import { goToAddress } from '../../system/Libs/Urls';
 
 export const routesPublicPages = {
 	 Index:{ path:"/"			, app:Index ,name:"Página Inicial"}
@@ -36,15 +36,26 @@ export const routesSystemPages = {
 };
 
 function PrivateRoute() {
-	const { isAuthenticated } 	= useContextAuth();
+	const { isUserAuthenticated } 	= useContextAuth();
 	const { addHistoryLog } 	= useContextConsole();
 	const location = useLocation();
-	if(isAuthenticated){
-		<LayoutPrivate><Outlet /></LayoutPrivate> 
+
+	if(isUserAuthenticated()){
+		return <LayoutPrivate><Outlet/></LayoutPrivate> 
 	}else{
 		alert(`Sem permissão de acesso ao endereço '${location.pathname}'`);
 		addHistoryLog(`Sem permissão de acesso ao endereço '${location.pathname}'`);
-		return <Navigate to={routesPublicPages.Login.path} />
+		goToAddress(routesPublicPages.Login.path);
+	}
+}
+
+function PublicRoute() {
+	const { isUserAuthenticated } 	= useContextAuth();
+
+	if(isUserAuthenticated()){
+		return <LayoutPrivate><Outlet/></LayoutPrivate> 
+	}else{
+		return <LayoutPublic><Outlet/></LayoutPublic> 
 	}
 }
 
@@ -64,8 +75,8 @@ export function getRoutesForPrivatePages(){
 	return( getRoutes(routesPrivatePages,PrivateRoute));
 }
 export function getRoutesForPublicPages(){
-	return( getRoutes(routesPublicPages,LayoutPublic));
+	return( getRoutes(routesPublicPages,PublicRoute));
 }
 export function getRoutesForSystemPages(){
-	return( getRoutes(routesSystemPages,LayoutPublic));
+	return( getRoutes(routesSystemPages,PublicRoute));
 }

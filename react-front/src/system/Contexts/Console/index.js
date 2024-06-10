@@ -1,7 +1,9 @@
 // auth.js
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
+import { getCurrentDateTimeStampFormated } from '../../Libs/DateTimes';
 
 const ContextConsole = createContext({});
+const ConsoleHistoryMaxEntries = 100;
 
 export const historyCriticalLevel={
 	 normal 	: 0
@@ -14,43 +16,8 @@ export const historyType={
 	,error		:1
 }
 
-export function getCurrentDateTimeStamp() {
-	const now = new Date();
-	
-	const year = now.getFullYear();
-	
-	const month = String(now.getMonth() + 1).padStart(2, '0');
-	const day = String(now.getDate()).padStart(2, '0');
-	
-	const hours = String(now.getHours()).padStart(2, '0');
-	const minutes = String(now.getMinutes()).padStart(2, '0');
-	const seconds = String(now.getSeconds()).padStart(2, '0');
-	
-	const formattedDateTime = `${year}${month}${day}_${hours}${minutes}${seconds}`;
-	
-	return formattedDateTime;
-}
-
-export function getCurrentDateTimeStampFormated() {
-	const now = new Date();
-	
-	const year = now.getFullYear();
-	
-	const month = String(now.getMonth() + 1).padStart(2, '0');
-	const day = String(now.getDate()).padStart(2, '0');
-	
-	const hours = String(now.getHours()).padStart(2, '0');
-	const minutes = String(now.getMinutes()).padStart(2, '0');
-	const seconds = String(now.getSeconds()).padStart(2, '0');
-	const miliSeconds = String(now.getMilliseconds()).padStart(4, '0');
-	
-	const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${miliSeconds}`;
-	
-	return formattedDateTime;
-}
-
 export function ContextConsoleProvider({ children }) {
-	const [histories, setHistories] = useState([]);
+	const ConsoleLocalStorageID = 'actionHistory';
 
 	const addHistoryLog = (message,criticalLevel,type, link,comment)=>{
 		if(criticalLevel	===undefined) {criticalLevel	= historyCriticalLevel.normal;}
@@ -68,14 +35,24 @@ export function ContextConsoleProvider({ children }) {
 			,react			:0
 		}
 
-		setHistories((prevHistories) => {
-			const updatedHistories = [...prevHistories, hist];
-			return updatedHistories;
-		});
+		let history = JSON.parse(localStorage.getItem(ConsoleLocalStorageID)) || [];
+
+		// Adicionar a nova ação ao histórico
+		history.push(hist);
+		
+		// Manter apenas as últimas `maxEntries` ações
+		if (history.length > ConsoleHistoryMaxEntries) {history = history.slice(-ConsoleHistoryMaxEntries);}
+		
+		// Salvar o histórico atualizado no localStorage
+		localStorage.setItem(ConsoleLocalStorageID, JSON.stringify(history));
+
 	}
 
+	function getHistoryLog() {return JSON.parse(localStorage.getItem(ConsoleLocalStorageID)) || [];}
+	function clearActionHistory() {localStorage.removeItem(ConsoleLocalStorageID);}
+  
 	return (
-		<ContextConsole.Provider value={{ histories,getCurrentDateTimeStampFormated,getCurrentDateTimeStamp,addHistoryLog}}>
+		<ContextConsole.Provider value={{ getHistoryLog,addHistoryLog,clearActionHistory}}>
 			{children}
 		</ContextConsole.Provider>
 	);

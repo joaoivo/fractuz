@@ -35,13 +35,13 @@ DECLARE @query nvarchar(max)='
 	IF @pName IS NOT NULL 
 		BEGIN
 		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
-		SET @where = CONCAT(@where,'([Name] = ''',@pName,''')')
+		SET @where = CONCAT(@where,'([Name] like ''%',@pName,'%'')')
 		END
 
 	IF @pDescription IS NOT NULL 
 		BEGIN
 		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
-		SET @where = CONCAT(@where,'([Description] = ''',@pDescription,''')')
+		SET @where = CONCAT(@where,'([Description] like ''%',@pDescription,'%'')')
 		END
 	
 	IF @where IS NOT NULL set @query = CONCAT(@query , ' where ',@where)

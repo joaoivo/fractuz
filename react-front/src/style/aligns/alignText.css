@@ -1,0 +1,116 @@
+@charset "utf-8";
+
+.general_alignText_left{text-align: left;}
+.general_alignText_right{text-align: right;}
+.general_alignText_center{text-align: center;}
+.general_alignText_justify{text-align: justify;}
+
+@media (max-width: 320px){
+	.wtdhMax0320_left{text-align: left;}
+	.wtdhMax0320_right{text-align: right;}
+	.wtdhMax0320_center{text-align: center;}
+	.wtdhMax0320_justify{text-align: justify;}
+}
+@media (min-width: 321px) and (max-width: 480px)  {
+	.wtdhMin321Max480_left{text-align: left;}
+	.wtdhMin321Max480_right{text-align: right;}
+	.wtdhMin321Max480_center{text-align: center;}
+	.wtdhMin321Max480_justify{text-align: justify;}
+}
+@media (min-width: 481px) and (max-width: 600px)  {
+	.tdhMin481Max600_left{text-align: left;}
+	.tdhMin481Max600_right{text-align: right;}
+	.tdhMin481Max600_center{text-align: center;}
+	.tdhMin481Max600_justify{text-align: justify;}
+}
+@media (min-width: 601px) and (max-width: 800px)  {
+	.wtdhMin601Max800_left{text-align: left;}
+	.wtdhMin601Max800_right{text-align: right;}
+	.wtdhMin601Max800_center{text-align: center;}
+	.wtdhMin601Max800_justify{text-align: justify;}
+}
+@media (min-width: 801px) and (max-width: 1024px) {
+	.wtdhMin801Max1024_left{text-align: left;}
+	.wtdhMin801Max1024_right{text-align: right;}
+	.wtdhMin801Max1024_center{text-align: center;}
+	.wtdhMin801Max1024_justify{text-align: justify;}
+}
+@media (min-width: 1025px) and (max-width: 1280px){
+	.wtdhMin1025Max1280_left{text-align: left;}
+	.wtdhMin1025Max1280_right{text-align: right;}
+	.wtdhMin1025Max1280_center{text-align: center;}
+	.wtdhMin1025Max1280_justify{text-align: justify;}
+}
+@media (min-width: 1281px) and (max-width: 1420px){
+	.wtdhMin1281Max1420_left{text-align: left;}
+	.wtdhMin1281Max1420_right{text-align: right;}
+	.wtdhMin1281Max1420_center{text-align: center;}
+	.wtdhMin1281Max1420_justify{text-align: justify;}
+}
+@media (min-width: 1421px) and (max-width: 1920px){
+	.wtdhMin1421Max1920_left{text-align: left;}
+	.wtdhMin1421Max1920_right{text-align: right;}
+	.wtdhMin1421Max1920_center{text-align: center;}
+	.wtdhMin1421Max1920_justify{text-align: justify;}
+}
+@media (min-width: 1921px){
+	.wtdhMin1921_left{text-align: left;}
+	.wtdhMin1921_right{text-align: right;}
+	.wtdhMin1921_center{text-align: center;}
+	.wtdhMin1921_justify{text-align: justify;}
+}
+
+@media (max-height: 320px){
+	.hghtMax320_left{text-align: left;}
+	.hghtMax320_right{text-align: right;}
+	.hghtMax320_center{text-align: center;}
+	.hghtMax320_justify{text-align: justify;}
+}
+@media (min-height: 321px) and (max-height: 480px)  {
+	.hghtMin320Max480_left{text-align: left;}
+	.hghtMin320Max480_right{text-align: right;}
+	.hghtMin320Max480_center{text-align: center;}
+	.hghtMin320Max480_justify{text-align: justify;}
+}
+@media (min-height: 481px) and (max-height: 600px)  {
+	.hghtMin481Max600_left{text-align: left;}
+	.hghtMin481Max600_right{text-align: right;}
+	.hghtMin481Max600_center{text-align: center;}
+	.hghtMin481Max600_justify{text-align: justify;}
+}
+@media (min-height: 601px) and (max-height: 800px)  {
+	.hghtMin601Max800_left{text-align: left;}
+	.hghtMin601Max800_right{text-align: right;}
+	.hghtMin601Max800_center{text-align: center;}
+	.hghtMin601Max800_justify{text-align: justify;}
+}
+@media (min-height: 801px) and (max-height: 1024px) {
+	.hghtMin801Max1024_left{text-align: left;}
+	.hghtMin801Max1024_right{text-align: right;}
+	.hghtMin801Max1024_center{text-align: center;}
+	.hghtMin801Max1024_justify{text-align: justify;}
+}
+@media (min-height: 1025px) and (max-height: 1280px){
+	.hghtMin1025Max1280_left{text-align: left;}
+	.hghtMin1025Max1280_right{text-align: right;}
+	.hghtMin1025Max1280_center{text-align: center;}
+	.hghtMin1025Max1280_justify{text-align: justify;}
+}
+@media (min-height: 1281px) and (max-height: 1420px){
+	.hghtMin1281Max1420_left{text-align: left;}
+	.hghtMin1281Max1420_right{text-align: right;}
+	.hghtMin1281Max1420_center{text-align: center;}
+	.hghtMin1281Max1420_justify{text-align: justify;}
+}
+@media (min-height: 1421px) and (max-height: 1920px){
+	.hghtMin1421Max1920_left{text-align: left;}
+	.hghtMin1421Max1920_right{text-align: right;}
+	.hghtMin1421Max1920_center{text-align: center;}
+	.hghtMin1421Max1920_justify{text-align: justify;}
+}
+@media (min-height: 1921px){
+	.hghtMin1921_left{text-align: left;}
+	.hghtMin1921_right{text-align: right;}
+	.hghtMin1921_center{text-align: center;}
+	.hghtMin1921_justify{text-align: justify;}
+}
