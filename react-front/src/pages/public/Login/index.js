@@ -43,7 +43,7 @@ export default function Login(){
 			goToAddress(routesPrivatePages.Home.path);
 
 		} catch (error) {
-			alert("Erro ao tentar logar. Verifique o Log.");
+			alert("Erro ao tentar logar. Verifique status no Log.");
 			if (error instanceof ExceptionContextAuth) {
 				console.error('Exceção personalizada capturada:', error.message);
 				console.error('Dados adicionais:', error);
@@ -54,10 +54,6 @@ export default function Login(){
 					\n Stack do Erro '${error.stack}'`);
 				return;
 			 }
-			// Lidar com o erro aqui, se necessário
-			alert("Erro ao tentar logar. Verifique status no Log.");
-			console.log("Erro ao tentar logar. Verifique status no Log.",error);
-			
 			addHistoryLog("Erro ao obter o token de login:"+ error);
 		 }
 	}

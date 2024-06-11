@@ -5,32 +5,54 @@ import './../../../style/aligns/disposition.css'
 import { TextFieldDefault } from '../../../elements/forms/Fields/TextFields';
 import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
 
-export default function Application(){
-	const [pesqDataObj, setPesqDataObj] = useState({});
+import { useApiFractuz } from '../../../components/api/fractus';
+import { useContextConsole } from '../../../system/Contexts/Console';
 
-	const setPesqData =(event,key)=>{
-		const pesqDataTemp = pesqDataObj;
-		pesqDataTemp[key] = event.target.value;
-		setPesqDataObj(pesqDataTemp);
+export default function Application(){
+	const { getApplicationList,ExceptionApiDefault } = useApiFractuz();
+	const {addHistoryLog} = useContextConsole();
+	
+	const [searchDataObj, setsearchDataObj] = useState({});
+
+	const setSearchData =(event,key)=>{
+		const searchDataTemp = searchDataObj;
+		searchDataTemp[key] = event.target.value;
+		setsearchDataObj(searchDataTemp);
 	}
 
 	const searchApplicationsFields = {
 		appName:{
 			 labelText:"Nome da Aplicação"
 			,fieldID:"name"
-			,onChangeEvent:(e)=>{ setPesqData(e,"name");}
+			,onChangeEvent:(e)=>{ setSearchData(e,"name");}
 		}
 		,appDesc:{
 			 labelText:"Descrição"
 			,fieldID:"description"
 			,fieldLabelStyle:{backgroundColor:"#50505090"}
-			,onChangeEvent:(e)=>{ setPesqData(e,"desc");}
+			,onChangeEvent:(e)=>{ setSearchData(e,"desc");}
 		}
 	}
 
-	const pesqApplications = ()=>{
-		alert("que top"); 
-		console.log(pesqDataObj)
+	const searchApplications = async ()=>{
+		try{
+			const response = await getApplicationList(searchDataObj);
+			addHistoryLog("Pesquisa de Aplicações executada");
+			console.log("response",response);
+		} catch (error) {
+			alert("Erro ao tentar Pesquisa de Aplicações. Verifique status no Log.");
+			if (error instanceof ExceptionApiDefault) {
+				console.error('Exceção personalizada capturada:', error.message);
+				console.error('Dados adicionais:', error);
+
+				const errorData = JSON.stringify(error);
+				addHistoryLog(`Erro no processo interno de Pesquisa de Aplicações: Mensagen: '${error.message}' 
+					\n dados gerais: '${errorData}'
+					\n Stack do Erro '${error.stack}'`);
+				return;
+			 }
+			addHistoryLog("Erro ao obter o token de login:"+ error);
+		}
 	}
 
 	return(
@@ -42,7 +64,7 @@ export default function Application(){
 				<div className="wtdhGeneral_duz24vw_20 generalDisposition_horizDisp_spaceBetween">
 					<TextFieldDefault params={searchApplicationsFields.appName}/>
 					<TextFieldDefault params={searchApplicationsFields.appDesc}/>
-					<LayoutButtonDefault onClickEvent={pesqApplications}>Pesquisar</LayoutButtonDefault>
+					<LayoutButtonDefault onClickEvent={searchApplications}>Pesquisar</LayoutButtonDefault>
 				</div>
 				<div>
 					lista de resultados
