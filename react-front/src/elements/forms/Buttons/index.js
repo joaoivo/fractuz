@@ -41,16 +41,10 @@ export const getButtonLabelStyle =(props)=>{
 	return returnObj;
 }
 
-
-
-
 export const LayoutButtonDefault=({children,...props})=>{
-	console.log("props",props);
-	console.log("children",children);
-	const internalOnClick = (event)=>{
-		
+
+	const internalOnClick = (event)=>{		
 		if(isObjectEmpty(props)){return;}
-		console.log("foi")
 		if(("onClickEvent" in props) && (typeof props.onClickEvent==='function')){
 			props.onClickEvent(event);
 		}

@@ -6,19 +6,32 @@ import { isObjectEmpty } from '../../../../system/Libs/Objects';
 export function TextFieldDefault(props){
 
 	const [textValue, setTextValue] = useState('');
-	const getValue = () =>{return(textValue);}
-	const setValue = (value)=>{setTextValue(value)}
 
-	const internalOnKeyPressed = (event)=>{
+	const internalOnChangeed = (event)=>{
 		setTextValue(event.target.value);
 		if(isObjectEmpty(props)){return;}
+		if(	!isObjectEmpty(props) 
+			&& 'params' 			in props
+			&& 'onChangeEvent' in props.params
+			&& (typeof props.params.onChangeEvent==='function')){
 
-		if(("onKeyPressEvent" in props) && (typeof props.onKeyPressEvent==='function')){props.onKeyPressEvent(event);}
+			props.params.onChangeEvent(event);
+		}
+	}
+
+	const getEvent_internalOnChanged=(props)=>{
+		if(	!isObjectEmpty(props) 
+			&& 'params' 			in props
+			&& 'onChangeEvent' in props.params){
+
+			return internalOnChangeed;
+		}
+		return ()=>{};
 	}
 
 	return(
 		<LayoutFieldDefault props={props}>
-			<input type='text' value={textValue} onChange={internalOnKeyPressed} style={{width:"100%"}}/>
+			<input type='text' value={textValue} onChange={getEvent_internalOnChanged(props)} style={{width:"100%"}}/>
 		</LayoutFieldDefault>
 	)
 }
