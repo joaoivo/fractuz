@@ -8,10 +8,13 @@ import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
 import { useApiFractuz } from '../../../components/api/fractus';
 import { useContextConsole } from '../../../system/Contexts/Console';
 
+import { TreatmentExceptions } from '../../../components/exception';
+
 export default function Application(){
-	const { getApplicationList,ExceptionApiDefault } = useApiFractuz();
+	const { getApplicationList } = useApiFractuz();
 	const {addHistoryLog} = useContextConsole();
-	
+	const {treatExceptions} = TreatmentExceptions();
+
 	const [searchDataObj, setsearchDataObj] = useState({});
 
 	const setSearchData =(event,key)=>{
@@ -40,18 +43,7 @@ export default function Application(){
 			addHistoryLog("Pesquisa de Aplicações executada");
 			console.log("response",response);
 		} catch (error) {
-			alert("Erro ao tentar Pesquisa de Aplicações. Verifique status no Log.");
-			if (error instanceof ExceptionApiDefault) {
-				console.error('Exceção personalizada capturada:', error.message);
-				console.error('Dados adicionais:', error);
-
-				const errorData = JSON.stringify(error);
-				addHistoryLog(`Erro no processo interno de Pesquisa de Aplicações: Mensagen: '${error.message}' 
-					\n dados gerais: '${errorData}'
-					\n Stack do Erro '${error.stack}'`);
-				return;
-			 }
-			addHistoryLog("Erro ao obter o token de login:"+ error);
+			treatExceptions(error,"Pesquisa de Aplicações");
 		}
 	}
 

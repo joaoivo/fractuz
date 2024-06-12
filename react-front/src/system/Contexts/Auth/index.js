@@ -5,20 +5,23 @@ import { isStringEmptyOrSpaces } from '../../Libs/Strings';
 import { isObjectEmpty,getObectPropertiesFilter } from '../../Libs/Objects';
 import { getCaesarDecrypt, getCaesarEncrypt } from '../../Libs/Crypto';
 
+import { ExceptionSystemDefault } from '../../Components/Exceptions';
+
 const ContextAuth = createContext();
+export 	class ExceptionSystemContextAuth extends ExceptionSystemDefault {
+	constructor(mensagem) {
+		super(mensagem);
+		this.name = this.constructor.name;
+		this.data = { mensagem };
+	}
+}
 
 export function ContextAuthProvider({ children }) {
 
 	const sessionUserIDKey = 'user';
 	const sessionUserCaesarShift = 3;
 
-	class ExceptionContextAuth extends Error {
-		constructor(mensagem) {
-			super(mensagem);
-			this.name = this.constructor.name;
-			this.data = { mensagem };
-		}
-	}
+
 
 	const setUserLogged = (userRawData)=>{
 		const user = getObectPropertiesFilter(userRawData,["name","mail","token"]);
@@ -37,10 +40,10 @@ export function ContextAuthProvider({ children }) {
 		const userData = getCaesarDecrypt(sessionStorage.getItem(sessionUserIDKey),sessionUserCaesarShift);
 		const user = JSON.parse(userData);
 
-		if(isObjectEmpty(user)){throw new ExceptionContextAuth("Object user is null");}
+		if(isObjectEmpty(user)){throw new ExceptionSystemContextAuth("Object user is null");}
 		if(!isUserValid(user)){
 			const messages = getUserValidationList(user);
-			throw new ExceptionContextAuth("Object user is isvalid ("+messages.join(", ")+")");
+			throw new ExceptionSystemContextAuth("Object user is isvalid ("+messages.join(", ")+")");
 		}
 
 		return user;
@@ -104,7 +107,7 @@ export function ContextAuthProvider({ children }) {
 	};
 
 	return (
-		<ContextAuth.Provider value={{ ExceptionContextAuth, isUserAuthenticated, login, logout, getUserLogged}}>
+		<ContextAuth.Provider value={{ ExceptionSystemContextAuth, isUserAuthenticated, login, logout, getUserLogged}}>
 			{children}
 		</ContextAuth.Provider>
 	);

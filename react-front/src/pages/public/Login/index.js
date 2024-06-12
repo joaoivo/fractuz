@@ -7,14 +7,17 @@ import {useApiFractuz} from "../../../components/api/fractus";
 import { routesPrivatePages } from "../../routes";
 import { goToAddress } from "../../../system/Libs/Urls";
 
+import { TreatmentExceptions } from "../../../components/exception";
+
 export default function Login(){
 
 	const [email,setEmail]=useState('jims_ibr@yahoo.com.br');
 	const [password,setPassword]=useState('a1b2c3d4');
 	const { getLoginToken } = useApiFractuz();
 
-	const {login, isUserAuthenticated, ExceptionContextAuth} = useContextAuth();
+	const {login, isUserAuthenticated, ExceptionSystemContextAuth} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
+	const {treatExceptions} = TreatmentExceptions();
 
 	const handleLogin = async ()=>{
 		try {
@@ -33,29 +36,18 @@ export default function Login(){
 				return;
 			}
 
-			addHistoryLog(`Usuário ${response.dataList[0].name} devidamente logado, redirecionando para a Home`);
-
 			if(!isUserAuthenticated()){
-				alert("para tudo que não gravou o login direito")
+				alert("para tudo! que não gravou o login direito")
 				addHistoryLog(`o safado não guardou a variavel de sessão`);
+				return
 			}
 
+			addHistoryLog(`Usuário ${response.dataList[0].name} devidamente logado, redirecionando para a Home`);
 			goToAddress(routesPrivatePages.Home.path);
 
 		} catch (error) {
-			alert("Erro ao tentar logar. Verifique status no Log.");
-			if (error instanceof ExceptionContextAuth) {
-				console.error('Exceção personalizada capturada:', error.message);
-				console.error('Dados adicionais:', error);
-
-				const errorData = JSON.stringify(error);
-				addHistoryLog(`Erro no processo interno de autenticação: Mensagen: '${error.message}' 
-					\n dados gerais: '${errorData}'
-					\n Stack do Erro '${error.stack}'`);
-				return;
-			 }
-			addHistoryLog("Erro ao obter o token de login:"+ error);
-		 }
+			treatExceptions(error,"Autênticação de Usuário");
+		}
 	}
 
 	return(

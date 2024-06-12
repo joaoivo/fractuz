@@ -1,8 +1,16 @@
-import { useContextConsole } from '../../../system/Contexts/Console';
-import { useContextAuth } from '../../../system/Contexts/Auth';
-import { config } from '../../../system/Constants';
+import { useContextConsole } 								from '../../../system/Contexts/Console';
+import { useContextAuth } 									from '../../../system/Contexts/Auth';
+import { config } 											from '../../../system/Constants';
 
-import { useApiDefault } from '..';
+import { useApiDefault, ExceptionSystemApiDefault } from '../../../system/Components/Api';
+
+export class ExceptionSystemApiFractuz extends ExceptionSystemApiDefault {
+	constructor(mensagem) {
+		super(mensagem);
+		this.name = this.constructor.name;
+		this.data = { mensagem };
+	}
+}
 
 export const apiFractuzEndPoint={
 	 login: "/Login"
@@ -16,15 +24,7 @@ export const apiFractuzEndPoint={
 export const useApiFractuz = () => {
 	const { addHistoryLog } = useContextConsole();
 	const { isUserAuthenticated, getUserLogged} = useContextAuth();
-	const { ExceptionApiDefault,methodGet } = useApiDefault();
-
-	class ExceptionApiFractuz extends Error {
-		constructor(mensagem) {
-			super(mensagem);
-			this.name = this.constructor.name;
-			this.data = { mensagem };
-		}
-	}
+	const { methodGet } = useApiDefault();
 
 	const getLoginToken = async (mail, pass) => {
 		const myHeaders = new Headers();
@@ -44,20 +44,25 @@ export const useApiFractuz = () => {
 			return JSON.parse(result);
 		} catch (err) {
 			addHistoryLog("ops! ocorreu um erro na tentativa de acesso a API:" + err);
-			//throw err; 
+			throw err; 
 		}
 	};
 
 	const getApplicationList = async (searchData) => {
 
-		if(!isUserAuthenticated()){throw new ExceptionApiFractuz("User not Auhenticated");}
+		if(!isUserAuthenticated()){
+
+			throw new ExceptionSystemApiFractuz("User not Auhenticated");
+		}
 		searchData["Authorization"] = "Bearer " + getUserLogged().token;
 
-		const response = await methodGet(searchData,config.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
-		const result 	= await response.text();
+		const jsonResponse = await methodGet(searchData,config.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
+		if(jsonResponse.code !==0){
+			throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`)
+		}
 
-		return JSON.parse(result);
+		return jsonResponse.dataList;
 	};
 
-	return { getLoginToken , getApplicationList,ExceptionApiDefault};
+	return { getLoginToken , getApplicationList};
 };
