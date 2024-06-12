@@ -15,14 +15,14 @@ export default function Login(){
 	const [password,setPassword]=useState('a1b2c3d4');
 	const { getLoginToken } = useApiFractuz();
 
-	const {login, isUserAuthenticated, ExceptionSystemContextAuth} = useContextAuth();
+	const {login, isUserAuthenticated} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
 	const {treatExceptions} = TreatmentExceptions();
 
 	const handleLogin = async ()=>{
 		try {
 
-			const response = await getLoginToken(email, password);
+			const response = await getLoginToken({mail:email, pass:password});
 			if(response.code!==0){
 				alert("Login não autorizado. Verifique o status no Log.")
 				addHistoryLog(`Login não autorizado: {code:${response.code}, title:${response.tittle}}`);
