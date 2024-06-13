@@ -2,6 +2,9 @@ import { useState } from 'react';
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 
+import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
+import { setFormFieldValuesStates } from '../../../elements/forms/Fields';
+
 import { TextFieldDefault } from '../../../elements/forms/Fields/TextFields';
 import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
 
@@ -10,59 +13,115 @@ import { useContextConsole } from '../../../system/Contexts/Console';
 
 import { TreatmentExceptions } from '../../../components/exception';
 
+
 export default function Application(){
 	const { getApplicationList } = useApiFractuz();
 	const {addHistoryLog} = useContextConsole();
 	const {treatExceptions} = TreatmentExceptions();
 
-	const [searchDataObj, setsearchDataObj] = useState({});
+	const [applicationSearchFieldsValues, setApplicationSearchFieldsValues] = useState({});
+	const [applicationRegisterFieldsValues, setApplicationRegisterFieldsValues] = useState({});
+	const [applicationDisplayType, setApplicationDisplayType] = useState(0);
 
-	const setSearchData =(event,key)=>{
-		const searchDataTemp = searchDataObj;
-		searchDataTemp[key] = event.target.value;
-		setsearchDataObj(searchDataTemp);
+	const applicationConfig ={
+		 seachForm:{
+			fields:{
+				appName:{
+					 labelText:"Nome da Aplicação"
+					,fieldID:"name"
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"name");}
+				}
+				,appDesc:{
+					 labelText:"Descrição"
+					,fieldID:"description"
+					,fieldLabelStyle:{backgroundColor:"#50505090"}
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"desc");}
+				}
+			}
+			,commands:{
+				toggleDisplayType:	()=>{
+					setApplicationDisplayType((applicationDisplayType!==0?0:1));
+				}
+				,searchApplications : async ()=>{
+					try{
+						const response = await getApplicationList(applicationSearchFieldsValues);
+						addHistoryLog("Pesquisa de Aplicações executada");
+					} catch (error) {
+						treatExceptions(error,"Pesquisa de Aplicações");
+					}
+				}
+			}
+		}
+		,registerForm:{
+			fields:{
+				appName:{
+					 labelText:"Nome da Aplicação"
+					,fieldID:"name"
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"name");}
+				}
+				,appDesc:{
+					 labelText:"Descrição"
+					,fieldID:"description"
+					,fieldLabelStyle:{backgroundColor:"#50505090"}
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"desc");}
+				}
+
+			}
+			,commands:{
+				toggleDisplayType:	()=>{
+					setApplicationDisplayType((applicationDisplayType!==0?0:1));
+				}
+				,addApplications : async ()=>{
+					try{
+						const response = await getApplicationList(applicationSearchFieldsValues);
+						addHistoryLog("Pesquisa de Aplicações executada");
+						console.log("response",response);
+					} catch (error) {
+						treatExceptions(error,"Pesquisa de Aplicações");
+					}
+				}
+			}
+		}
 	}
 
-	const searchApplicationsFields = {
-		appName:{
-			 labelText:"Nome da Aplicação"
-			,fieldID:"name"
-			,onChangeEvent:(e)=>{ setSearchData(e,"name");}
-		}
-		,appDesc:{
-			 labelText:"Descrição"
-			,fieldID:"description"
-			,fieldLabelStyle:{backgroundColor:"#50505090"}
-			,onChangeEvent:(e)=>{ setSearchData(e,"desc");}
-		}
-	}
 
-	const searchApplications = async ()=>{
-		try{
-			const response = await getApplicationList(searchDataObj);
-			addHistoryLog("Pesquisa de Aplicações executada");
-			console.log("response",response);
-		} catch (error) {
-			treatExceptions(error,"Pesquisa de Aplicações");
-		}
-	}
-
-	return(
-		<div className="wtdhGeneral_duz24vw_20" style={{border :"1px solid gray" }}>
-			<h1>Applications</h1>
-			<hr/>
-
+	const ApplicationDisplayType ={
+		 Search: ()=>(
+				<div>
+					<div className="wtdhGeneral_duz24vw_20 generalDisposition_horizDisp_spaceBetween">
+						<TextFieldDefault params={applicationConfig.seachForm.fields.appName}/>
+						<TextFieldDefault params={applicationConfig.seachForm.fields.appDesc}/>
+						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
+						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
+					</div>
+					<div>
+						lista de resultados
+					</div>
+				</div>
+			)
+		,Register : ()=>(
 			<div>
 				<div className="wtdhGeneral_duz24vw_20 generalDisposition_horizDisp_spaceBetween">
-					<TextFieldDefault params={searchApplicationsFields.appName}/>
-					<TextFieldDefault params={searchApplicationsFields.appDesc}/>
-					<LayoutButtonDefault onClickEvent={searchApplications}>Pesquisar</LayoutButtonDefault>
-				</div>
-				<div>
-					lista de resultados
+					<TextFieldDefault params={applicationConfig.registerForm.fields.appName}/>
+					<TextFieldDefault params={applicationConfig.registerForm.fields.appDesc}/>
+					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.searchApplications}>Salvar</LayoutButtonDefault>
+					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
 				</div>
 			</div>
+		)
+	}
 
-		</div>
-	)
+	if(applicationDisplayType!==1){
+		return(
+			<LayoutPrivateBody title="Applications> Consulta">
+				<ApplicationDisplayType.Search/>
+			</LayoutPrivateBody>
+		)
+	}else{
+		return(
+			<LayoutPrivateBody title="Applications> Cadastro">
+				<ApplicationDisplayType.Register/>
+			</LayoutPrivateBody>
+		)
+	}
 }
