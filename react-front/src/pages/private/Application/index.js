@@ -2,7 +2,8 @@ import { useState } from 'react';
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 
-import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
+//import { ContextPrivadeLayoutBodyProvider } from '../../../elements/layouts/Private/Body';
+
 import { setFormFieldValuesStates } from '../../../elements/forms/Fields';
 
 import { TextFieldDefault } from '../../../elements/forms/Fields/TextFields';
@@ -10,13 +11,15 @@ import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
 
 import { useApiFractuz } from '../../../components/api/fractus';
 import { useContextConsole } from '../../../system/Contexts/Console';
+import { useContextPrivadeLayoutBody, ContextPrivadeLayoutBodyProvider } from '../../../elements/layouts/Private/Body';
 
 import { TreatmentExceptions } from '../../../components/exception';
 
 export default function Application(){
-	const { getApplicationList, addApplication } = useApiFractuz();
-	const { addHistoryLog } = useContextConsole();
-	const {treatExceptions} = TreatmentExceptions();
+	const { getApplicationList, addApplication} = useApiFractuz();
+	const { addHistoryLog 							} = useContextConsole();
+	const { MessagesToPanel_set 					} = useContextPrivadeLayoutBody();
+	const { treatExceptions							} = TreatmentExceptions();
 
 	const [applicationSearchFieldsValues	, setApplicationSearchFieldsValues	] = useState({});
 	const [applicationSearchResults			, setApplicationSearchResults			] = useState({});
@@ -48,8 +51,10 @@ export default function Application(){
 						const response = await getApplicationList(applicationSearchFieldsValues);
 						setApplicationSearchResults(response);
 						addHistoryLog("Pesquisa de Aplicações executada");
+						MessagesToPanel_set("Pesquisa de Aplicações executada")
 					} catch (error) {
 						treatExceptions(error,"Pesquisa de Aplicações");
+						MessagesToPanel_set("Erro na Pesquisa de Aplicações executada")
 					}
 				}
 			}
@@ -116,15 +121,15 @@ export default function Application(){
 
 	if(applicationDisplayType!==1){
 		return(
-			<LayoutPrivateBody title="Applications> Consulta">
+			<ContextPrivadeLayoutBodyProvider title="Applications> Consulta">
 				<ApplicationDisplayType.Search/>
-			</LayoutPrivateBody>
+			</ContextPrivadeLayoutBodyProvider>
 		)
 	}else{
 		return(
-			<LayoutPrivateBody title="Applications> Cadastro">
+			<ContextPrivadeLayoutBodyProvider title="Applications> Cadastro">
 				<ApplicationDisplayType.Register/>
-			</LayoutPrivateBody>
+			</ContextPrivadeLayoutBodyProvider>
 		)
 	}
 }

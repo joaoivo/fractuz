@@ -45,7 +45,6 @@ export function ContextConsoleProvider({ children }) {
 		
 		// Salvar o histórico atualizado no localStorage
 		localStorage.setItem(ConsoleLocalStorageID, JSON.stringify(history));
-
 	}
 
 	function getHistoryLog() {return JSON.parse(localStorage.getItem(ConsoleLocalStorageID)) || [];}
