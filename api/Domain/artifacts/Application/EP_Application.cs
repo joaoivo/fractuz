@@ -31,7 +31,7 @@ public class EP_Application:IEndPoint{
 			Int32? pageNumber = getHeaderIntValues(request.Headers,"pageNumber");
 			Int32? pageRowCount=getHeaderIntValues(request.Headers,"pageRowCount");
 
-			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request);
+			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_Application>? application_lst = BP_Application.Select(Config,guid, name, description, columnsOrderBy, pageNumber, pageRowCount);
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Aplicações", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
@@ -41,7 +41,7 @@ public class EP_Application:IEndPoint{
 	[Authorize]
 	public IResult ApplicationAPI_Post([FromBody] EN_Application application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_Application.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_Application.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -50,7 +50,7 @@ public class EP_Application:IEndPoint{
 	[Authorize]
 	public IResult ApplicationAPI_Put([FromBody] EN_Application application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_Application.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_Application.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -59,7 +59,7 @@ public class EP_Application:IEndPoint{
 	[Authorize]
 	public IResult ApplicationAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

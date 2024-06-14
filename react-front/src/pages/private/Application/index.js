@@ -13,15 +13,16 @@ import { useContextConsole } from '../../../system/Contexts/Console';
 
 import { TreatmentExceptions } from '../../../components/exception';
 
-
 export default function Application(){
-	const { getApplicationList } = useApiFractuz();
-	const {addHistoryLog} = useContextConsole();
+	const { getApplicationList, addApplication } = useApiFractuz();
+	const { addHistoryLog } = useContextConsole();
 	const {treatExceptions} = TreatmentExceptions();
 
-	const [applicationSearchFieldsValues, setApplicationSearchFieldsValues] = useState({});
-	const [applicationRegisterFieldsValues, setApplicationRegisterFieldsValues] = useState({});
-	const [applicationDisplayType, setApplicationDisplayType] = useState(0);
+	const [applicationSearchFieldsValues	, setApplicationSearchFieldsValues	] = useState({});
+	const [applicationSearchResults			, setApplicationSearchResults			] = useState({});
+	const [applicationRegisterFieldsValues	, setApplicationRegisterFieldsValues] = useState({});
+
+	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
 
 	const applicationConfig ={
 		 seachForm:{
@@ -29,13 +30,13 @@ export default function Application(){
 				appName:{
 					 labelText:"Nome da Aplicação"
 					,fieldID:"name"
-					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"name");}
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"Name");}
 				}
 				,appDesc:{
 					 labelText:"Descrição"
 					,fieldID:"description"
 					,fieldLabelStyle:{backgroundColor:"#50505090"}
-					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"desc");}
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"Description");}
 				}
 			}
 			,commands:{
@@ -45,6 +46,7 @@ export default function Application(){
 				,searchApplications : async ()=>{
 					try{
 						const response = await getApplicationList(applicationSearchFieldsValues);
+						setApplicationSearchResults(response);
 						addHistoryLog("Pesquisa de Aplicações executada");
 					} catch (error) {
 						treatExceptions(error,"Pesquisa de Aplicações");
@@ -52,20 +54,20 @@ export default function Application(){
 				}
 			}
 		}
+		
 		,registerForm:{
 			fields:{
 				appName:{
 					 labelText:"Nome da Aplicação"
 					,fieldID:"name"
-					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"name");}
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"Name");}
 				}
 				,appDesc:{
 					 labelText:"Descrição"
 					,fieldID:"description"
 					,fieldLabelStyle:{backgroundColor:"#50505090"}
-					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"desc");}
+					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"Description");}
 				}
-
 			}
 			,commands:{
 				toggleDisplayType:	()=>{
@@ -73,17 +75,17 @@ export default function Application(){
 				}
 				,addApplications : async ()=>{
 					try{
-						const response = await getApplicationList(applicationSearchFieldsValues);
-						addHistoryLog("Pesquisa de Aplicações executada");
+						const response = await addApplication({},applicationRegisterFieldsValues);
+						addHistoryLog("Adição de Aplicações executada");
 						console.log("response",response);
+						setApplicationDisplayType(0);
 					} catch (error) {
-						treatExceptions(error,"Pesquisa de Aplicações");
+						treatExceptions(error,"Adição de Aplicações");
 					}
 				}
 			}
 		}
 	}
-
 
 	const ApplicationDisplayType ={
 		 Search: ()=>(
@@ -95,7 +97,8 @@ export default function Application(){
 						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 					</div>
 					<div>
-						lista de resultados
+						<h4>lista de resultados</h4>
+						<div>{applicationSearchResults ? <i>Algum Resultados</i>:<i>Sem Resultados de Pesquisa</i>}</div>
 					</div>
 				</div>
 			)
@@ -104,7 +107,7 @@ export default function Application(){
 				<div className="wtdhGeneral_duz24vw_20 generalDisposition_horizDisp_spaceBetween">
 					<TextFieldDefault params={applicationConfig.registerForm.fields.appName}/>
 					<TextFieldDefault params={applicationConfig.registerForm.fields.appDesc}/>
-					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.searchApplications}>Salvar</LayoutButtonDefault>
+					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.addApplications}>Salvar</LayoutButtonDefault>
 					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
 				</div>
 			</div>

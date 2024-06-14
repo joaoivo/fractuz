@@ -1,5 +1,4 @@
 import { ExceptionApplicationDefault, ExceptionSystemDefault, ExceptionUserDefault } from "../../Components/Exceptions";
-import { isObjectEmpty } from "../Objects";
 import { isStringEmptyOrSpaces } from "../Strings";
 
 export const treatDefaultError = (error, processDesc)=>{
@@ -16,7 +15,7 @@ export const treatExceptionDefaultsByTypes =(error, processDesc
 		,callBackExceptionSystem
 		,callBackExceptionGeneral) => {
 	
-	if((isObjectEmpty(error)) || !(error instanceof Error)) {return;}
+	if((!!!(error)) || !(error instanceof Error)) {return;}
 	if(isStringEmptyOrSpaces(processDesc)){processDesc="[Processo não especificado]";}
 
 	if((callBackExceptionUser			===undefined)||(typeof callBackExceptionUser 			!=="function")){callBackExceptionUser 			= treatDefaultError;}

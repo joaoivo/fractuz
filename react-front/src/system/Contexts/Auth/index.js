@@ -21,10 +21,8 @@ export function ContextAuthProvider({ children }) {
 	const sessionUserIDKey = 'user';
 	const sessionUserCaesarShift = 3;
 
-
-
 	const setUserLogged = (userRawData)=>{
-		const user = getObectPropertiesFilter(userRawData,["name","mail","token"]);
+		const user = getObectPropertiesFilter(userRawData,["name","mail","token","userID"]);
 		if(isObjectEmpty(userRawData)){return;}
 
 		sessionStorage.setItem(sessionUserIDKey, getCaesarEncrypt(JSON.stringify(user),sessionUserCaesarShift));
@@ -82,7 +80,15 @@ export function ContextAuthProvider({ children }) {
 		}else if(isStringEmptyOrSpaces(user.token)){
 			messages.push("Token não pode ser vazio")
 		}else if(user.token.length<=300){
-			messages.push("Tome não pode ter menos de 300 caractéres")
+			messages.push("Token não pode ter menos de 300 caractéres")
+		}
+		
+		if(!user.hasOwnProperty("userID")){
+			messages.push("Não tem userID")
+		}else if(isStringEmptyOrSpaces(user.userID)){
+			messages.push("userID não pode ser vazio")
+		}else if(user.userID.length<=30){
+			messages.push("userID não pode ter menos de 30 caractéres")
 		}
 
 		return messages;

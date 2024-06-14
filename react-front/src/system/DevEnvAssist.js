@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { config, environment_types } from "./Constants";
+import { systemConfig } from '../configs';
 
 function StrictModeOn({children}) {
 	return (
@@ -15,7 +15,7 @@ function StrictModeOff({children}) {
 }
 
 export const DevEnvAssist = ({children}) =>{
-	if (config.environment.type === environment_types.prod) {
+	if (systemConfig.environment.type === systemConfig.environment_types.prod) {
 		return StrictModeOff({children});
 	} else {
 		return StrictModeOn({children});

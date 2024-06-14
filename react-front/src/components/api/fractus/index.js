@@ -1,7 +1,7 @@
 import { useContextAuth } 									from '../../../system/Contexts/Auth';
-import { config } 											from '../../../system/Constants';
-
-import { useApiDefault, ExceptionSystemApiDefault } from '../../../system/Components/Api';
+import { systemConfig } from '../../../configs';
+import { useApiDefault, ExceptionSystemApiDefault}	from '../../../system/Components/Api';
+import { isObjectEmpty } from '../../../system/Libs/Objects';
 
 export class ExceptionSystemApiFractuz extends ExceptionSystemApiDefault {
 	constructor(mensagem) {
@@ -22,24 +22,41 @@ export const apiFractuzEndPoint={
 
 export const useApiFractuz = () => {
 	const { isUserAuthenticated, getUserLogged} = useContextAuth();
-	const { methodGet } = useApiDefault();
+	const { methodGet , methodPost} = useApiDefault();
 
 	const getLoginToken = async (loginData) => {
-		const jsonResponse = await methodGet(loginData,config.urls.PUBLIC_API_URL + apiFractuzEndPoint.login);
+		const jsonResponse = await methodGet(loginData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.login);
 		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
 		return jsonResponse;
 	};
 
-	const getApplicationList = async (searchData) => {
+	const getApplicationList = async (headerData) => {
 
 		if(!isUserAuthenticated()){throw new ExceptionSystemApiFractuz("User not Auhenticated");}
-		searchData["Authorization"] = "Bearer " + getUserLogged().token;
+		headerData["Authorization"] = "Bearer " + getUserLogged().token;
 
-		const jsonResponse = await methodGet(searchData,config.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
+		const jsonResponse = await methodGet(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
 		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
 
 		return jsonResponse.dataList;
 	};
 
-	return { getLoginToken , getApplicationList};
+	const addApplication = async (headerData,ApplicationData) => {
+
+		if(isObjectEmpty(ApplicationData)){throw new ExceptionSystemApiFractuz("Applications Object is Empty");}
+		if(!isUserAuthenticated()){throw new ExceptionSystemApiFractuz("User not Auhenticated");}
+
+		if(isObjectEmpty(headerData)){headerData={};}
+
+		const user = getUserLogged();
+		headerData["Authorization"] = "Bearer " + user.token;
+		ApplicationData["SystemCreationUser"] = user.userID;
+
+		const jsonResponse = await methodPost(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application,ApplicationData);
+		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
+
+		return jsonResponse;
+	};
+
+	return { getLoginToken , getApplicationList, addApplication};
 };

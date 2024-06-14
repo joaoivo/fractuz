@@ -23,7 +23,7 @@ public class EP_AppDataBase:IEndPoint{
 	public IResult AppDataBasesAPI_GetAdv(HttpRequest request,[FromQuery] string? queryGuid=null,[FromQuery] string? queryApplication=null,[FromQuery] string? queryDatabaseName=null	,[FromQuery] string? queryBuildOrder =null){
 		try{
 
-			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request);
+			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			Guid? guid=null;
 			Guid? application=null;
 			string? databaseName=null;
@@ -39,7 +39,7 @@ public class EP_AppDataBase:IEndPoint{
 	[Authorize]
 	public IResult AppDataBasesAPI_Get(HttpRequest request){
 		try{
-			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request);
+			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
@@ -50,7 +50,7 @@ public class EP_AppDataBase:IEndPoint{
 	[Authorize]
 	public IResult AppDataBasesAPI_Post([FromBody] EN_AppDataBase application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDataBase.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDataBase.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -59,7 +59,7 @@ public class EP_AppDataBase:IEndPoint{
 	[Authorize]
 	public IResult AppDataBasesAPI_Put([FromBody] EN_AppDataBase application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDataBase.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDataBase.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -68,7 +68,7 @@ public class EP_AppDataBase:IEndPoint{
 	[Authorize]
 	public IResult AppDataBasesAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDataBase.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDataBase.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

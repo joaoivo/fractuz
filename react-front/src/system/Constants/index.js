@@ -7,31 +7,31 @@ export const environment_types= {
 
 /// environment config
 const prod = {
-	urls: {
-		 PUBLIC_API_URL: "http://localhost:5096"
+	/*urls: {
+		PUBLIC_API_URL: "http://localhost:5096"
 	}
-	,environment:{
+	,*/environment:{
 		type:environment_types.prod
 	}
 };
 const dev = {
-	urls: {
+	/*urls: {
 		PUBLIC_API_URL: "http://localhost:5096"
 	}
-	,environment:{
+	,*/environment:{
 		type:environment_types.dev
 	}
 };
 const staging = {
-	urls: {
+	/*urls: {
 		PUBLIC_API_URL: "http://localhost:5096"
 	}
-	,environment:{
+	,*/environment:{
 		type:environment_types.stag
 	}
 };
 
-export const config = 
+export const systemConfigGeneral = 
 	process.env.NODE_ENV === "development" ? dev :
 	process.env.NODE_ENV === "test" 			? staging :
 	process.env.NODE_ENV === "production" 	? prod :

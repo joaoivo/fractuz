@@ -24,7 +24,7 @@ public class EP_AppDbTableField:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Get(HttpRequest request){
 		try{
-			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request);
+			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_AppDbTableField>? application_lst = BP_AppDbTableField.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
@@ -35,7 +35,7 @@ public class EP_AppDbTableField:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Post([FromBody] EN_AppDbTableField application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTableField.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDbTableField.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -44,7 +44,7 @@ public class EP_AppDbTableField:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Put([FromBody] EN_AppDbTableField application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTableField.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDbTableField.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -53,7 +53,7 @@ public class EP_AppDbTableField:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTableField.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDbTableField.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

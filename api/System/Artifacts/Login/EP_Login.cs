@@ -27,9 +27,10 @@ public class EP_Login:IEndPoint{
 			}
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = new List<Object>{
 				new {
-					 token=	JWTTokensManager.GenerateJWTToken(managerUser_lst[0],Config)
-					,name=	managerUser_lst[0].ParticName
-					,mail=	managerUser_lst[0].ParticMail
+					 token	=	JWTTokensManager.GenerateJWTToken(managerUser_lst[0],Config)
+					,name		=	managerUser_lst[0].ParticName
+					,mail		=	managerUser_lst[0].ParticMail
+					,userID 	=	managerUser_lst[0].SystemIDX
 				}
 			}});
 		}catch(Exception ex){

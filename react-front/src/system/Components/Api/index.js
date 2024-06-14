@@ -11,16 +11,25 @@ export class ExceptionSystemApiDefault extends ExceptionSystemDefault {
 
 export const useApiDefault = () => {
 
-	const methodGet = async (headerData,url) => {
+	const methodExecute = async (method,headerData,url,bodyData) => {
 
+		if(bodyData===undefined){bodyData=null;}
 		const myHeaders = new Headers();
 		Object.keys(headerData).forEach((key)=>{myHeaders.append(key, headerData[key]);});
 
 		const requestOptions = {
-			method: "GET",
+			method: method,
 			headers: myHeaders,
 			redirect: "follow",
 		};
+
+		if (bodyData) {
+			if(typeof bodyData === 'object'){
+				requestOptions.body = JSON.stringify(bodyData);
+				myHeaders.append("Content-Type", "application/json");
+				myHeaders.append("charset", "utf-8");
+			}else{requestOptions.body = bodyData.toString();}
+		}
 
 		let response;
 		try{
@@ -37,5 +46,10 @@ export const useApiDefault = () => {
 		return JSON.parse(result);
 	}
 
-	return { methodGet}
+	const methodGet	 = async (headerData,url,bodyData) => {return methodExecute ("GET"	,headerData,url,bodyData);}
+	const methodPost	 = async (headerData,url,bodyData) => {return methodExecute ("POST"	,headerData,url,bodyData);}
+	const methodPut	 = async (headerData,url,bodyData) => {return methodExecute ("PUT"	,headerData,url,bodyData);}
+	const methodDelete = async (headerData,url,bodyData) => {return methodExecute ("DELETE",headerData,url,bodyData);}
+
+	return { methodGet, methodPost, methodPut, methodDelete, methodExecute}
 }

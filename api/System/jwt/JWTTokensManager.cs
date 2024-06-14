@@ -3,17 +3,25 @@ using System.Security.Claims;
 using System.Text;
 using Fractuz.Domain.Users.Entities;
 using Microsoft.IdentityModel.Tokens;
+using Fractuz.System.Security;
 
 namespace api.System.jwt;
 
 public static class JWTTokensManager{
 	public static string  GenerateJWTToken(EN_ManagerUser user,IConfiguration config) {
+		string currentUTC =DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+
+		SimpleCrypto crypto = new SimpleCrypto(currentUTC,config);
+
+		string userID = (user.SystemIDX??Guid.Empty).ToString();
 		var claims = new List<Claim> {
-			 new Claim(ClaimTypes.NameIdentifier, (user.SystemIDX??Guid.Empty).ToString())
+			 new Claim(ClaimTypes.NameIdentifier, crypto.Encrypt(userID))
 			,new Claim(ClaimTypes.Name, user.ParticName??"")
 			,new Claim(ClaimTypes.Email, user.ParticMail??"")
 			,new Claim("IsAdm", user.IsAdm==null?"0":(user.IsAdm==true?"1":"0"))
+			,new Claim("DateTime", currentUTC)
 		};
+
 		JwtSecurityToken jwtToken = new JwtSecurityToken(
 			claims: claims,
 			notBefore: DateTime.UtcNow,
@@ -26,7 +34,7 @@ public static class JWTTokensManager{
 			);
 		return new JwtSecurityTokenHandler().WriteToken(jwtToken);
 	}
-	public static EN_ManagerUser GetUserByBearerToken(HttpRequest request){
+	public static EN_ManagerUser GetUserByBearerToken(HttpRequest request,IConfiguration config){
 		EN_ManagerUser user = new EN_ManagerUser();
 		var authorizationHeader = request.Headers["Authorization"].FirstOrDefault();
 		if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer ")){
@@ -37,7 +45,13 @@ public static class JWTTokensManager{
 
 			Guid guid;
 			Int16 IsAdm;
-			if(Guid.TryParse( jsonToken.Payload[ClaimTypes.NameIdentifier].ToString(), out guid)){user.SystemIDX = guid;}
+
+			string currentUTC =(jsonToken.Payload["DateTime"] ?? "").ToString();
+			//,new Claim("DateTime", currentUTC)
+			SimpleCrypto crypto = new SimpleCrypto(currentUTC,config);
+			string userIDDecrypted = crypto.Decrypt(jsonToken.Payload[ClaimTypes.NameIdentifier].ToString());
+
+			if(Guid.TryParse( userIDDecrypted, out guid)){user.SystemIDX = guid;}
 			if(Int16.TryParse( jsonToken.Payload["IsAdm"].ToString(), out IsAdm)){user.IsAdm = IsAdm==1;}
 			user.ParticName = jsonToken.Payload[ClaimTypes.Name].ToString();
 			user.ParticMail = jsonToken.Payload[ClaimTypes.Email].ToString();

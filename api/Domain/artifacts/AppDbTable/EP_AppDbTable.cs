@@ -23,7 +23,7 @@ public class EP_AppDbTable:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableAPI_Get(HttpRequest request){
 		try{
-			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request);
+			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_AppDbTable>? application_lst = BP_AppDbTable.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
@@ -34,7 +34,7 @@ public class EP_AppDbTable:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableAPI_Post([FromBody] EN_AppDbTable application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTable.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDbTable.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -43,7 +43,7 @@ public class EP_AppDbTable:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableAPI_Put([FromBody] EN_AppDbTable application,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTable.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDbTable.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
@@ -52,7 +52,7 @@ public class EP_AppDbTable:IEndPoint{
 	[Authorize]
 	public IResult AppDbTableAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request)));
+			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
