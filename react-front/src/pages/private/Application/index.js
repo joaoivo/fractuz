@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 
@@ -23,6 +23,8 @@ export default function Application(){
 	const [applicationRegisterFieldsValues	, setApplicationRegisterFieldsValues] = useState({});
 	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
 
+	const layoutRef = useRef(null);
+
 	const applicationConfig ={
 		 seachForm:{
 			fields:{
@@ -46,11 +48,10 @@ export default function Application(){
 					try{
 						const response = await getApplicationList(applicationSearchFieldsValues);
 						setApplicationSearchResults(response);
-						addHistoryLog("Pesquisa de Aplicações executada");
-						//MessagesToPanel_set("Pesquisa de Aplicações executada")
+						layoutRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada");
 					} catch (error) {
 						treatExceptions(error,"Pesquisa de Aplicações");
-						//MessagesToPanel_set("Erro na Pesquisa de Aplicações executada")
+						layoutRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações executada");
 					}
 				}
 			}
@@ -99,7 +100,14 @@ export default function Application(){
 					</div>
 					<div className="wtdhGeneral_duz24pc_24">
 						<h4>lista de resultados</h4>
-						<div>{applicationSearchResults ? <i>Algum Resultados</i>:<i>Sem Resultados de Pesquisa</i>}</div>
+						<div>{applicationSearchResults.length > 0 ? <div>
+									<i>{applicationSearchResults.length} Aplicações </i><hr/>
+									{
+										applicationSearchResults.map((app,idx)=>{
+											return <div key={idx}>{app.Name}</div>
+										})
+									}
+								</div>:<i>Sem Resultados de Pesquisa</i>}</div>
 					</div>
 				</div>
 		)
@@ -117,13 +125,13 @@ export default function Application(){
 
 	if(applicationDisplayType!==1){
 		return(
-			<LayoutPrivateBody title="Applications> Consulta">
+			<LayoutPrivateBody title="Applications> Consulta" ref={layoutRef}>
 				<ApplicationDisplayType.Search/>
 			</LayoutPrivateBody>
 		)
 	}else{
 		return(
-			<LayoutPrivateBody title="Applications> Cadastro">
+			<LayoutPrivateBody title="Applications> Cadastro" ref={layoutRef}>
 				<ApplicationDisplayType.Register/>
 			</LayoutPrivateBody>
 		)

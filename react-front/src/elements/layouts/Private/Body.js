@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { useContextConsole } from '../../../system/Contexts/Console';
 import { isArrayEmptyOrNull } from '../../../system/Libs/Arrays';
 
-export function LayoutPrivateBody({children,...props}) {
+export const LayoutPrivateBody = forwardRef(({children, ...props}, ref) => {
 	const { addHistory } = useContextConsole();
 	const [formMessages	, setFormMessages	] = useState([]);
 
@@ -21,6 +21,13 @@ export function LayoutPrivateBody({children,...props}) {
 		setFormMessages(data);
 	}
 
+	useImperativeHandle(ref, () => ({
+		MessagesToPanel_get,
+		MessagesToPanel_clean,
+		MessagesToPanel_set,
+		MessagesToPanel_add
+	}));
+
 	return (
 		<div className="wtdhGeneral_duz24vw_20" style={{border :"1px solid gray", borderRadius: "10px", padding: "5px" }}>
 			<h1>{props && props.title && props.title}</h1>
@@ -36,4 +43,4 @@ export function LayoutPrivateBody({children,...props}) {
 			}
 		</div>
 	);
-}
+});
