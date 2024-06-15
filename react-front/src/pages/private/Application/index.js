@@ -2,8 +2,6 @@ import { useState } from 'react';
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 
-//import { ContextPrivadeLayoutBodyProvider } from '../../../elements/layouts/Private/Body';
-
 import { setFormFieldValuesStates } from '../../../elements/forms/Fields';
 
 import { TextFieldDefault } from '../../../elements/forms/Fields/TextFields';
@@ -11,20 +9,18 @@ import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
 
 import { useApiFractuz } from '../../../components/api/fractus';
 import { useContextConsole } from '../../../system/Contexts/Console';
-import { useContextPrivadeLayoutBody, ContextPrivadeLayoutBodyProvider } from '../../../elements/layouts/Private/Body';
+import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 
 import { TreatmentExceptions } from '../../../components/exception';
 
 export default function Application(){
 	const { getApplicationList, addApplication} = useApiFractuz();
 	const { addHistoryLog 							} = useContextConsole();
-	const { MessagesToPanel_set 					} = useContextPrivadeLayoutBody();
 	const { treatExceptions							} = TreatmentExceptions();
 
 	const [applicationSearchFieldsValues	, setApplicationSearchFieldsValues	] = useState({});
 	const [applicationSearchResults			, setApplicationSearchResults			] = useState({});
 	const [applicationRegisterFieldsValues	, setApplicationRegisterFieldsValues] = useState({});
-
 	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
 
 	const applicationConfig ={
@@ -51,10 +47,10 @@ export default function Application(){
 						const response = await getApplicationList(applicationSearchFieldsValues);
 						setApplicationSearchResults(response);
 						addHistoryLog("Pesquisa de Aplicações executada");
-						MessagesToPanel_set("Pesquisa de Aplicações executada")
+						//MessagesToPanel_set("Pesquisa de Aplicações executada")
 					} catch (error) {
 						treatExceptions(error,"Pesquisa de Aplicações");
-						MessagesToPanel_set("Erro na Pesquisa de Aplicações executada")
+						//MessagesToPanel_set("Erro na Pesquisa de Aplicações executada")
 					}
 				}
 			}
@@ -94,19 +90,19 @@ export default function Application(){
 
 	const ApplicationDisplayType ={
 		 Search: ()=>(
-				<div>
-					<div className="wtdhGeneral_duz24vw_20 generalDisposition_horizDisp_spaceBetween">
+				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+					<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
 						<TextFieldDefault params={applicationConfig.seachForm.fields.appName}/>
 						<TextFieldDefault params={applicationConfig.seachForm.fields.appDesc}/>
 						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
 						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 					</div>
-					<div>
+					<div className="wtdhGeneral_duz24pc_24">
 						<h4>lista de resultados</h4>
 						<div>{applicationSearchResults ? <i>Algum Resultados</i>:<i>Sem Resultados de Pesquisa</i>}</div>
 					</div>
 				</div>
-			)
+		)
 		,Register : ()=>(
 			<div>
 				<div className="wtdhGeneral_duz24vw_20 generalDisposition_horizDisp_spaceBetween">
@@ -121,15 +117,15 @@ export default function Application(){
 
 	if(applicationDisplayType!==1){
 		return(
-			<ContextPrivadeLayoutBodyProvider title="Applications> Consulta">
+			<LayoutPrivateBody title="Applications> Consulta">
 				<ApplicationDisplayType.Search/>
-			</ContextPrivadeLayoutBodyProvider>
+			</LayoutPrivateBody>
 		)
 	}else{
 		return(
-			<ContextPrivadeLayoutBodyProvider title="Applications> Cadastro">
+			<LayoutPrivateBody title="Applications> Cadastro">
 				<ApplicationDisplayType.Register/>
-			</ContextPrivadeLayoutBodyProvider>
+			</LayoutPrivateBody>
 		)
 	}
 }

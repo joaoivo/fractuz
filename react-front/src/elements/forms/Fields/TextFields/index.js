@@ -7,7 +7,7 @@ export function TextFieldDefault(props){
 
 	const [textValue, setTextValue] = useState('');
 
-	const internalOnChangeed = (event)=>{
+	const internalOnChanged = (event)=>{
 		setTextValue(event.target.value);
 		if(isObjectEmpty(props)){return;}
 		if(	!isObjectEmpty(props) 
@@ -24,7 +24,7 @@ export function TextFieldDefault(props){
 			&& 'params' 			in props
 			&& 'onChangeEvent' in props.params){
 
-			return internalOnChangeed;
+			return internalOnChanged;
 		}
 		return ()=>{};
 	}
