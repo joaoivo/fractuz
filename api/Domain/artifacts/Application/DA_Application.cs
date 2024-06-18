@@ -21,19 +21,21 @@ public static class DA_Application{
 
 		parameters.Add("@rTotalRowCount"		, null				, DbType.Int32		, ParameterDirection.Output);
 		parameters.Add("@rSeachRowCount"		, null				, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@pSearchPageCount"	, null				, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@rSearchPageCount"	, null				, DbType.Int32		, ParameterDirection.Output);
 		parameters.Add("@rQuery"				, null				, DbType.String	, ParameterDirection.Output,4000);
 
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			application_lst = db.Query<EN_Application>("[dbo].[pr_Applications_sel]",parameters);
 		}
+//application_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
+//
+		pageNumber 		=parameters.Get<Int32?>("@pPageNumber");
+		pageRowCount	=parameters.Get<Int32?>("@pPageRowCount");
+		totalRowCount	=parameters.Get<Int32?>("@rTotalRowCount");
+		seachRowCount	=parameters.Get<Int32?>("@rSeachRowCount");
+		searchPageCount=parameters.Get<Int32?>("@rSearchPageCount");
+		query				=parameters.Get<string?>("@rQuery");
 
-		pageNumber =0;
-		pageRowCount=0;
-		totalRowCount=0;
-		seachRowCount=0;
-		searchPageCount=0;
-		query="";
 		return application_lst;
 	}
 

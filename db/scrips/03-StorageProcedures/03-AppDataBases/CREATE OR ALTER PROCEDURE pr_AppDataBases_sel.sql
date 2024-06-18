@@ -32,23 +32,23 @@ DECLARE @query nvarchar(max)='
 	----- where
 	DECLARE @where nvarchar(max)=null
 
-	IF @pGuid IS NOT NULL SET @where = CONCAT('\n\t ([SystemIDX]=''',@pGuid,''') ')
+	IF @pGuid IS NOT NULL SET @where = CONCAT(' ([SystemIDX]=''',@pGuid,''') ')
 
 	IF @pApplication IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
 		SET @where = CONCAT(@where,'([Application] = ''',@pApplication,''')')
 		END
 
 	IF @pDatabaseName IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
 		SET @where = CONCAT(@where,'([DatabaseName] = ''',@pDatabaseName,''')')
 		END
 
 	IF @pBuildOrder IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
 		SET @where = CONCAT(@where,'([BuildOrder] = ''',@pBuildOrder,''')')
 		END
 
@@ -57,18 +57,18 @@ DECLARE @query nvarchar(max)='
 	----- order by	
 	IF @pColumnsOrderBy IS NOT NULL 
 		BEGIN
-		SET @query = CONCAT(@query,'\n ORDER BY ',@pColumnsOrderBy)
+		SET @query = CONCAT(@query,' ORDER BY ',@pColumnsOrderBy)
 		END
 
 	------- paginação
 	IF @pPageRowCount IS NOT NULL 
 		BEGIN
-		SET @query = CONCAT(@query,'\n LIMIT ',@pPageRowCount)
+		SET @query = CONCAT(@query,' LIMIT ',@pPageRowCount)
 		END
 			
 	IF @pPageNumber IS NOT NULL 
 		BEGIN
-		SET @query = CONCAT(@query,'\n OFFSET ', (@pPageNumber - 1) *@pPageRowCount)
+		SET @query = CONCAT(@query,' OFFSET ', (@pPageNumber - 1) *@pPageRowCount)
 		END
 	
 	--exec(@query)

@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-
 import {LayoutFieldDefault} from '../index'
 import { isObjectEmpty } from '../../../../system/Libs/Objects';
 
 export function TextFieldDefault(props){
 
-	const [textValue, setTextValue] = useState('');
-
 	const internalOnChanged = (event)=>{
-		setTextValue(event.target.value);
 		if(isObjectEmpty(props)){return;}
 		if(	!isObjectEmpty(props) 
 			&& 'params' 			in props
@@ -28,10 +23,9 @@ export function TextFieldDefault(props){
 		}
 		return ()=>{};
 	}
-
 	return(
 		<LayoutFieldDefault props={props}>
-			<input type='text' value={textValue} onChange={getEvent_internalOnChanged(props)} style={{width:"100%"}}/>
+			<input type='text' value={props.params.value || ''} onChange={getEvent_internalOnChanged(props)} style={{width:"100%"}}/>
 		</LayoutFieldDefault>
 	)
 }

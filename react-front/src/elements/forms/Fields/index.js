@@ -51,7 +51,7 @@ export const LayoutFieldDefault=({children,props})=>{
 		<label id={getFieldLabelTagID(props)} style={getFieldLabelStyle(props)}>
 			<div>
 				<span>{getFieldLabelText(props)}:</span>
-				<span>{typeof children==='function'? children() : children}</span>
+				<span>{typeof children==='function'? <children {...props}/> : children}</span>
 			</div>
 			<div></div>
 		</label>

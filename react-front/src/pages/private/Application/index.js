@@ -8,21 +8,20 @@ import { TextFieldDefault } from '../../../elements/forms/Fields/TextFields';
 import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
 
 import { useApiFractuz } from '../../../components/api/fractus';
-import { useContextConsole } from '../../../system/Contexts/Console';
 import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 
 import { TreatmentExceptions } from '../../../components/exception';
+import { ApplicationGridViewer } from './GridViewer';
 
 export default function Application(){
 	const { getApplicationList, addApplication} = useApiFractuz();
-	const { addHistoryLog 							} = useContextConsole();
 	const { treatExceptions							} = TreatmentExceptions();
 
 	const [applicationSearchFieldsValues	, setApplicationSearchFieldsValues	] = useState({});
 	const [applicationSearchResults			, setApplicationSearchResults			] = useState({});
 	const [applicationRegisterFieldsValues	, setApplicationRegisterFieldsValues] = useState({});
 	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
-
+	
 	const layoutRef = useRef(null);
 
 	const applicationConfig ={
@@ -30,28 +29,31 @@ export default function Application(){
 			fields:{
 				appName:{
 					 labelText:"Nome da Aplicação"
-					,fieldID:"name"
+					,fieldID:"Name"
 					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"Name");}
+					,value: applicationSearchFieldsValues.Name
 				}
 				,appDesc:{
 					 labelText:"Descrição"
-					,fieldID:"description"
+					,fieldID:"Description"
 					,fieldLabelStyle:{backgroundColor:"#50505090"}
 					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationSearchFieldsValues, setApplicationSearchFieldsValues,e,"Description");}
+					,value: (applicationSearchFieldsValues.Description)
 				}
 			}
 			,commands:{
-				toggleDisplayType:	()=>{
-					setApplicationDisplayType((applicationDisplayType!==0?0:1));
-				}
+				toggleDisplayType:	()=>{setApplicationDisplayType((applicationDisplayType!==0?0:1));}
 				,searchApplications : async ()=>{
 					try{
 						const response = await getApplicationList(applicationSearchFieldsValues);
 						setApplicationSearchResults(response);
-						layoutRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada");
+						let complement = 	response.length<= 0 ? "Não houve registros nestes critérios":
+												response.length===1 ? "1 aplicação encontrada":
+																			 response.length.toString()+ " Aplicações encontradas"
+						layoutRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada: "+complement);
 					} catch (error) {
 						treatExceptions(error,"Pesquisa de Aplicações");
-						layoutRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações executada");
+						layoutRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações: "+error);
 					}
 				}
 			}
@@ -61,12 +63,12 @@ export default function Application(){
 			fields:{
 				appName:{
 					 labelText:"Nome da Aplicação"
-					,fieldID:"name"
+					,fieldID:"Name"
 					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"Name");}
 				}
 				,appDesc:{
 					 labelText:"Descrição"
-					,fieldID:"description"
+					,fieldID:"Description"
 					,fieldLabelStyle:{backgroundColor:"#50505090"}
 					,onChangeEvent:(e)=>{ setFormFieldValuesStates(applicationRegisterFieldsValues, setApplicationRegisterFieldsValues,e,"Description");}
 				}
@@ -78,11 +80,11 @@ export default function Application(){
 				,addApplications : async ()=>{
 					try{
 						const response = await addApplication({},applicationRegisterFieldsValues);
-						addHistoryLog("Adição de Aplicações executada");
-						console.log("response",response);
+						layoutRef.current.MessagesToPanel_set(response.description);
 						setApplicationDisplayType(0);
 					} catch (error) {
 						treatExceptions(error,"Adição de Aplicações");
+						layoutRef.current.MessagesToPanel_set("Erro na Adição de Aplicações: "+error);
 					}
 				}
 			}
@@ -92,22 +94,30 @@ export default function Application(){
 	const ApplicationDisplayType ={
 		 Search: ()=>(
 				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
-					<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+					<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween" style={{padding:"5px"}}>
 						<TextFieldDefault params={applicationConfig.seachForm.fields.appName}/>
 						<TextFieldDefault params={applicationConfig.seachForm.fields.appDesc}/>
 						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
 						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 					</div>
 					<div className="wtdhGeneral_duz24pc_24">
-						<h4>lista de resultados</h4>
-						<div>{applicationSearchResults.length > 0 ? <div>
-									<i>{applicationSearchResults.length} Aplicações </i><hr/>
-									{
-										applicationSearchResults.map((app,idx)=>{
-											return <div key={idx}>{app.Name}</div>
-										})
-									}
-								</div>:<i>Sem Resultados de Pesquisa</i>}</div>
+						<div>{applicationSearchResults.length > 0 &&
+							<div>
+								<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+									<h2>
+										<i>
+											{applicationSearchResults.length === 1 ? "1 aplicação encontrada":applicationSearchResults.length.toString() + " Aplicações encontradas" }  
+										</i>
+									</h2>
+									<button onClick={()=>setApplicationSearchResults([])}>X</button>
+								</div>
+								<div style={{maxHeight:"25vh",overflowY:"auto", padding:"5px"}} className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceAround">
+									{applicationSearchResults.map((app,idx)=>{
+										return <ApplicationGridViewer key={idx} Application={app}/>
+									})}
+								</div>
+							</div>}
+						</div>
 					</div>
 				</div>
 		)

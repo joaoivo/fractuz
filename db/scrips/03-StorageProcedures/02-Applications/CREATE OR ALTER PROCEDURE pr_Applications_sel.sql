@@ -12,7 +12,7 @@ CREATE OR ALTER PROCEDURE pr_Applications_sel
 
 	,@rTotalRowCount		INT					= 0		OUTPUT --- quantas linhas totais a pesquisa trouxe
 	,@rSeachRowCount		INT					= 0		OUTPUT --- quantas linhas serão exibidas
-	,@pSearchPageCount	INT					= NULL 	OUTPUT
+	,@rSearchPageCount	INT					= NULL 	OUTPUT
 	,@rQuery					NVARCHAR(MAX)		= NULL 	OUTPUT --- instrução SQL que trouxe estes dados (DEbug apenas)
 
 AS BEGIN 
@@ -30,41 +30,40 @@ DECLARE @query nvarchar(max)='
 	----- where
 	DECLARE @where nvarchar(max)=null
 
-	IF @pGuid IS NOT NULL SET @where = CONCAT('\n\t ([SystemIDX]=''',@pGuid,''') ')
+	IF @pGuid IS NOT NULL SET @where = CONCAT('  ([SystemIDX]=''',@pGuid,''') ')
 
 	IF @pName IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where,Char(10), '  and ')
 		SET @where = CONCAT(@where,'([Name] like ''%',@pName,'%'')')
 		END
 
 	IF @pDescription IS NOT NULL 
 		BEGIN
-		IF @where IS NOT NULL set @where = CONCAT(@where, '\n\t and ')
+		IF @where IS NOT NULL set @where = CONCAT(@where,Char(10), '  and ')
 		SET @where = CONCAT(@where,'([Description] like ''%',@pDescription,'%'')')
 		END
 	
-	IF @where IS NOT NULL set @query = CONCAT(@query , ' where ',@where)
+	IF @where IS NOT NULL set @query = CONCAT(@query ,Char(10), ' where ',@where)
 
 	----- order by	
 	IF @pColumnsOrderBy IS NOT NULL 
 		BEGIN
-		SET @query = CONCAT(@query,'\n ORDER BY ',@pColumnsOrderBy)
+		SET @query = CONCAT(@query,Char(10),' ORDER BY ',@pColumnsOrderBy)
 		END
 
 	------- paginação
 	IF @pPageRowCount IS NOT NULL 
 		BEGIN
-		SET @query = CONCAT(@query,'\n LIMIT ',@pPageRowCount)
+		SET @query = CONCAT(@query,Char(10),' LIMIT ',@pPageRowCount)
 		END
 			
 	IF @pPageNumber IS NOT NULL 
 		BEGIN
-		SET @query = CONCAT(@query,'\n OFFSET ', (@pPageNumber - 1) *@pPageRowCount)
+		SET @query = CONCAT(@query,Char(10),' OFFSET ', (@pPageNumber - 1) *@pPageRowCount)
 		END
 	
-	--exec(@query)
 	set @rQuery = @query
-	EXEC sp_executesql @query
+	exec(@query)
 END; 
 go

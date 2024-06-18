@@ -4,8 +4,7 @@
 }
 article.body{
 	width: 99vw;
-	height: 50vh;
-	/*border: 1px black solid;*/
+	height: 65vh;
 	display: flex;
 	justify-content: center;
 	align-items: center;
