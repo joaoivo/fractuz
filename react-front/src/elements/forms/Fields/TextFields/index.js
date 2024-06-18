@@ -12,6 +12,7 @@ export const TextFieldDefault = forwardRef(({children, ...props}, ref)=>{
 			,scrollIntoView(){inputRef.current.scrollIntoView();}
 			,inputRef
 			,value
+			,setValue
 		}
 	},[value]);
 

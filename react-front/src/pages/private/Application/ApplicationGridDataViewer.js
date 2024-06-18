@@ -1,3 +1,7 @@
+import { getCaesarEncrypt } from "../../../system/Libs/Crypto";
+import { goToAddress } from "../../../system/Libs/Urls";
+import { routesPrivatePages } from "../../routes";
+
 export const ApplicationGridDataViewer =(props)=>{
 	return(
 		<div style={{border:"1px solid #00000060",borderRadius:"7px",margin:"2px", padding:"5px", maxWidth:"40vw", minWidth:"25vw"}} className="generalDisposition_horizDisp_spaceBetween">
@@ -16,7 +20,7 @@ export const ApplicationGridDataViewer =(props)=>{
 				}
 			</div>
 			<div style={{display:"flex", flexDirection:"column", margin:"5px"}}>
-				<button>Editar</button>
+				<button onClick={()=>{ goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX))}}>Editar</button>
 				<button>Databases</button>
 				<button>Excluir</button>
 			</div>

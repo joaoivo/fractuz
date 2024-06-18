@@ -1,4 +1,7 @@
-import { useState, useRef , useCallback} from 'react';
+import { useState, useRef , useEffect } from 'react';
+
+import { useParams } from 'react-router-dom';
+
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 
@@ -11,15 +14,14 @@ import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 import { TreatmentExceptions } from '../../../components/exception';
 import { ApplicationGridDataViewer } from './ApplicationGridDataViewer';
 import { Grid } from '../../../elements/forms/Grids';
+import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
 
 export default function Application(){
 	const { getApplicationList, addApplication} = useApiFractuz();
 	const { treatExceptions							} = TreatmentExceptions();
-
-	//const [applicationSearchFieldsValues	, setApplicationSearchFieldsValues	] = useState({});
-	const [applicationSearchResults			, setApplicationSearchResults			] = useState({});
-	//const [applicationRegisterFieldsValues	, setApplicationRegisterFieldsValues] = useState({});
+	
 	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
+	const { id } = useParams();
 
 	const layoutRef = useRef(null);
 	const gridRef = useRef(null);
@@ -28,6 +30,18 @@ export default function Application(){
 	const refSeachDesc= useRef("");
 	const refRegisName= useRef("");
 	const refRegisDesc= useRef("");
+
+	useEffect(
+		()=>{
+			if(!!!id){return;}
+			let guid = getCaesarDecrypt(id);
+			const response = getApplicationList({guid:guid});
+
+			refRegisName.current.setValue(guid);
+			console.log(response);
+		}
+		,[id]
+	)
 
 	const applicationConfig ={
 		 seachForm:{
@@ -63,7 +77,7 @@ export default function Application(){
 				}
 			}
 		}
-		
+
 		,registerForm:{
 			fields:{
 				appName:{
@@ -117,7 +131,7 @@ export default function Application(){
 		)
 	}
 
-	if(applicationDisplayType!==1){
+	if(applicationDisplayType!==1 && !!!id){
 		return(
 			<LayoutPrivateBody title="Applications> Consulta" ref={layoutRef}>
 				<ApplicationDisplayType.Search/>

@@ -27,8 +27,9 @@ export const routesPublicPages = {
 };
 
 export const routesPrivatePages = {
-	 Home:			{ path:"/Home"			, app:Home 			,name:"Home"}
-	,Application:	{ path:"/Application", app:Application ,name:"Aplicações"}
+	 Home:				{ path:"/Home"			, app:Home 				,name:"Home"}
+	 ,Application:		{ path:"/Application", app:Application 	,name:"Aplicações"}
+	 ,ApplicationEdit:{ path:"/Application/:id", app:Application,name:"Aplicações"}
 };
 
 export const routesSystemPages = {
