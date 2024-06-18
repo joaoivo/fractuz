@@ -1,31 +1,23 @@
+import { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 import {LayoutFieldDefault} from '../index'
-import { isObjectEmpty } from '../../../../system/Libs/Objects';
 
-export function TextFieldDefault(props){
+export const TextFieldDefault = forwardRef(({children, ...props}, ref)=>{
 
-	const internalOnChanged = (event)=>{
-		if(isObjectEmpty(props)){return;}
-		if(	!isObjectEmpty(props) 
-			&& 'params' 			in props
-			&& 'onChangeEvent' in props.params
-			&& (typeof props.params.onChangeEvent==='function')){
+	const inputRef = useRef(null);
+	const [value, setValue ] = useState("");
 
-			props.params.onChangeEvent(event);
+	useImperativeHandle(ref, () => {
+		return{
+			 setFocus(){inputRef.current.focus();inputRef.current.scrollIntoView();}
+			,scrollIntoView(){inputRef.current.scrollIntoView();}
+			,inputRef
+			,value
 		}
-	}
+	},[value]);
 
-	const getEvent_internalOnChanged=(props)=>{
-		if(	!isObjectEmpty(props) 
-			&& 'params' 			in props
-			&& 'onChangeEvent' in props.params){
-
-			return internalOnChanged;
-		}
-		return ()=>{};
-	}
 	return(
 		<LayoutFieldDefault props={props}>
-			<input type='text' value={props.params.value || ''} onChange={getEvent_internalOnChanged(props)} style={{width:"100%"}}/>
+			<input type='text' value={value} onChange={(e)=>{console.log(e.target.value);setValue(e.target.value)}} style={{width:"100%"}}/>
 		</LayoutFieldDefault>
 	)
-}
+})

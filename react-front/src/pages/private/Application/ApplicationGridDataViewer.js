@@ -1,4 +1,4 @@
-export const ApplicationGridViewer =(props)=>{
+export const ApplicationGridDataViewer =(props)=>{
 	return(
 		<div style={{border:"1px solid #00000060",borderRadius:"7px",margin:"2px", padding:"5px", maxWidth:"40vw", minWidth:"25vw"}} className="generalDisposition_horizDisp_spaceBetween">
 			<div style={{maxWidth:"70%"}}>
