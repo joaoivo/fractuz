@@ -97,28 +97,22 @@ export default function Application(){
 
 	const ApplicationDisplayType ={
 		 Search: ()=>(
-				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
-					<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween" style={{padding:"5px"}}>
-						<TextFieldDefault params={applicationConfig.seachForm.fields.appName} ref={refSeachName}/>
-						<TextFieldDefault params={applicationConfig.seachForm.fields.appDesc} ref={refSeachDesc}/>
-						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
-						<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
-					</div>
-					<div className="wtdhGeneral_duz24pc_24">
-						<div>
-							<Grid ref={gridRef} viewer={ApplicationGridDataViewer}/>
-						</div>
-					</div>
+			<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween" style={{padding:"5px"}}>
+					<TextFieldDefault params={applicationConfig.seachForm.fields.appName} ref={refSeachName}/>
+					<TextFieldDefault params={applicationConfig.seachForm.fields.appDesc} ref={refSeachDesc}/>
+					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
+					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 				</div>
+				<Grid ref={gridRef} viewer={ApplicationGridDataViewer}/>
+			</div>
 		)
 		,Register : ()=>(
-			<div>
-				<div className="wtdhGeneral_duz24pc_20 generalDisposition_horizDisp_spaceBetween">
-					<TextFieldDefault params={applicationConfig.registerForm.fields.appName} ref={refRegisName}/>
-					<TextFieldDefault params={applicationConfig.registerForm.fields.appDesc} ref={refRegisDesc}/>
-					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.addApplications}>Salvar</LayoutButtonDefault>
-					<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
-				</div>
+			<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+				<TextFieldDefault params={applicationConfig.registerForm.fields.appName} ref={refRegisName}/>
+				<TextFieldDefault params={applicationConfig.registerForm.fields.appDesc} ref={refRegisDesc}/>
+				<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.addApplications}>Salvar</LayoutButtonDefault>
+				<LayoutButtonDefault onClickEvent={applicationConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
 			</div>
 		)
 	}

@@ -17,7 +17,7 @@ export const TextFieldDefault = forwardRef(({children, ...props}, ref)=>{
 
 	return(
 		<LayoutFieldDefault props={props}>
-			<input type='text' value={value} onChange={(e)=>{console.log(e.target.value);setValue(e.target.value)}} style={{width:"100%"}}/>
+			<input type='text' value={value} onChange={(e)=>{setValue(e.target.value)}} style={{width:"100%"}}/>
 		</LayoutFieldDefault>
 	)
 })
