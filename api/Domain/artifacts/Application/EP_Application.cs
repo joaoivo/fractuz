@@ -57,9 +57,10 @@ public class EP_Application:IEndPoint{
 	}
 
 	[Authorize]
-	public IResult ApplicationAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
+	public IResult ApplicationAPI_Delete(HttpRequest request){
 		try{
-			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
+			Guid? guid=getHeaderGuidValues(request.Headers,"guid");
+			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,guid,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

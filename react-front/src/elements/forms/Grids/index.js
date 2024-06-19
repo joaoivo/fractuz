@@ -3,10 +3,13 @@ import { forwardRef, useImperativeHandle, useState } from 'react';
 export const Grid = forwardRef(({children, ...props}, ref)=>{
 	const [list, setList ] = useState([]);
 
+	const getGridList=()=>{ return (list);}
+	const setGridList=(inputList)=>{ setList(inputList);}
+
 	useImperativeHandle(ref, () => {
 		return{
-			 getGridList(){ return (list);}
-			,setGridList(inputList){ setList(inputList);}
+			 getGridList
+			,setGridList
 		}
 	},[list]);
 
@@ -20,7 +23,7 @@ export const Grid = forwardRef(({children, ...props}, ref)=>{
 				<button onClick={()=>setList([])}>X</button>
 			</div>
 			<div style={{maxHeight:"25vh",overflowY:"auto", padding:"5px"}} className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceAround">
-				{list.map((app,idx)=>{return <props.viewer key={idx} Data={app}/>})}
+				{list.map((app,idx)=>{return <props.viewer key={idx} Data={app} layoutRef={props.layoutRef} gridFunctions={{getGridList,setGridList}}/>})}
 			</div>
 		</div>
 	)

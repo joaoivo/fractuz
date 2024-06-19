@@ -1,22 +1,22 @@
-import { useState, useRef , useEffect } from 'react';
+import { useState, useRef , useEffect} from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } 						from 'react-router-dom';
+
+import { TextFieldDefault } 				from '../../../elements/forms/Fields/TextFields';
+import { LayoutButtonDefault } 			from '../../../elements/forms/Buttons';
+
+import { useApiFractuz } 					from '../../../components/api/fractus';
+import { LayoutPrivateBody } 				from '../../../elements/layouts/Private/Body';
+
+import { TreatmentExceptions } 			from '../../../components/exception';
+import { ApplicationGridDataViewer } 	from './ApplicationGridDataViewer';
+import { Grid } 								from '../../../elements/forms/Grids';
+import { getCaesarDecrypt } 				from '../../../system/Libs/Crypto';
+import { goToAddress } 						from '../../../system/Libs/Urls';
+import { routesPrivatePages } 			from '../../routes';
 
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
-
-import { TextFieldDefault } from '../../../elements/forms/Fields/TextFields';
-import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
-
-import { useApiFractuz } from '../../../components/api/fractus';
-import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
-
-import { TreatmentExceptions } from '../../../components/exception';
-import { ApplicationGridDataViewer } from './ApplicationGridDataViewer';
-import { Grid } from '../../../elements/forms/Grids';
-import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
-import { goToAddress } from '../../../system/Libs/Urls';
-import { routesPrivatePages } from '../../routes';
 
 export default function Application(){
 	const { getApplicationList, addApplication} = useApiFractuz();
@@ -103,7 +103,7 @@ export default function Application(){
 				}
 				,addApplications : async ()=>{
 					try{
-						const applicationRegisterFieldsValues = {Name:refRegisName.current.inputRef.current.value, Description:refRegisName.current.inputRef.current.value}
+						const applicationRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisName.current.value}
 						const response = await addApplication({},applicationRegisterFieldsValues);
 						layoutRef.current.MessagesToPanel_set(response.description);
 						setApplicationDisplayType(0);
@@ -125,7 +125,7 @@ export default function Application(){
 					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
 					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 				</div>
-				<Grid ref={gridRef} viewer={ApplicationGridDataViewer}/>
+				<Grid ref={gridRef} viewer={ApplicationGridDataViewer} layoutRef={layoutRef}/>
 			</div>
 		)
 		,Register : ()=>(

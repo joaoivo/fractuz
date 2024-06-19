@@ -1,8 +1,32 @@
-import { getCaesarEncrypt } from "../../../system/Libs/Crypto";
-import { goToAddress } from "../../../system/Libs/Urls";
-import { routesPrivatePages } from "../../routes";
+import { useApiFractuz } 			from "../../../components/api/fractus";
+import { TreatmentExceptions } 	from "../../../components/exception";
+import { getCaesarEncrypt } 		from "../../../system/Libs/Crypto";
+import { goToAddress } 				from "../../../system/Libs/Urls";
+import { routesPrivatePages } 	from "../../routes";
 
 export const ApplicationGridDataViewer =(props)=>{
+
+	const { deleteApplication} = useApiFractuz();
+	const { treatExceptions	} = TreatmentExceptions();
+
+	const application_edit=()=>{goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
+	const application_delete=async ()=>{
+		try{
+			if(!window.confirm("Confirma a exclusão da aplicação")){return;}
+			await deleteApplication(props.Data.SystemIDX);
+
+			let list = props.gridFunctions.getGridList().filter(item => item.SystemIDX !== props.Data.SystemIDX);
+			props.gridFunctions.setGridList(list);
+			let message ="Applicação excluída com Sucesso!";
+			alert(message);
+			props.layoutRef.current.MessagesToPanel_set(message);
+		}catch(ex){
+			treatExceptions(ex,"Exclusão de Aplicações");
+			props.layoutRef.current.MessagesToPanel_set("Erro na Exclusão de Aplicações: "+ex);
+		}
+	}
+	const application_database=()=>{}
+
 	return(
 		<div style={{border:"1px solid #00000060",borderRadius:"7px",margin:"2px", padding:"5px", maxWidth:"40vw", minWidth:"25vw"}} className="generalDisposition_horizDisp_spaceBetween">
 			<div style={{maxWidth:"70%"}}>
@@ -20,9 +44,9 @@ export const ApplicationGridDataViewer =(props)=>{
 				}
 			</div>
 			<div style={{display:"flex", flexDirection:"column", margin:"5px"}}>
-				<button onClick={()=>{ goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX))}}>Editar</button>
-				<button>Databases</button>
-				<button>Excluir</button>
+				<button onClick={application_edit		}>Editar</button>
+				<button onClick={application_database	}>Databases</button>
+				<button onClick={application_delete		}>Excluir</button>
 			</div>
 
 		</div>

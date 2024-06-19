@@ -26,7 +26,7 @@ public static class BP_Application{
 	public static EN_Return Update(IConfiguration config,EN_Application Application,EN_ManagerUser userAuthor){
 		return DA_Application.Update(config,Application,userAuthor);
 	}
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+	public static EN_Return Delete(IConfiguration config,Guid? SystemIDX,EN_ManagerUser userAuthor){
 		return DA_Application.Delete(config,SystemIDX,userAuthor);
 	}
 }

@@ -101,12 +101,12 @@ public static class DA_Application{
 		return application_return;
 	}
 
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+	public static EN_Return Delete(IConfiguration config,Guid? SystemIDX,EN_ManagerUser userAuthor){
 		EN_Return application_return = new EN_Return();
 		IEnumerable<EN_Application> application_lst = new List<EN_Application>();
 		DynamicParameters parameters = new DynamicParameters();
 
-		parameters.Add("@rGuid"						, SystemIDX									, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pGuid"						, SystemIDX									, DbType.Guid		, ParameterDirection.Input);
 
 		parameters.Add("@rIsOK"						, null										, DbType.Boolean	, ParameterDirection.Output);
 		parameters.Add("@rRowsAffected"			, null										, DbType.Int32		, ParameterDirection.Output);
