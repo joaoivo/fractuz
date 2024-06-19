@@ -15,6 +15,8 @@ import { TreatmentExceptions } from '../../../components/exception';
 import { ApplicationGridDataViewer } from './ApplicationGridDataViewer';
 import { Grid } from '../../../elements/forms/Grids';
 import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
+import { goToAddress } from '../../../system/Libs/Urls';
+import { routesPrivatePages } from '../../routes';
 
 export default function Application(){
 	const { getApplicationList, addApplication} = useApiFractuz();
@@ -36,11 +38,15 @@ export default function Application(){
 			if(!!!id){return;}
 			let guid = getCaesarDecrypt(id);
 			const response = getApplicationList({guid:guid});
-
-			refRegisName.current.setValue(guid);
-			console.log(response);
+			if(response instanceof Promise){
+				response.then(result => {
+					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
+					refRegisName.current.setValue(result[0].Name);
+					refRegisDesc.current.setValue(result[0].Description);
+				})
+			}
 		}
-		,[id]
+		,[id,getApplicationList]
 	)
 
 	const applicationConfig ={
@@ -92,7 +98,8 @@ export default function Application(){
 			}
 			,commands:{
 				toggleDisplayType:	()=>{
-					setApplicationDisplayType((applicationDisplayType!==0?0:1));
+					if(!!id){goToAddress(routesPrivatePages.Application.path);}
+					else{setApplicationDisplayType((applicationDisplayType!==0?0:1));}
 				}
 				,addApplications : async ()=>{
 					try{
