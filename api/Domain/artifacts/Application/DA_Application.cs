@@ -77,7 +77,7 @@ public static class DA_Application{
 		IEnumerable<EN_Application> application_lst = new List<EN_Application>();
 		DynamicParameters parameters = new DynamicParameters();
 
-		parameters.Add("@rGuid"						, Application.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pGuid"						, Application.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pName"						, Application.Name						, DbType.String	, ParameterDirection.Input,150);
 		parameters.Add("@pDescription"			, Application.Description				, DbType.String	, ParameterDirection.Input,150);
 

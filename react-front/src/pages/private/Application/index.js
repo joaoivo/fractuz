@@ -17,6 +17,7 @@ import { routesPrivatePages } 			from '../../routes';
 
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
+import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 
 export default function Application(){
 	const { Application } = useApiFractuz();//getApplicationList, addApplication}
@@ -103,13 +104,22 @@ export default function Application(){
 				}
 				,addApplications : async ()=>{
 					try{
-						const applicationRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisName.current.value}
-						const response = await Application.insert({},applicationRegisterFieldsValues);
-						layoutRef.current.MessagesToPanel_set(response.description);
-						setApplicationDisplayType(0);
+						const applicationRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisDesc.current.value}
+						let response;
+						if(isStringEmptyOrSpaces(id)){
+							response = await Application.insert({},applicationRegisterFieldsValues);							
+							layoutRef.current.MessagesToPanel_set(response.description);
+							if(response.code===0){setApplicationDisplayType(0);}
+						}else{
+							applicationRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
+							response = await Application.update({},applicationRegisterFieldsValues);
+							alert(response.description);
+							layoutRef.current.MessagesToPanel_set(response.description);
+							if(response.code===0){goToAddress(routesPrivatePages.Application.path);}
+						}
 					} catch (error) {
-						treatExceptions(error,"Adição de Aplicações");
-						layoutRef.current.MessagesToPanel_set("Erro na Adição de Aplicações: "+error);
+						treatExceptions(error,"Salvar Aplicações");
+						layoutRef.current.MessagesToPanel_set("Erro ao Gravar Aplicações: "+error);
 					}
 				}
 			}

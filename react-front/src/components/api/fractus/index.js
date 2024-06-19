@@ -62,7 +62,7 @@ export const useApiFractuz = () => {
 	
 			const user = getUserLogged();
 			headerData["Authorization"] = "Bearer " + user.token;
-			ApplicationData["SystemCreationUser"] = user.userID;
+			//ApplicationData["SystemCreationUser"] = user.userID;
 	
 			const jsonResponse = await methodPut(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application,ApplicationData);
 			if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
