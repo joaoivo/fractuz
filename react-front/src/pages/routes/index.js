@@ -10,6 +10,7 @@ import About 			from '../../pages/public/About';
 import Login 			from '../../pages/public/Login';
 
 // User Pages
+import Database 		from '../private/Database';
 import Application	from '../../pages/private/Application'
 import Home 			from '../../pages/private/Home';
 
@@ -27,9 +28,12 @@ export const routesPublicPages = {
 };
 
 export const routesPrivatePages = {
-	 Home:				{ path:"/Home"			, app:Home 				,name:"Home"}
-	 ,Application:		{ path:"/Application", app:Application 	,name:"Aplicações"}
-	 ,ApplicationEdit:{ path:"/Application/:id", app:Application,name:"Aplicações"}
+	 Home:				{ path:"/Home"									, app:Home 			,name:"Home"}
+	,Application:		{ path:"/Application"						, app:Application ,name:"Aplicações"}
+	,ApplicationEdit:	{ path:"/Application/:id"					, app:Application	,name:"Aplicações"}
+	,DatabaseRedirect:{ path:"/Database/"							, app:Database 	,name:"Bases de Dados"}
+	,DatabaseView:		{ path:"/Database/:idApp"					, app:Database 	,name:"Bases de Dados"}
+	,DatabaseEdit:		{ path:"/Database/:idApp/:idDatabase"	, app:Database 	,name:"Bases de Dados"}
 };
 
 export const routesSystemPages = {

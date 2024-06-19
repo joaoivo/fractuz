@@ -9,7 +9,6 @@ import { useApiFractuz } 					from '../../../components/api/fractus';
 import { LayoutPrivateBody } 				from '../../../elements/layouts/Private/Body';
 
 import { TreatmentExceptions } 			from '../../../components/exception';
-import { ApplicationGridDataViewer } 	from './ApplicationGridDataViewer';
 import { Grid } 								from '../../../elements/forms/Grids';
 import { getCaesarDecrypt } 				from '../../../system/Libs/Crypto';
 import { goToAddress } 						from '../../../system/Libs/Urls';
@@ -18,12 +17,12 @@ import { routesPrivatePages } 			from '../../routes';
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 
-export default function Application(){
-	const { Application } = useApiFractuz();//getApplicationList, addApplication}
+export default function Database () {
+	const { Application} = useApiFractuz();
 	const { treatExceptions							} = TreatmentExceptions();
 	
 	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
-	const { id } = useParams();
+	const { idApp,idDatabase } = useParams();
 
 	const layoutRef = useRef(null);
 	const gridRef = useRef(null);
@@ -35,9 +34,9 @@ export default function Application(){
 
 	useEffect(
 		()=>{
-			if(!!!id){return;}
-			let guid = getCaesarDecrypt(id);
-			const response = Application.get({guid:guid});
+			if(!!!idApp){return;}
+			let guid = getCaesarDecrypt(idApp);
+			const response = Application.insert({guid:guid});
 			if(response instanceof Promise){
 				response.then(result => {
 					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
@@ -46,7 +45,7 @@ export default function Application(){
 				})
 			}
 		}
-		,[id,Application]
+		,[idApp,Application]
 	)
 
 	const applicationConfig ={
@@ -98,8 +97,10 @@ export default function Application(){
 			}
 			,commands:{
 				toggleDisplayType:	()=>{
+					/*
 					if(!!id){goToAddress(routesPrivatePages.Application.path);}
 					else{setApplicationDisplayType((applicationDisplayType!==0?0:1));}
+					*/
 				}
 				,addApplications : async ()=>{
 					try{
@@ -125,7 +126,7 @@ export default function Application(){
 					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
 					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 				</div>
-				<Grid ref={gridRef} viewer={ApplicationGridDataViewer} layoutRef={layoutRef}/>
+				{/*<Grid ref={gridRef} viewer={ApplicationGridDataViewer} layoutRef={layoutRef}/>*/}
 			</div>
 		)
 		,Register : ()=>(
@@ -138,7 +139,7 @@ export default function Application(){
 		)
 	}
 
-	if(applicationDisplayType!==1 && !!!id){
+	if(applicationDisplayType!==1 && !!!idApp){
 		return(
 			<LayoutPrivateBody title="Applications> Consulta" ref={layoutRef}>
 				<ApplicationDisplayType.Search/>

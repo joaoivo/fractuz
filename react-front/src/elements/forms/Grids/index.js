@@ -11,7 +11,7 @@ export const Grid = forwardRef(({children, ...props}, ref)=>{
 			 getGridList
 			,setGridList
 		}
-	},[list]);
+	},[]);
 
 	if(list.length <= 0){return <></>}
 	return(
