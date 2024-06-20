@@ -1,4 +1,4 @@
-import { useApiFractuz } 			from "../../../components/api/fractus";
+import { useApiFractuzApplications } from "../../../components/api/fractus/Applications";
 import { TreatmentExceptions } 	from "../../../components/exception";
 import { getCaesarEncrypt } 		from "../../../system/Libs/Crypto";
 import { goToAddress } 				from "../../../system/Libs/Urls";
@@ -6,14 +6,14 @@ import { routesPrivatePages } 	from "../../routes";
 
 export const ApplicationGridDataViewer =(props)=>{
 
-	const { deleteApplication} = useApiFractuz();
+	const { httpDelete} = useApiFractuzApplications();
 	const { treatExceptions	} = TreatmentExceptions();
 
 	const application_edit=()=>{goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
 	const application_delete=async ()=>{
 		try{
 			if(!window.confirm("Confirma a exclusão da aplicação")){return;}
-			await deleteApplication(props.Data.SystemIDX);
+			await httpDelete(props.Data.SystemIDX);
 
 			let list = props.gridFunctions.getGridList().filter(item => item.SystemIDX !== props.Data.SystemIDX);
 			props.gridFunctions.setGridList(list);

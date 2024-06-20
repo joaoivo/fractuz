@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useContextAuth } from '../../../system/Contexts/Auth';
 import { useContextConsole } from "../../../system/Contexts/Console";
 
-import {useApiFractuz} from "../../../components/api/fractus";
+import { useApiFractuzUsers } from "../../../components/api/fractus/Users";
 
 import { routesPrivatePages } from "../../routes";
 import { goToAddress } from "../../../system/Libs/Urls";
@@ -13,7 +13,7 @@ export default function Login(){
 
 	const [email,setEmail]=useState('jims_ibr@yahoo.com.br');
 	const [password,setPassword]=useState('a1b2c3d4');
-	const { getLoginToken } = useApiFractuz();
+	const { getLoginToken } = useApiFractuzUsers();
 
 	const {login, isUserAuthenticated} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
