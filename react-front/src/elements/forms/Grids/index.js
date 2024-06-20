@@ -23,7 +23,7 @@ export const Grid = forwardRef(({children, ...props}, ref)=>{
 				<button onClick={()=>setList([])}>X</button>
 			</div>
 			<div style={{maxHeight:"25vh",overflowY:"auto", padding:"5px"}} className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceAround">
-				{list.map((app,idx)=>{return <props.viewer key={idx} Data={app} layoutRef={props.layoutRef} gridFunctions={{getGridList,setGridList}}/>})}
+				{list.map((app,idx)=>{return <props.viewer key={idx} Data={app} layoutFormRef={props.layoutFormRef} gridFunctions={{getGridList,setGridList}}/>})}
 			</div>
 		</div>
 	)

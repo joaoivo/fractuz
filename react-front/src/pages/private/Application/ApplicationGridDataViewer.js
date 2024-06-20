@@ -19,10 +19,10 @@ export const ApplicationGridDataViewer =(props)=>{
 			props.gridFunctions.setGridList(list);
 			let message ="Applicação excluída com Sucesso!";
 			alert(message);
-			props.layoutRef.current.MessagesToPanel_set(message);
+			props.layoutFormRef.current.MessagesToPanel_set(message);
 		}catch(ex){
 			treatExceptions(ex,"Exclusão de Aplicações");
-			props.layoutRef.current.MessagesToPanel_set("Erro na Exclusão de Aplicações: "+ex);
+			props.layoutFormRef.current.MessagesToPanel_set("Erro na Exclusão de Aplicações: "+ex);
 		}
 	}
 	const application_database=()=>{

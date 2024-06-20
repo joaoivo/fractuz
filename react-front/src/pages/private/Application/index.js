@@ -6,6 +6,7 @@ import { TextFieldDefault } 				from '../../../elements/forms/Fields/TextFields'
 import { LayoutButtonDefault } 			from '../../../elements/forms/Buttons';
 
 import { useApiFractuzApplications } 	from '../../../components/api/fractus/Applications';
+import useValidationsDefaults from '../../../system/Components/Validations';
 import { LayoutPrivateBody } 				from '../../../elements/layouts/Private/Body';
 
 import { TreatmentExceptions } 			from '../../../components/exception';
@@ -21,12 +22,13 @@ import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 
 export default function Application(){
 	const Application = useApiFractuzApplications();
-	const { treatExceptions							} = TreatmentExceptions();
+	const { treatExceptions	} = TreatmentExceptions();
+	const { getFieldValidationList } = useValidationsDefaults()
 	
-	const [applicationDisplayType				, setApplicationDisplayType			] = useState(0);
+	const [applicationDisplayType	, setApplicationDisplayType] = useState(0);
 	const { id } = useParams();
 
-	const layoutRef = useRef(null);
+	const layoutFormRef = useRef(null);
 	const gridRef = useRef(null);
 
 	const refSeachName= useRef("");
@@ -75,11 +77,11 @@ export default function Application(){
 						let complement = 	response.length<= 0 ? "Não houve registros nestes critérios":
 												response.length===1 ? "1 aplicação encontrada":
 																			 response.length.toString()+ " Aplicações encontradas"
-						layoutRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada: "+complement);
+						layoutFormRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada: "+complement);
 
 					} catch (error) {
 						treatExceptions(error,"Pesquisa de Aplicações");
-						layoutRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações: "+error);
+						layoutFormRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações: "+error);
 					}
 				}
 			}
@@ -87,14 +89,16 @@ export default function Application(){
 
 		,registerForm:{
 			fields:{
-				appName:{
+				 appName:{
 					 labelText:"Nome da Aplicação"
 					,fieldID:"Name"
+					,refValue:refRegisName
 				}
 				,appDesc:{
 					 labelText:"Descrição"
 					,fieldID:"Description"
 					,fieldLabelStyle:{backgroundColor:"#50505090"}
+					,refValue:refRegisDesc
 				}
 			}
 			,commands:{
@@ -108,19 +112,22 @@ export default function Application(){
 						let response;
 						if(isStringEmptyOrSpaces(id)){
 							response = await Application.httpInsert({},applicationRegisterFieldsValues);							
-							layoutRef.current.MessagesToPanel_set(response.description);
+							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.code===0){setApplicationDisplayType(0);}
 						}else{
 							applicationRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
 							response = await Application.httpUpdate({},applicationRegisterFieldsValues);
 							alert(response.description);
-							layoutRef.current.MessagesToPanel_set(response.description);
+							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.code===0){goToAddress(routesPrivatePages.Application.path);}
 						}
 					} catch (error) {
 						treatExceptions(error,"Salvar Aplicações");
-						layoutRef.current.MessagesToPanel_set("Erro ao Gravar Aplicações: "+error);
+						layoutFormRef.current.MessagesToPanel_set("Erro ao Gravar Aplicações: "+error);
 					}
+				}
+				,test : async ()=>{
+					const teste = getFieldValidationList(applicationConfig.registerForm.fields);
 				}
 			}
 		}
@@ -135,7 +142,7 @@ export default function Application(){
 					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
 					<LayoutButtonDefault onClickEvent={applicationConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 				</div>
-				<Grid ref={gridRef} viewer={ApplicationGridDataViewer} layoutRef={layoutRef}/>
+				<Grid ref={gridRef} viewer={ApplicationGridDataViewer} layoutFormRef={layoutFormRef}/>
 			</div>
 		)
 		,Register : ()=>(
@@ -150,13 +157,13 @@ export default function Application(){
 
 	if(applicationDisplayType!==1 && !!!id){
 		return(
-			<LayoutPrivateBody title="Applications> Consulta" ref={layoutRef}>
+			<LayoutPrivateBody title="Applications> Consulta" ref={layoutFormRef}>
 				<ApplicationDisplayType.Search/>
 			</LayoutPrivateBody>
 		)
 	}else{
 		return(
-			<LayoutPrivateBody title="Applications> Cadastro" ref={layoutRef}>
+			<LayoutPrivateBody title="Applications> Cadastro" ref={layoutFormRef}>
 				<ApplicationDisplayType.Register/>
 			</LayoutPrivateBody>
 		)

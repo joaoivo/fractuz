@@ -1,3 +1,4 @@
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import { isObjectEmpty } from "../../../system/Libs/Objects"
 
 export const setFormFieldValuesStates =(formFieldStates,setStateFormFieldFunction,event,key)=>{
@@ -6,7 +7,17 @@ export const setFormFieldValuesStates =(formFieldStates,setStateFormFieldFunctio
 	setStateFormFieldFunction(dataTemp);
 }
 
-export const LayoutFieldDefault=({children,props})=>{
+export const LayoutFieldDefault= forwardRef(({children, ...props}, ref)=>{
+
+	const [statusMessage, setStatusMessage ] = useState("");
+
+	useImperativeHandle(ref, () => {
+		return{
+			 statusMessage
+			,setStatusMessage
+		}
+	},[statusMessage]);
+
 	const defaultFieldProperties = {
 		fields:{
 			idPrefix:"lbl"
@@ -27,7 +38,7 @@ export const LayoutFieldDefault=({children,props})=>{
 
 	const getFieldLabelStyle =(props)=>{
 		let returnObj = {
-			display:"block"
+			 display:"block"
 
 			,border:"1px solid black"
 			,borderRadius:"5px"
@@ -53,7 +64,9 @@ export const LayoutFieldDefault=({children,props})=>{
 				<span>{getFieldLabelText(props)}:</span>
 				<span>{typeof children==='function'? <children {...props}/> : children}</span>
 			</div>
-			<div></div>
+			<div>
+				{statusMessage}
+			</div>
 		</label>
 	)
-}
+})
