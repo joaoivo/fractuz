@@ -14,6 +14,7 @@ export const enumValidationBasicRules = {
 	}
 
 	,Date :(value) => {
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		const resultNegative = [`está com o um formato de data inválido ${!!!value?"":`('${value}')` }`];
 		if (typeof value !== 'string' && !(value instanceof Date)) {return resultNegative;}
 
@@ -25,7 +26,7 @@ export const enumValidationBasicRules = {
 			return [];
 		}
 		if(value instanceof Date) {
-			if(!isNaN(date)){return resultNegative;}
+			if(!isNaN(value)){return resultNegative;}
 			return [];
 		}
 
@@ -33,6 +34,7 @@ export const enumValidationBasicRules = {
 	}
 
 	,Time : (value) => {
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		if (typeof value !== 'string') return [`está com tipo de dado inválido para Hora (${typeof value !== 'string'})`];
 
 		// Regex para validar formato de hora HH:MM ou HH:MM:SS
@@ -41,6 +43,7 @@ export const enumValidationBasicRules = {
 	}
 
 	,DateTime :(value) => {
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		const resultNegative = [`está com o um formato de data inválido ${!!!value?"":`('${value}')` }`];
 		if (typeof value !== 'string') return [`está com tipo de dado inválido para Data e Hora (${typeof value !== 'string'})`];
 
@@ -54,6 +57,7 @@ export const enumValidationBasicRules = {
 	}
 
 	,numericOnlyDigits: (value)=>{
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		const regex = /^\d+$/;
 		return regex.test(value)?[]:["precisa ter somente dígitos"];
 	}
@@ -64,6 +68,7 @@ export const enumValidationBasicRules = {
 	,numericMonetary : 8
 */
 	,CEP : (value) => {
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		if (typeof value !== 'string' && typeof value !== 'number') return false;
 
 		// Regex para validar formato de data YYYY-MM-DD ou DD/MM/YYYY
@@ -71,25 +76,29 @@ export const enumValidationBasicRules = {
 		return regex.test(value);
 	}
 	,RG: (value)=>{
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		if(value.length<5){return ["RG deve ter no m&iacute;nimo 5 Digitos"];}
 		return [];
 	}
 	,CPF : (value)=>{
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		if(value.length<10){return ["precisar ter, no m&iacute;nimo, 10 dig&iacute;tos."];}
 		
-		var strValidMailChar = '1234567890';
-		var arrInvalidChas=[];
-		var arrCharsRemove=["-","."," "];
+		let strValidMailChar = '1234567890';
+		let arrInvalidChas=[];
+		let arrCharsRemove=["-","."," "];
+		var ix = 0;
+
 		for(ix=0;ix<arrCharsRemove.length;ix++){while(value.indexOf(arrCharsRemove[ix])>=0){value=value.replace(arrCharsRemove[ix],"");}}
 		for(ix=0;ix<value.length;ix++){
 			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){arrInvalidChas.push(value.substr(ix,1));}
 		}
 		if(arrInvalidChas.length){return ["Caractere(s) inv&aacute;lido(s) para CPF "+arrInvalidChas.join(",")];}
 
-		if(value.length==10){value= "0" + value;}
+		if(value.length===10){value= "0" + value;}
 		var strBase 	= value.substr(0,9);
 		var strVerif 	= value.substr(9,2);
-		var ix,intTotal11,intTotal12,intDigit1,intDigit2;
+		var intTotal1,intTotal2,intDigit1,intDigit2;
 		intTotal1=0;
 		intTotal2=0;
 		for(ix=0;ix<=8;ix++){
@@ -97,16 +106,17 @@ export const enumValidationBasicRules = {
 			intTotal2+=((11-ix)*parseInt(strBase.substr(ix,1)));
 		}
 		intDigit1=((intTotal1*10)%11);
-		if(intDigit1==10){intDigit1=0;}
+		if(intDigit1===10){intDigit1=0;}
 		intTotal2 += (intDigit1*2);
 		intDigit2=((intTotal2*10)%11);
-		if(intDigit2==10){intDigit2=0;}
+		if(intDigit2===10){intDigit2=0;}
 		intDigit1=(intDigit1*10)+intDigit2;
-		if(intDigit1!=parseInt(strVerif)){return ["digitos verificadores não estão corretos"];}
+		if(intDigit1!==parseInt(strVerif)){return ["digitos verificadores não estão corretos"];}
 	}
 	,CNPJ: (value)=> {
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		const erros = [];
-		if (/[^0-9\.\-\/]/.test(value)) {
+		if (/[^0-9.\-/]/.test(value)) {
 			erros.push("contém caracteres não numéricos.");
 			return erros;
 		}
@@ -134,7 +144,6 @@ export const enumValidationBasicRules = {
 		}
 
 		const validarDigito = (value, pos) => {
-			let tamanho = pos - 7;
 			let numeros = value.substring(0, pos);
 			let soma = 0;
 			let posMultiplicador = pos - 7;
@@ -156,6 +165,7 @@ export const enumValidationBasicRules = {
 		return erros;
 	}
 	,Email:(value)=>{
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		let result =[];
 		if(value.indexOf("@")<0){result.push("E-MAIL sem o Dom&iacute;nio '@algo.com'");}
 		else if(value.indexOf("@")<3){result.push("E-MAIL precisa ter 3 caract&eacute;res antes do '@' (Arroba)");}
@@ -165,19 +175,20 @@ export const enumValidationBasicRules = {
 		var intArrobCont=0;
 		for(ix=0;ix<value.length;ix++){
 			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){result.push("Caractere inv&aacute;lido para email (<b>"+value.substr(ix,1)+"</b>)");}
-			intArrobCont = intArrobCont + (value.substr(ix,1)=="@"?1:0);
+			intArrobCont = intArrobCont + (value.substr(ix,1)==="@"?1:0);
 		}
 		if(intArrobCont>=2){result.push("Só &eacute; permitido haver um '@' (arroba) no e-mail");}
 		return result;
 	}
 	,Phone:(value)=>{
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		let result = [];
 		if(value.length<10){result.push("TELEFONE tem que ter no m&iacute;nimo 10 d&iacute;gitos");}
 		else{
 			var arrDDD = ['11','12','13','14','15','16','17','18','19','21','22','24','27','28','31','32','33','34','35','37','38','41','42','43','44','45','46','47','48','49','51','53','54','55','61','62','63','64','65','66','67','68','69','71','73','74','75','77','79','81','82','83','84','85','86','87','88','89','91','92','93','94','95','96','97','98','99'];
 			var ix = 0;
 			var blnExists = false;
-			for(ix=0;ix<arrDDD.length;ix++ ){ blnExists = blnExists || (arrDDD[ix]==value.substr(0,2)); }
+			for(ix=0;ix<arrDDD.length;ix++ ){ blnExists = blnExists || (arrDDD[ix]===value.substr(0,2)); }
 			if(!blnExists){result.push("TELEFONE Est&aacute; com DDD inv&aacute;lido");}
 		}
 		var strValidMailChar = '1234567890';
@@ -188,6 +199,7 @@ export const enumValidationBasicRules = {
 	}
 	//,Mobile:15
 	,Password: (value)=>{
+		if((value===undefined) || (value===null) || (value==="")){return []}
 		if(value){value=value.trim();}
 		let result = [];
 		const lengthMin = 6;
@@ -217,7 +229,7 @@ export const enumValidationBasicRules = {
 		var sequenceCharCodesDiference=[sequenceCharCodes[0]];
 		for(ix=0;ix<sequenceCharCodes.length-1;ix++){sequenceCharCodesDiference.push((ix<=0?sequenceCharCodesDiference[0]:sequenceCharCodes[ix])-sequenceCharCodes[ix+1]);}
 		for(ix=1;ix<sequenceCharCodesDiference.length;ix++){
-			if(sequenceCharCodesDiference[ix-1]==sequenceCharCodesDiference[ix]){
+			if(sequenceCharCodesDiference[ix-1]===sequenceCharCodesDiference[ix]){
 				if(sequenceQtdData<=0){sequenceQtdData=2;}
 				else{sequenceQtdData++;}
 			}else{sequenceQtdData=0;}
@@ -244,22 +256,73 @@ export const enumCommonVarType ={
 }
 export default function useValidationsDefaults(){
 	const getFieldValidationList=(fields)=>{
+		
 		if(isObjectEmpty(fields)){throw new ExceptionSystemDefault("objeto de Campos de Validação sem conteúdo");}
 		const fieldsName = Object.getOwnPropertyNames(fields);
-		const ValidationBasicRulesFunctions = Object.getOwnPropertyNames(enumValidationBasicRules);
-		const result = {};
+		const ValidationBasicRulesFunctionNames = Object.getOwnPropertyNames(enumValidationBasicRules);
+		const resultGeneral = {};
+		let isFirstInvalidFieldFocused = false;
 
 		fieldsName.forEach((fieldName,fieldIndex)=>{
+			let resultField = [];
 			// o return aqui tem o mesmo efeito de um continue
 			if(!("refValue" in fields[fieldName])){return;}
-			//let thisField = fields[fieldName];
-			let thisFieldRef = fields[fieldName].refValue;
-			//thisFieldRef.current.setStatusMessage(thisFieldRef.current.value);
+			let thisField = fields[fieldName];
+			let thisFieldRef = thisField.refValue;
+			let thisFieldValue = thisFieldRef.current.value;
 
+			if(!("Validation" in thisField) || isObjectEmpty(thisField.Validation)){return;}
+			let fieldValidation = thisField.Validation;
+			
+			if(("valueMin" in fieldValidation) && (thisFieldValue<fieldValidation.valueMin)){
+				resultField.push(`Valor abaixo do mínimo (${fieldValidation.valueMin})`);
+			}
+			
+			if(("valueMax" in fieldValidation) && (thisFieldValue>fieldValidation.valueMax)){
+				resultField.push(`Valor abaixo do mínimo (${fieldValidation.valueMax})`);
+			}
+
+			if(("lengthMin" in fieldValidation) && (thisFieldValue.length<fieldValidation.lengthMin)){
+				resultField.push(`Mínimo de (${fieldValidation.lengthMin}) caractéres`);
+			}
+
+			if(("lengthMax" in fieldValidation) && (thisFieldValue.length>fieldValidation.lengthMax)){
+				resultField.push(`Máximo de (${fieldValidation.lengthMax}) caractéres`);
+			}
+
+			if(("basicRules" in fieldValidation) && Array.isArray(fieldValidation.basicRules) && (fieldValidation.basicRules.length>0)){
+				fieldValidation.basicRules.forEach((validationRule,validationIndex)=>{
+					ValidationBasicRulesFunctionNames.forEach((functionName, functionIndex)=>{
+						if(validationRule.trim().toUpperCase()!==functionName.trim().toUpperCase()){return;}
+						let validationTmpResult = enumValidationBasicRules[functionName](thisFieldValue);
+						if(validationTmpResult.length>0){
+							resultField = resultField.concat(validationTmpResult);
+							if(!isFirstInvalidFieldFocused){
+								isFirstInvalidFieldFocused=true;
+								thisFieldRef.current.setFocus();
+								thisFieldRef.current.scrollIntoView();
+							}
+						}
+					})
+				})
+			}
+
+			if(resultField.length>0){
+				resultGeneral[fieldName]=resultField;
+				thisFieldRef.current.statusMessage_setWarning(resultField);
+			}else{
+				thisFieldRef.current.statusMessage_setNormal("");
+			}
 
 		});
-		return result;
+		return resultGeneral;
 	}
 
-	return {getFieldValidationList}
+	const isFieldsValid=(fields)=>{
+		const  resultValid = getFieldValidationList(fields);
+		const  errorFieldsList = Object.getOwnPropertyNames(resultValid);
+		return errorFieldsList.length<=0;
+	}
+
+	return {getFieldValidationList,isFieldsValid}
 }

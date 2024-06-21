@@ -23,7 +23,7 @@ import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 export default function Application(){
 	const Application = useApiFractuzApplications();
 	const { treatExceptions	} = TreatmentExceptions();
-	const { getFieldValidationList } = useValidationsDefaults()
+	const { isFieldsValid } = useValidationsDefaults()
 	
 	const [applicationDisplayType	, setApplicationDisplayType] = useState(0);
 	const { id } = useParams();
@@ -62,7 +62,6 @@ export default function Application(){
 				,appDesc:{
 					 labelText:"Descrição"
 					,fieldID:"Description"
-					,fieldLabelStyle:{backgroundColor:"#50505090"}
 				}
 			}
 			,commands:{
@@ -93,12 +92,21 @@ export default function Application(){
 					 labelText:"Nome da Aplicação"
 					,fieldID:"Name"
 					,refValue:refRegisName
+					,Validation:{
+						 lengthMin:3
+						,lengthMax:200
+						,basicRules:["NotNull"]
+					}
 				}
 				,appDesc:{
 					 labelText:"Descrição"
 					,fieldID:"Description"
-					,fieldLabelStyle:{backgroundColor:"#50505090"}
 					,refValue:refRegisDesc
+					,Validation:{
+						 lengthMin:5
+						,lengthMax:1000
+						,basicRules:["NotNull"]
+					}
 				}
 			}
 			,commands:{
@@ -108,6 +116,10 @@ export default function Application(){
 				}
 				,addApplications : async ()=>{
 					try{
+						if(!isFieldsValid(applicationConfig.registerForm.fields)){
+							layoutFormRef.current.MessagesToPanel_set("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
+							return;
+						}
 						const applicationRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisDesc.current.value}
 						let response;
 						if(isStringEmptyOrSpaces(id)){
@@ -127,7 +139,7 @@ export default function Application(){
 					}
 				}
 				,test : async ()=>{
-					const teste = getFieldValidationList(applicationConfig.registerForm.fields);
+					
 				}
 			}
 		}

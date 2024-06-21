@@ -14,15 +14,18 @@ export const TextFieldDefault = forwardRef(({children, ...props}, ref)=>{
 			,inputRef
 			,value
 			,setValue
-			,setStatusMessage(message){inputLayoutRef.current.setStatusMessage(message);}
-			,cleanStatusMessage(){inputLayoutRef.current.setStatusMessage("");}
 
+			,statusMessage_clean			(){inputLayoutRef.current.statusMessage_set("");}
+			,statusMessage_set			(message){inputLayoutRef.current.statusMessage_set(message);}
+			,statusMessage_setNormal	(message){inputLayoutRef.current.statusField_setNormal(message);}
+			,statusMessage_setWarning	(message){inputLayoutRef.current.statusField_setWarning(message);}
+			,statusMessage_setError		(message){inputLayoutRef.current.statusField_setError(message);}
 		}
 	},[value]);
 
 	return(
 		<LayoutFieldDefault {...props} ref={inputLayoutRef}>
-			<input type='text' value={value} onChange={(e)=>{setValue(e.target.value)}} style={{width:"100%"}}/>
+			<input type='text' ref={inputRef} value={value} onChange={(e)=>{setValue(e.target.value)}} style={{width:"100%", backgroundColor:"#ffffff88", border:"0px solid #ffffff11", borderRadius:"4px", padding:"4px",outline:"none"}}/>
 		</LayoutFieldDefault>
 	)
 })
