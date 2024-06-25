@@ -1,39 +1,39 @@
-import { useApiFractuzApplications } from "../../../components/api/fractus/Applications";
+import { useApiFractuzDatabases } from "../../../components/api/fractus/Database";
 import { TreatmentExceptions } 	from "../../../components/exception";
 import { getCaesarEncrypt } 		from "../../../system/Libs/Crypto";
 import { goToAddress,goToRoutes } 				from "../../../system/Libs/Urls";
 import { routesPrivatePages } 	from "../../routes";
 
-export const ApplicationGridDataViewer =(props)=>{
+export const DatabaseGridDataViewer =(props)=>{
 
-	const { httpDelete} = useApiFractuzApplications();
+	const { httpDelete} = useApiFractuzDatabases();
 	const { treatExceptions	} = TreatmentExceptions();
 
-	const application_edit=()=>{goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
-	const application_delete=async ()=>{
+	const database_edit=()=>{goToAddress(routesPrivatePages.Database.path+getCaesarEncrypt(props.Data.Application)+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
+	const database_delete=async ()=>{
 		try{
-			if(!window.confirm("Confirma a exclusão da aplicação")){return;}
+			if(!window.confirm("Confirma a exclusão da Base de Dados")){return;}
 			await httpDelete(props.Data.SystemIDX);
 
 			let list = props.gridFunctions.getGridList().filter(item => item.SystemIDX !== props.Data.SystemIDX);
 			props.gridFunctions.setGridList(list);
-			let message ="Applicação excluída com Sucesso!";
+			let message ="Base de dados excluída com Sucesso!";
 			alert(message);
 			props.layoutFormRef.current.MessagesToPanel_set(message);
 		}catch(ex){
-			treatExceptions(ex,"Exclusão de Aplicações");
-			props.layoutFormRef.current.MessagesToPanel_set("Erro na Exclusão de Aplicações: "+ex);
+			treatExceptions(ex,"Exclusão de Base de Dados");
+			props.layoutFormRef.current.MessagesToPanel_set("Erro na Exclusão de Base de Dados: "+ex);
 		}
 	}
-	const application_database=()=>{
+	const database_table=()=>{
 		goToRoutes(routesPrivatePages.DatabaseView.path+"/","idApp", getCaesarEncrypt(props.Data.SystemIDX));
 	}
 
 	return(
 		<div style={{border:"1px solid #00000060",borderRadius:"7px",margin:"2px", padding:"5px", maxWidth:"40vw", minWidth:"25vw"}} className="generalDisposition_horizDisp_spaceBetween">
 			<div style={{maxWidth:"70%"}}>
-				<h3>{props.Data.Name}</h3>
-				<sup><i>{props.Data.Description}</i></sup>
+				<h3>{props.Data.BuildOrder} - {props.Data.DatabaseName}</h3>
+				<sup><i>{props.Data.DatabaseDescription}</i></sup>
 				{props.Data.SystemCreationUserName &&
 					<div><hr/>
 						<sup>
@@ -46,9 +46,9 @@ export const ApplicationGridDataViewer =(props)=>{
 				}
 			</div>
 			<div style={{display:"flex", flexDirection:"column", margin:"5px"}}>
-				<button onClick={application_edit		}>Editar</button>
-				<button onClick={application_database	}>Databases</button>
-				<button onClick={application_delete		}>Excluir</button>
+				<button onClick={database_edit	}>Editar</button>
+				<button onClick={database_table	}>Databases</button>
+				<button onClick={database_delete	}>Excluir</button>
 			</div>
 
 		</div>

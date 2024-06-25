@@ -21,9 +21,9 @@ import './../../../style/aligns/disposition.css'
 import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 
 export default function Application(){
-	const Application = useApiFractuzApplications();
+	const apiApplication = useApiFractuzApplications();
 	const { treatExceptions	} = TreatmentExceptions();
-	const { isFieldsValid } = useValidationsDefaults()
+	const { isFieldsValid } = useValidationsDefaults();
 	
 	const [applicationDisplayType	, setApplicationDisplayType] = useState(0);
 	const { id } = useParams();
@@ -40,7 +40,7 @@ export default function Application(){
 		()=>{
 			if(!!!id){return;}
 			let guid = getCaesarDecrypt(id);
-			const response = Application.httpGet({guid:guid});
+			const response = apiApplication.httpGet({guid:guid});
 			if(response instanceof Promise){
 				response.then(result => {
 					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
@@ -49,7 +49,7 @@ export default function Application(){
 				})
 			}
 		}
-		,[id,Application]
+		,[id,apiApplication]
 	)
 
 	const applicationConfig ={
@@ -70,7 +70,7 @@ export default function Application(){
 					try{
 						
 						const applicationSearchFieldsValues = {Name:refSeachName.current.value, Description:refSeachDesc.current.value}
-						const response = await Application.httpGet(applicationSearchFieldsValues);
+						const response = await apiApplication.httpGet(applicationSearchFieldsValues);
 						gridRef.current.setGridList(response);
 						
 						let complement = 	response.length<= 0 ? "Não houve registros nestes critérios":
@@ -123,12 +123,12 @@ export default function Application(){
 						const applicationRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisDesc.current.value}
 						let response;
 						if(isStringEmptyOrSpaces(id)){
-							response = await Application.httpInsert({},applicationRegisterFieldsValues);							
+							response = await apiApplication.httpInsert({},applicationRegisterFieldsValues);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.code===0){setApplicationDisplayType(0);}
 						}else{
 							applicationRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
-							response = await Application.httpUpdate({},applicationRegisterFieldsValues);
+							response = await apiApplication.httpUpdate({},applicationRegisterFieldsValues);
 							alert(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.code===0){goToAddress(routesPrivatePages.Application.path);}

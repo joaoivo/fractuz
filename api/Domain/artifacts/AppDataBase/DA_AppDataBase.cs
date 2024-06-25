@@ -46,7 +46,8 @@ public static class DA_AppDataBase{
 		AppDataBase.SystemActive= AppDataBase.SystemActive==null?true:AppDataBase.SystemActive;
 
 		parameters.Add("@pApplication"			, AppDataBase.Application			, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pDatabaseName"			, AppDataBase.DatabaseName			, DbType.String	, ParameterDirection.Input,150);
+		parameters.Add("@pDatabaseName"			, AppDataBase.DatabaseName			, DbType.String	, ParameterDirection.Input,100);
+		parameters.Add("@pDatabaseDescription"	, AppDataBase.DatabaseDescription, DbType.String	, ParameterDirection.Input,900);
 		parameters.Add("@pBuildOrder"				, AppDataBase.BuildOrder			, DbType.Int32		, ParameterDirection.Input);
 
 		parameters.Add("@pSystemActive"			, AppDataBase.SystemActive			, DbType.Boolean	, ParameterDirection.Input);
@@ -77,9 +78,10 @@ public static class DA_AppDataBase{
 		IEnumerable<EN_AppDataBase> appDataBase_lst = new List<EN_AppDataBase>();
 		DynamicParameters parameters = new DynamicParameters();
 
-		parameters.Add("@rGuid"						, AppDataBase.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pGuid"						, AppDataBase.SystemIDX					, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pApplication"			, AppDataBase.Application				, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pDatabaseName"			, AppDataBase.DatabaseName				, DbType.String	, ParameterDirection.Input,150);
+		parameters.Add("@pDatabaseDescription"	, AppDataBase.DatabaseDescription	, DbType.String	, ParameterDirection.Input,900);
 		parameters.Add("@pBuildOrder"				, AppDataBase.BuildOrder				, DbType.Int32		, ParameterDirection.Input);
 
 		parameters.Add("@pSystemActive"			, AppDataBase.SystemActive				, DbType.Boolean	, ParameterDirection.Input);
@@ -103,12 +105,12 @@ public static class DA_AppDataBase{
 		return appDataBase_return;
 	}
 
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+	public static EN_Return Delete(IConfiguration config,Guid? SystemIDX,EN_ManagerUser userAuthor){
 		EN_Return appDataBase_return = new EN_Return();
 		IEnumerable<EN_AppDataBase> appDataBase_lst = new List<EN_AppDataBase>();
 		DynamicParameters parameters = new DynamicParameters();
 
-		parameters.Add("@rGuid"						, SystemIDX									, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pGuid"						, SystemIDX									, DbType.Guid		, ParameterDirection.Input);
 
 		parameters.Add("@rIsOK"						, null										, DbType.Boolean	, ParameterDirection.Output);
 		parameters.Add("@rRowsAffected"			, null										, DbType.Int32		, ParameterDirection.Output);

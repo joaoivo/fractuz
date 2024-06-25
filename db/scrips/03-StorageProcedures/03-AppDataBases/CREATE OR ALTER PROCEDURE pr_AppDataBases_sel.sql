@@ -21,6 +21,7 @@ DECLARE @query nvarchar(max)='
 	SELECT [SystemIDX]
 			,[Application]
 			,[DatabaseName]
+			,[DatabaseDescription]
 			,[BuildOrder]
 			,[SystemActive]
 			,[SystemCreationDt]

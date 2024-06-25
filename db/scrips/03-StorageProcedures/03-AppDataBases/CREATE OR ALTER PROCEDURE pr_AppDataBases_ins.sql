@@ -3,6 +3,7 @@ GO
 CREATE OR ALTER PROCEDURE pr_AppDataBases_ins
 	 @pApplication				uniqueidentifier 	= NULL
 	,@pDatabaseName			NVARCHAR (100) 	= NULL
+	,@pDatabaseDescription	NVARCHAR (900) 	= NULL
 	,@pBuildOrder				INT 					= NULL
 	
 	,@pSystemActive			BIT					= 1
@@ -23,9 +24,9 @@ BEGIN TRY
 	SET @rIsOK =0
 
 	INSERT INTO [fractuz].[dbo].[tbAppDataBases](
-		[SystemIDX]	,[Application]	,[DatabaseName]	,[BuildOrder]	,[SystemCreationUser] 
+		[SystemIDX]	,[Application]	,[DatabaseName]	,[DatabaseDescription],[BuildOrder]	,[SystemCreationUser] 
 	) VALUES(
-		@rGuid		,@pApplication	,@pDatabaseName	,@pBuildOrder	,@pSystemCreationUser
+		@rGuid		,@pApplication	,@pDatabaseName	,@pDatabaseDescription,@pBuildOrder	,@pSystemCreationUser
 	)
 
 	--- Verificar se houve erro durante a atualização

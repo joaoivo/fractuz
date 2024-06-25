@@ -31,7 +31,7 @@ export const routesPrivatePages = {
 	 Home:				{ path:"/Home"									, app:Home 			,name:"Home"}
 	,Application:		{ path:"/Application"						, app:Application ,name:"Aplicações"}
 	,ApplicationEdit:	{ path:"/Application/:id"					, app:Application	,name:"Aplicações"}
-	,DatabaseRedirect:{ path:"/Database/"							, app:Database 	,name:"Bases de Dados"}
+	,Database:			{ path:"/Database/"							, app:Database 	,name:"Bases de Dados"}
 	,DatabaseView:		{ path:"/Database/:idApp"					, app:Database 	,name:"Bases de Dados"}
 	,DatabaseEdit:		{ path:"/Database/:idApp/:idDatabase"	, app:Database 	,name:"Bases de Dados"}
 };

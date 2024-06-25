@@ -23,16 +23,16 @@ public class EP_Application:IEndPoint{
 	public IResult ApplicationAPI_Get(HttpRequest request){
 		try{
 
-			Guid? guid=getHeaderGuidValues(request.Headers,"guid");
-			String? name=getHeaderStringValues(request.Headers,"name");
-			String? description=getHeaderStringValues(request.Headers,"description");
+			Guid? SystemIDX=getHeaderGuidValues(request.Headers,"SystemIDX");
+			String? Name=getHeaderStringValues(request.Headers,"Name");
+			String? Description=getHeaderStringValues(request.Headers,"Description");
 
 			String? columnsOrderBy=getHeaderStringValues(request.Headers,"columnsOrderBy");
 			Int32? pageNumber = getHeaderIntValues(request.Headers,"pageNumber");
 			Int32? pageRowCount=getHeaderIntValues(request.Headers,"pageRowCount");
 
 			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
-			List<EN_Application>? application_lst = BP_Application.Select(Config,guid, name, description, columnsOrderBy, pageNumber, pageRowCount);
+			List<EN_Application>? application_lst = BP_Application.Select(Config,SystemIDX, Name, Description, columnsOrderBy, pageNumber, pageRowCount);
 			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Aplicações", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
@@ -59,7 +59,7 @@ public class EP_Application:IEndPoint{
 	[Authorize]
 	public IResult ApplicationAPI_Delete(HttpRequest request){
 		try{
-			Guid? guid=getHeaderGuidValues(request.Headers,"guid");
+			Guid? guid=getHeaderGuidValues(request.Headers,"SystemIDX");
 			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,guid,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});

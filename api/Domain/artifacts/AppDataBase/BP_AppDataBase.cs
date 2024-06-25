@@ -5,7 +5,7 @@ using Fractuz.Domain.Users.Entities;
 namespace Fractuz.Domain.AppDataBase.BussinesPlan;
 public static class BP_AppDataBase{
 	public static List<EN_AppDataBase>? Select(IConfiguration config
-		, Guid? guid=null,Guid? application=null,string? databaseName=null	,int? buildOrder =null
+		, Guid? SystemIDX=null,Guid? ApplicationIDX=null,string? databaseName=null	,int? buildOrder =null
 		, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		int? totalRowCount=null;
@@ -14,7 +14,7 @@ public static class BP_AppDataBase{
 		string? query = null;
 
 		return (List<EN_AppDataBase>?)DA_AppDataBase.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query , ref pageNumber , ref pageRowCount, columnsOrderBy
-		,guid, application, databaseName	,buildOrder );
+		,SystemIDX, ApplicationIDX, databaseName	,buildOrder );
 	}
 	public static List<EN_AppDataBase>? Select(IConfiguration config,out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query
 		, Guid? guid=null,Guid? application=null,string? databaseName=null	,int? buildOrder =null
@@ -31,7 +31,7 @@ public static class BP_AppDataBase{
 	public static EN_Return Update(IConfiguration config,EN_AppDataBase AppDataBase,EN_ManagerUser userAuthor){
 		return DA_AppDataBase.Update(config,AppDataBase,userAuthor);
 	}
-	public static EN_Return Delete(IConfiguration config,Guid SystemIDX,EN_ManagerUser userAuthor){
+	public static EN_Return Delete(IConfiguration config,Guid? SystemIDX,EN_ManagerUser userAuthor){
 		return DA_AppDataBase.Delete(config,SystemIDX,userAuthor);
 	}
 }

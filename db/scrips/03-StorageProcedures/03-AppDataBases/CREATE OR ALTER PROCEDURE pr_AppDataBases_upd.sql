@@ -1,9 +1,10 @@
 USE fractuz
 GO
 CREATE OR ALTER PROCEDURE pr_AppDataBases_upd
-	 @pGuid 						uniqueidentifier 	
-	,@pApplication				uniqueidentifier	
-	,@pDatabaseName			NVARCHAR (100) 	
+	 @pGuid 						uniqueidentifier
+	,@pApplication				uniqueidentifier
+	,@pDatabaseName			NVARCHAR (100)
+	,@pDatabaseDescription	NVARCHAR (900)
 	,@pBuildOrder				INT 	
 	
 	,@pSystemActive			BIT					= 1
@@ -27,6 +28,7 @@ BEGIN TRY
 			 [Application]				= @pApplication
 			,[DatabaseName]			= @pDatabaseName
 			,[BuildOrder]				= @pBuildOrder
+			,[DatabaseDescription]	= @pDatabaseDescription
 			
 			,[SystemActive] 			= isNull(@pSystemActive,[SystemActive])
 			,[SystemLastUpdateDt] 	= GETDATE()
