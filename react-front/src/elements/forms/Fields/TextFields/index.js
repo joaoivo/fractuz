@@ -1,7 +1,9 @@
 import { forwardRef, useRef, useImperativeHandle, useState } from 'react';
 import {LayoutFieldDefault} from '../index'
+import useValidationsDefaults from '../../../../system/Components/Validations';
 
 export const TextFieldDefault = forwardRef(({children, ...props}, ref)=>{
+	const { isFieldsValid } = useValidationsDefaults();
 
 	const inputRef = useRef(null);
 	const inputLayoutRef = useRef(null);
@@ -25,13 +27,22 @@ export const TextFieldDefault = forwardRef(({children, ...props}, ref)=>{
 
 	return(
 		<LayoutFieldDefault {...props} ref={inputLayoutRef}>
-			<input type='text' ref={inputRef} value={value} onChange={(e)=>{setValue(e.target.value)}} style={{width:"100%", backgroundColor:"#ffffff88", border:"0px solid #ffffff11", borderRadius:"4px", padding:"4px",outline:"none"}}/>
+			<input type='text' 
+				ref={inputRef}
+				value={value}
+				
+				onChange={(e)=>{setValue(e.target.value)}}
+				onBlur={()=>{isFieldsValid({field:props.params})}}
+				
+				style={{width:"100%", backgroundColor:"#ffffff88", border:"0px solid #ffffff11", borderRadius:"4px", padding:"4px",outline:"none"}}
+			/>
 		</LayoutFieldDefault>
 	)
 });
 
 export const PassFieldDefault = forwardRef(({children, ...props}, ref)=>{
 
+	const { isFieldsValid } = useValidationsDefaults();
 	const inputRef = useRef(null);
 	const inputLayoutRef = useRef(null);
 	const [value, setValue ] = useState("");
@@ -54,7 +65,15 @@ export const PassFieldDefault = forwardRef(({children, ...props}, ref)=>{
 
 	return(
 		<LayoutFieldDefault {...props} ref={inputLayoutRef}>
-			<input type='password' ref={inputRef} value={value} onChange={(e)=>{setValue(e.target.value)}} style={{width:"100%", backgroundColor:"#ffffff88", border:"0px solid #ffffff11", borderRadius:"4px", padding:"4px",outline:"none"}}/>
+			<input type='password'
+				ref={inputRef}
+				value={value}
+				
+				onChange={(e)=>{setValue(e.target.value)}}
+				onBlur={()=>{isFieldsValid({field:props.params})}}
+				
+				style={{width:"100%", backgroundColor:"#ffffff88", border:"0px solid #ffffff11", borderRadius:"4px", padding:"4px",outline:"none"}}
+			/>
 		</LayoutFieldDefault>
 	)
 });

@@ -12,6 +12,7 @@ import Login 			from '../../pages/public/Login';
 // User Pages
 import Database 		from '../private/Database';
 import Application	from '../../pages/private/Application'
+import Tables 			from '../private/Table';
 import Home 			from '../../pages/private/Home';
 
 //system Pages
@@ -34,6 +35,9 @@ export const routesPrivatePages = {
 	,Database:			{ path:"/Database/"							, app:Database 	,name:"Bases de Dados"}
 	,DatabaseView:		{ path:"/Database/:idApp"					, app:Database 	,name:"Bases de Dados"}
 	,DatabaseEdit:		{ path:"/Database/:idApp/:idDatabase"	, app:Database 	,name:"Bases de Dados"}
+	,Table:				{ path:"/Table/"								, app:Tables 		,name:"Tabelas"}
+	,TableView:			{ path:"/Table/:idDatabase"				, app:Tables 		,name:"Tabelas"}
+	,TableEdit:			{ path:"/Table/:idDatabase/:idTable"	, app:Tables 		,name:"Tabelas"}
 };
 
 export const routesSystemPages = {

@@ -95,7 +95,7 @@ export default function Login(){
 				<TextFieldDefault params={loginConfig.loginForm.fields.email} ref={refLoginMail}/>
 				<PassFieldDefault params={loginConfig.loginForm.fields.password} ref={refLoginPass}/>
 			</div>
-			<div>				
+			<div>
 				<LayoutButtonDefault onClickEvent={loginConfig.loginForm.commands.handleLogin}>Login</LayoutButtonDefault>
 			</div>
 		</LayoutPrivateBody>

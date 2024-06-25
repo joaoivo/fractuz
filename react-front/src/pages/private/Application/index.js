@@ -138,9 +138,6 @@ export default function Application(){
 						layoutFormRef.current.MessagesToPanel_set("Erro ao Gravar Aplicações: "+error);
 					}
 				}
-				,test : async ()=>{
-					
-				}
 			}
 		}
 	}
