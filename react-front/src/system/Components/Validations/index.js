@@ -77,12 +77,12 @@ export const enumValidationBasicRules = {
 	}
 	,RG: (value)=>{
 		if((value===undefined) || (value===null) || (value==="")){return []}
-		if(value.length<5){return ["RG deve ter no m&iacute;nimo 5 Digitos"];}
+		if(value.length<5){return ["RG deve ter no mínimo 5 Digitos"];}
 		return [];
 	}
 	,CPF : (value)=>{
 		if((value===undefined) || (value===null) || (value==="")){return []}
-		if(value.length<10){return ["precisar ter, no m&iacute;nimo, 10 dig&iacute;tos."];}
+		if(value.length<10){return ["precisar ter, no mínimo, 10 digítos."];}
 		
 		let strValidMailChar = '1234567890';
 		let arrInvalidChas=[];
@@ -93,7 +93,7 @@ export const enumValidationBasicRules = {
 		for(ix=0;ix<value.length;ix++){
 			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){arrInvalidChas.push(value.substr(ix,1));}
 		}
-		if(arrInvalidChas.length){return ["Caractere(s) inv&aacute;lido(s) para CPF "+arrInvalidChas.join(",")];}
+		if(arrInvalidChas.length){return ["Caractere(s) inválido(s) para CPF "+arrInvalidChas.join(",")];}
 
 		if(value.length===10){value= "0" + value;}
 		var strBase 	= value.substr(0,9);
@@ -167,33 +167,33 @@ export const enumValidationBasicRules = {
 	,Email:(value)=>{
 		if((value===undefined) || (value===null) || (value==="")){return []}
 		let result =[];
-		if(value.indexOf("@")<0){result.push("E-MAIL sem o Dom&iacute;nio '@algo.com'");}
-		else if(value.indexOf("@")<3){result.push("E-MAIL precisa ter 3 caract&eacute;res antes do '@' (Arroba)");}
+		if(value.indexOf("@")<0){result.push("E-MAIL sem o Domínio '@algo.com'");}
+		else if(value.indexOf("@")<3){result.push("E-MAIL precisa ter 3 caractéres antes do '@' (Arroba)");}
 		else if(value.indexOf(".",value.indexOf("@"))<(value.indexOf("@")+2)){result.push("precisa ter '.' (ponto) após o '@' (Arroba)");}
 		var strValidMailChar = '1234567890-_.@ABCDEFGHIJKLMNOPQRSTUVXYWZ';
 		var ix=0;
 		var intArrobCont=0;
 		for(ix=0;ix<value.length;ix++){
-			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){result.push("Caractere inv&aacute;lido para email (<b>"+value.substr(ix,1)+"</b>)");}
+			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){result.push("Caractere inválido para email (<b>"+value.substr(ix,1)+"</b>)");}
 			intArrobCont = intArrobCont + (value.substr(ix,1)==="@"?1:0);
 		}
-		if(intArrobCont>=2){result.push("Só &eacute; permitido haver um '@' (arroba) no e-mail");}
+		if(intArrobCont>=2){result.push("Só é permitido haver um '@' (arroba) no e-mail");}
 		return result;
 	}
 	,Phone:(value)=>{
 		if((value===undefined) || (value===null) || (value==="")){return []}
 		let result = [];
-		if(value.length<10){result.push("TELEFONE tem que ter no m&iacute;nimo 10 d&iacute;gitos");}
+		if(value.length<10){result.push("TELEFONE tem que ter no mínimo 10 dígitos");}
 		else{
 			var arrDDD = ['11','12','13','14','15','16','17','18','19','21','22','24','27','28','31','32','33','34','35','37','38','41','42','43','44','45','46','47','48','49','51','53','54','55','61','62','63','64','65','66','67','68','69','71','73','74','75','77','79','81','82','83','84','85','86','87','88','89','91','92','93','94','95','96','97','98','99'];
 			var ix = 0;
 			var blnExists = false;
 			for(ix=0;ix<arrDDD.length;ix++ ){ blnExists = blnExists || (arrDDD[ix]===value.substr(0,2)); }
-			if(!blnExists){result.push("TELEFONE Est&aacute; com DDD inv&aacute;lido");}
+			if(!blnExists){result.push("TELEFONE Está com DDD inválido");}
 		}
 		var strValidMailChar = '1234567890';
 		for(ix=0;ix<value.length;ix++){
-			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){result.push("Caractere inv&aacute;lido para Celular (<b>"+value.substr(ix,1)+"</b>)");}
+			if(strValidMailChar.indexOf(value.substr(ix,1).toUpperCase())<0){result.push("Caractere inválido para Celular (<b>"+value.substr(ix,1)+"</b>)");}
 		}
 		return result;
 	}
@@ -204,7 +204,7 @@ export const enumValidationBasicRules = {
 		let result = [];
 		const lengthMin = 6;
 		const lengthMax = 20;
-		if(value.length<lengthMin||value.length>lengthMax){result.push(`precisa ter entre ${lengthMin} e ${lengthMax} caract&eacute;res alfanumericos`);}
+		if(value.length<lengthMin||value.length>lengthMax){result.push(`precisa ter entre ${lengthMin} e ${lengthMax} caractéres alfanumericos`);}
 
 		const strLettersTiny	="abcdefghijklmnopqrstuvxywz";
 		const strLettersCapital="ABCDEFGHIJKLMNOPQRSTUVXYWZ";
@@ -235,10 +235,10 @@ export const enumValidationBasicRules = {
 			}else{sequenceQtdData=0;}
 			if(sequenceQtdData>sequenceQtdMaxData){sequenceQtdMaxData=sequenceQtdData;}
 		}
-		if(!qtdTinyChars			){result.push("precisa ter no mínimo 1 caract&eacute;res minúsculo");}
-		if(!qtdCapitalChars		){result.push("precisa ter no mínimo 1 caract&eacute;res maiúsculo");}
+		if(!qtdTinyChars			){result.push("precisa ter no mínimo 1 caractéres minúsculo");}
+		//if(!qtdCapitalChars		){result.push("precisa ter no mínimo 1 caractéres maiúsculo");}
 		if(!qtdNumbersChas		){result.push("precisa ter no mínimo 1 dígito numérico");}
-		if(!qtdSpecialChas		){result.push("precisa ter no mínimo 1 caract&eacute;res especial");}
+		//if(!qtdSpecialChas		){result.push("precisa ter no mínimo 1 caractéres especial");}
 
 		return result;
 	}

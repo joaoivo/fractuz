@@ -14,7 +14,7 @@ export const useApiFractuzApplications= ()=>{
 		headerData["Authorization"] = "Bearer " + getUserLogged().token;
 
 		const jsonResponse = await methodGet(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
-		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
+		if(!jsonResponse.isSuccess){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro: ${jsonResponse.description}`);}
 		return jsonResponse.dataList;
 	}
 
@@ -29,7 +29,7 @@ export const useApiFractuzApplications= ()=>{
 		ApplicationData["SystemCreationUser"] = user.userID;
 
 		const jsonResponse = await methodPost(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application,ApplicationData);
-		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
+		if(!jsonResponse.isSuccess){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro: ${jsonResponse.description}`);}
 		return jsonResponse;
 	}
 
@@ -44,7 +44,7 @@ export const useApiFractuzApplications= ()=>{
 		ApplicationData["SystemCreationUser"] = user.userID;
 
 		const jsonResponse = await methodPut(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application,ApplicationData);
-		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
+		if(!jsonResponse.isSuccess){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro: ${jsonResponse.description}`);}
 		return jsonResponse;
 	}
 
@@ -55,10 +55,10 @@ export const useApiFractuzApplications= ()=>{
 		const user = getUserLogged();
 		headerData["Authorization"] = "Bearer " + user.token;
 		headerData["SystemCreationUser"] = user.userID;
-		headerData["guid"] = id;		
+		headerData["guid"] = id;
 
 		const jsonResponse = await methodDelete(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
-		if(jsonResponse.code !==0){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro ${jsonResponse.code}: Message: ${jsonResponse.description}`);}
+		if(!jsonResponse.isSuccess){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro: ${jsonResponse.description}`);}
 
 		return jsonResponse;
 	}

@@ -26,9 +26,9 @@ public class EP_AppDbTableField:IEndPoint{
 		try{
 			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_AppDbTableField>? application_lst = BP_AppDbTableField.Select(Config);
-			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
+			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true,tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
@@ -37,7 +37,7 @@ public class EP_AppDbTableField:IEndPoint{
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDbTableField.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
@@ -46,7 +46,7 @@ public class EP_AppDbTableField:IEndPoint{
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDbTableField.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
@@ -55,7 +55,7 @@ public class EP_AppDbTableField:IEndPoint{
 		try{
 			return ApiRoutePressets.returnResults(BP_AppDbTableField.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 }

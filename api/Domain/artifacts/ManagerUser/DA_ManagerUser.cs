@@ -82,7 +82,6 @@ public static class DA_ManagerUser{
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
 
 			managerUser_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
-			managerUser_return.code= parameters.Get<int>("@rProcessCode");
 		}
 		return managerUser_return;
 	}
@@ -111,7 +110,6 @@ public static class DA_ManagerUser{
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
 
 			managerUser_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
-			managerUser_return.code= parameters.Get<int>("@rProcessCode");
 		}
 		return managerUser_return;
 	}
@@ -136,7 +134,6 @@ public static class DA_ManagerUser{
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
 
 			managerUser_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
-			managerUser_return.code= parameters.Get<int>("@rProcessCode");
 		}
 		return managerUser_return;
 	}

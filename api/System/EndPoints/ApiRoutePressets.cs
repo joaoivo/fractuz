@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Mvc;
 namespace Fractuz.System.Defaults.EndPoint;
 
 public static class ApiRoutePressets{
@@ -23,14 +24,12 @@ public static class ApiRoutePressets{
 
 		if(result_en==null){
 			return Results.BadRequest("Operação não efetuada: "+operation);
-		}else if(result_en.code!=0){
+		}else if(result_en.isError==null?false:result_en.isError==true){
 			return Results.Problem("Problema não execução: "+result_en.description,null,500,result_en.tittle + " " + result_en.description);
-		}else if(result_en.code==0){
+		}else{
 			JsonSerializerOptions jsonOptions =new JsonSerializerOptions { WriteIndented = true, IgnoreReadOnlyFields =true, AllowTrailingCommas =false };
 			string data = JsonSerializer.Serialize<EN_Return>(result_en,jsonOptions);
 			return Results.Ok(JsonObject.Parse(data));
-		}else{
-			return Results.NotFound("fugiu");
 		}
 	}
 }

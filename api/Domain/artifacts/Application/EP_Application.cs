@@ -33,9 +33,9 @@ public class EP_Application:IEndPoint{
 
 			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_Application>? application_lst = BP_Application.Select(Config,SystemIDX, Name, Description, columnsOrderBy, pageNumber, pageRowCount);
-			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Aplicações", dataList = application_lst, author = userAuthor});
+			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Aplicações", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 	[Authorize]
@@ -43,7 +43,7 @@ public class EP_Application:IEndPoint{
 		try{
 			return ApiRoutePressets.returnResults(BP_Application.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
@@ -52,7 +52,7 @@ public class EP_Application:IEndPoint{
 		try{
 			return ApiRoutePressets.returnResults(BP_Application.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 
@@ -62,7 +62,7 @@ public class EP_Application:IEndPoint{
 			Guid? guid=getHeaderGuidValues(request.Headers,"SystemIDX");
 			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,guid,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 }

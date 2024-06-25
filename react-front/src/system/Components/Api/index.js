@@ -1,4 +1,5 @@
 
+import { isObjectEmpty } from "../../Libs/Objects";
 import { ExceptionSystemDefault } from "../Exceptions";
 
 export class ExceptionSystemApiDefault extends ExceptionSystemDefault {
@@ -36,7 +37,7 @@ export const useApiDefault = () => {
 			response = await fetch(url, requestOptions);
 		}catch(ex){
 			// foi colocado este try/catch para conter o output do fetch quando não dá autorizado
-			if(!( ("ok" in response) && ("status" in response) && ("statusText" in response))){
+			if((isObjectEmpty(response)) || !( ("ok" in response) && ("status" in response) && ("statusText" in response))){
 				throw new ExceptionSystemApiDefault(`Strange Server Response NOK. ${ex.message}`);
 			}
 		}

@@ -125,13 +125,13 @@ export default function Application(){
 						if(isStringEmptyOrSpaces(id)){
 							response = await apiApplication.httpInsert({},applicationRegisterFieldsValues);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
-							if(response.code===0){setApplicationDisplayType(0);}
+							if(response.isSuccess){setApplicationDisplayType(0);}
 						}else{
 							applicationRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
 							response = await apiApplication.httpUpdate({},applicationRegisterFieldsValues);
 							alert(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
-							if(response.code===0){goToAddress(routesPrivatePages.Application.path);}
+							if(response.isSuccess){goToAddress(routesPrivatePages.Application.path);}
 						}
 					} catch (error) {
 						treatExceptions(error,"Salvar Aplicações");

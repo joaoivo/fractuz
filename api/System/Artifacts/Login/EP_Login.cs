@@ -20,12 +20,12 @@ public class EP_Login:IEndPoint{
 			string particMail = request.Headers["mail"].ToString();
 			string particPass = request.Headers["pass"].ToString();
 			List<EN_ManagerUser>? managerUser_lst = BP_ManagerUser.Login(Config,particMail,particPass);
-			if(managerUser_lst==null){return ApiRoutePressets.returnResults(new EN_Return{code=1,tittle="Login de Usuário",description="Sem resultado de login", dataList = {}});}
+			if(managerUser_lst==null){return ApiRoutePressets.returnResults(new EN_Return{isSuccess=false,isError=false,tittle="Login de Usuário",description="Sem resultado de login", dataList = {}});}
 			if(managerUser_lst.Count!=1){
-				if(managerUser_lst.Count<=0){return ApiRoutePressets.returnResults(new EN_Return{code=1,tittle="Login de Usuário",description="Email não encontrado", dataList = {}});}
-				else{return ApiRoutePressets.returnResults(new EN_Return{code=1,tittle="Login de Usuário",description="Email não confuso", dataList = {}});}
+				if(managerUser_lst.Count<=0){return ApiRoutePressets.returnResults(new EN_Return{isSuccess=false,isError=false,tittle="Login de Usuário",description="Email não encontrado", dataList = {}});}
+				else{return ApiRoutePressets.returnResults(new EN_Return{isSuccess=false,isError=false,tittle="Login de Usuário",description="Cadastro de Email confuso", dataList = {}});}
 			}
-			return ApiRoutePressets.returnResults(new EN_Return{code=0,tittle="Pesquisa de Usuário", dataList = new List<Object>{
+			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = new List<Object>{
 				new {
 					 token	=	JWTTokensManager.GenerateJWTToken(managerUser_lst[0],Config)
 					,name		=	managerUser_lst[0].ParticName
@@ -34,7 +34,7 @@ public class EP_Login:IEndPoint{
 				}
 			}});
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults(new EN_Return{code=99, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=false,isError=true,tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}
 	}
 }

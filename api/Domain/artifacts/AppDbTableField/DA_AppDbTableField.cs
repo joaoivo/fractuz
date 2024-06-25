@@ -79,7 +79,6 @@ public static class DA_AppDbTableField{
 			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
 			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
-			appDbTableField_return.code= parameters.Get<int>("@rProcessCode");
 		}
 		return appDbTableField_return;
 	}
@@ -120,7 +119,6 @@ public static class DA_AppDbTableField{
 			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
 			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
-			appDbTableField_return.code= parameters.Get<int>("@rProcessCode");
 		}
 		return appDbTableField_return;
 	}
@@ -145,7 +143,6 @@ public static class DA_AppDbTableField{
 			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
 			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
-			appDbTableField_return.code= parameters.Get<int>("@rProcessCode");
 		}
 		return appDbTableField_return;
 	}

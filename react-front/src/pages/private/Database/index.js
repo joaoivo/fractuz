@@ -152,13 +152,13 @@ export default function Database () {
 						if(isStringEmptyOrSpaces(idDatabase)){
 							response = await apiDatabase.httpInsert({},databaseRegisterFieldsValues);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
-							if(response.code===0){setDisplayType(0);}
+							if(response.isSuccess){setDisplayType(0);}
 						}else{
 							databaseRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(idDatabase);
 							response = await apiDatabase.httpUpdate({},databaseRegisterFieldsValues);
 							alert(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
-							if(response.code===0){goToRoutes(routesPrivatePages.DatabaseView.path,"idApp",idApp);}
+							if(response.isSuccess){goToRoutes(routesPrivatePages.DatabaseView.path,"idApp",idApp);}
 						}
 					} catch (error) {
 						treatExceptions(error,"Salvar Base de dados");

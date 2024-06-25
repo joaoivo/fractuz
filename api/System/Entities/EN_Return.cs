@@ -4,7 +4,8 @@ public class EN_Return{
 	public Guid? id {get; set;}= null ;
 	public string? authorName {get; set;} = null;
 	public string? authorMail {get; set;} = null;
-	public int? code {get; set;} = null;
+	public bool isSuccess {get; set;} = true;
+	public bool? isError {get; set;} = false;
 	public string? tittle {get; set;} = null;
 	public string? description {get; set;} = null;
 	public DateTime? timeStamp {get; set;} = DateTime.Now;
