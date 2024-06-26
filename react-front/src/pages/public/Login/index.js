@@ -90,14 +90,16 @@ export default function Login(){
 		}
 	}
 	return(
-		<LayoutPrivateBody title="Login de Usuário" ref={layoutFormRef}>
-			<div>
-				<TextFieldDefault params={loginConfig.loginForm.fields.email} ref={refLoginMail}/>
-				<PassFieldDefault params={loginConfig.loginForm.fields.password} ref={refLoginPass}/>
-			</div>
-			<div>
-				<LayoutButtonDefault onClickEvent={loginConfig.loginForm.commands.handleLogin}>Login</LayoutButtonDefault>
-			</div>
-		</LayoutPrivateBody>
+		<div className="wtdhGeneral_duz24vw_05">
+			<LayoutPrivateBody title="Login de Usuário" ref={layoutFormRef}>
+				<div>
+					<TextFieldDefault params={loginConfig.loginForm.fields.email} ref={refLoginMail}/>
+					<PassFieldDefault params={loginConfig.loginForm.fields.password} ref={refLoginPass}/>
+				</div>
+				<div>
+					<LayoutButtonDefault onClickEvent={loginConfig.loginForm.commands.handleLogin}>Login</LayoutButtonDefault>
+				</div>
+			</LayoutPrivateBody>
+		</div>
 	);
 }

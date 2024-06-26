@@ -5,7 +5,7 @@ using Fractuz.Domain.Users.Entities;
 namespace Fractuz.Domain.AppDataBase.BussinesPlan;
 public static class BP_AppDataBase{
 	public static List<EN_AppDataBase>? Select(IConfiguration config
-		, Guid? SystemIDX=null,Guid? ApplicationIDX=null,string? databaseName=null	,int? buildOrder =null
+		, Guid? SystemIDX=null,Guid? ApplicationIDX=null,string? databaseName=null,string? databaseDescription=null		,int? buildOrder =null
 		, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		int? totalRowCount=null;
@@ -14,14 +14,14 @@ public static class BP_AppDataBase{
 		string? query = null;
 
 		return (List<EN_AppDataBase>?)DA_AppDataBase.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query , ref pageNumber , ref pageRowCount, columnsOrderBy
-		,SystemIDX, ApplicationIDX, databaseName	,buildOrder );
+		,SystemIDX, ApplicationIDX, databaseName	,databaseDescription,buildOrder );
 	}
 	public static List<EN_AppDataBase>? Select(IConfiguration config,out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query
-		, Guid? guid=null,Guid? application=null,string? databaseName=null	,int? buildOrder =null
+		, Guid? guid=null,Guid? application=null,string? databaseName=null	,string? databaseDescription=null	,int? buildOrder =null
 		,Boolean? isAdm =null, String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		List<EN_AppDataBase>? appDataBase_lst = (List<EN_AppDataBase>?)DA_AppDataBase.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
-			,guid, application, databaseName	,buildOrder );
+			,guid, application, databaseName,databaseDescription,buildOrder );
 		return appDataBase_lst;
 	}
 

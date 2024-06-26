@@ -16,7 +16,7 @@ public class EP_Application:IEndPoint{
 			 new apiMethodParam{handle=ApplicationAPI_Get 		, httpMethods=new HttpMethod[]{HttpMethod.Get }}
 			,new apiMethodParam{handle=ApplicationAPI_Post		, httpMethods=new HttpMethod[]{HttpMethod.Post}}
 			,new apiMethodParam{handle=ApplicationAPI_Put		, httpMethods=new HttpMethod[]{HttpMethod.Put}}
-			,new apiMethodParam{handle=ApplicationAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete}}
+			,new apiMethodParam{handle=ApplicationAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete},routeComplement="/{IDX}"}
 		};
 	}
 	[Authorize]
@@ -57,10 +57,11 @@ public class EP_Application:IEndPoint{
 	}
 
 	[Authorize]
-	public IResult ApplicationAPI_Delete(HttpRequest request){
+	public IResult ApplicationAPI_Delete([FromRoute] string IDX,HttpRequest request){
 		try{
-			Guid? guid=getHeaderGuidValues(request.Headers,"SystemIDX");
-			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,guid,JWTTokensManager.GetUserByBearerToken(request,Config)));
+			Guid SystemIDX;
+			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
+			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
 		}

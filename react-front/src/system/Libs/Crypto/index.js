@@ -1,4 +1,5 @@
 export const getCaesarEncrypt = (texto, shift) => {
+	if (texto === undefined) { return ''; }
 	if (shift === undefined) { shift = 1 }
 	return texto.split('').map(char => {
 		const code = char.charCodeAt(0);
@@ -17,6 +18,7 @@ export const getCaesarEncrypt = (texto, shift) => {
 }
 
 export const getCaesarDecrypt = (texto, shift) => {
+	if (texto === undefined) { return ''; }
 	if (shift === undefined) { shift = 1 }
 	return texto.split('').map(char => {
 		const code = char.charCodeAt(0);

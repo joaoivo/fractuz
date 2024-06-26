@@ -1,31 +1,31 @@
-import { useApiFractuzApplications } 	from "../../../components/api/fractus/Applications";
+import { useApiFractuzTables } from "../../../components/api/fractus/Tables";
 import { TreatmentExceptions } 			from "../../../components/exception";
 import { getCaesarEncrypt } 				from "../../../system/Libs/Crypto";
 import { goToAddress,goToRoutes } 		from "../../../system/Libs/Urls";
 import { routesPrivatePages } 			from "../../routes";
 
-export const ApplicationGridDataViewer =(props)=>{
+export const TableGridDataViewer =(props)=>{
 
-	const { httpDelete} = useApiFractuzApplications();
+	const { httpDelete} = useApiFractuzTables();
 	const { treatExceptions	} = TreatmentExceptions();
 
-	const application_edit=()=>{goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
-	const application_delete=async ()=>{
+	const table_edit=()=>{goToAddress(routesPrivatePages.Table.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
+	const table_delete=async ()=>{
 		try{
-			if(!window.confirm("Confirma a exclusão da aplicação")){return;}
+			if(!window.confirm("Confirma a exclusão da tabela")){return;}
 			await httpDelete(props.Data.SystemIDX);
 
 			let list = props.gridFunctions.getGridList().filter(item => item.SystemIDX !== props.Data.SystemIDX);
 			props.gridFunctions.setGridList(list);
-			let message ="Applicação excluída com Sucesso!";
+			let message ="Tabela excluída com Sucesso!";
 			alert(message);
 			props.layoutFormRef.current.MessagesToPanel_set(message);
 		}catch(ex){
-			treatExceptions(ex,"Exclusão de Aplicações");
-			props.layoutFormRef.current.MessagesToPanel_set("Erro na Exclusão de Aplicações: "+ex);
+			treatExceptions(ex,"Exclusão de Tabelas");
+			props.layoutFormRef.current.MessagesToPanel_set("Erro na Exclusão de Tabelas: "+ex);
 		}
 	}
-	const application_database=()=>{
+	const table_field=()=>{
 		goToRoutes(routesPrivatePages.DatabaseView.path+"/","idApp", getCaesarEncrypt(props.Data.SystemIDX));
 	}
 
@@ -46,9 +46,9 @@ export const ApplicationGridDataViewer =(props)=>{
 				}
 			</div>
 			<div style={{display:"flex", flexDirection:"column", margin:"5px"}}>
-				<button onClick={application_edit		}>Editar</button>
-				<button onClick={application_database	}>Databases</button>
-				<button onClick={application_delete		}>Excluir</button>
+				<button onClick={table_edit	}>Editar</button>
+				<button onClick={table_field	}>Campos</button>
+				<button onClick={table_delete	}>Excluir</button>
 			</div>
 
 		</div>

@@ -55,9 +55,8 @@ export const useApiFractuzApplications= ()=>{
 		const user = getUserLogged();
 		headerData["Authorization"] = "Bearer " + user.token;
 		headerData["SystemCreationUser"] = user.userID;
-		headerData["guid"] = id;
 
-		const jsonResponse = await methodDelete(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application);
+		const jsonResponse = await methodDelete(headerData,systemConfig.urls.PUBLIC_API_URL + apiFractuzEndPoint.application+"/"+id);
 		if(!jsonResponse.isSuccess){throw new ExceptionSystemApiFractuz(`O servidor Acusou erro: ${jsonResponse.description}`);}
 
 		return jsonResponse;

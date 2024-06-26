@@ -166,15 +166,19 @@ export default function Application(){
 
 	if(applicationDisplayType!==1 && !!!id){
 		return(
-			<LayoutPrivateBody title="Applications> Consulta" ref={layoutFormRef}>
-				<ApplicationDisplayType.Search/>
-			</LayoutPrivateBody>
+			<div className="wtdhGeneral_duz24vw_20">
+				<LayoutPrivateBody title="Applications> Consulta" ref={layoutFormRef}>
+					<ApplicationDisplayType.Search/>
+				</LayoutPrivateBody>
+			</div>
 		)
 	}else{
 		return(
-			<LayoutPrivateBody title="Applications> Cadastro" ref={layoutFormRef}>
-				<ApplicationDisplayType.Register/>
-			</LayoutPrivateBody>
+			<div className="wtdhGeneral_duz24vw_20">
+				<LayoutPrivateBody title="Applications> Cadastro" ref={layoutFormRef}>
+					<ApplicationDisplayType.Register/>
+				</LayoutPrivateBody>
+			</div>
 		)
 	}
 }

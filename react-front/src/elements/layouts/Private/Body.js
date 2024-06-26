@@ -41,7 +41,7 @@ export const LayoutPrivateBody = forwardRef(({children, ...props}, ref) => {
 	}));
 
 	return (
-		<div className="wtdhGeneral_duz24vw_20" style={{border :"1px solid gray", borderRadius: "10px", padding: "5px" }}>
+		<div className="wtdhGeneral_duz24pc_24" style={{border :"1px solid gray", borderRadius: "10px", padding: "5px" }}>
 			<h1>{props && props.title && props.title}</h1>
 			<hr/>
 			<div style={{width:"100%"}}>

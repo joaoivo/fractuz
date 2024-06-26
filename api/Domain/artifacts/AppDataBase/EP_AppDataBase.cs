@@ -17,7 +17,7 @@ public class EP_AppDataBase:IEndPoint{
 			,new apiMethodParam{handle=AppDataBasesAPI_Get 		, httpMethods=new HttpMethod[]{HttpMethod.Get }}
 			,new apiMethodParam{handle=AppDataBasesAPI_Post		, httpMethods=new HttpMethod[]{HttpMethod.Post}}
 			,new apiMethodParam{handle=AppDataBasesAPI_Put		, httpMethods=new HttpMethod[]{HttpMethod.Put}}
-			,new apiMethodParam{handle=AppDataBasesAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete}}
+			,new apiMethodParam{handle=AppDataBasesAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete},routeComplement="/{IDX}"}
 		};
 	}
 	public IResult AppDataBasesAPI_GetAdv(HttpRequest request,[FromQuery] string? queryGuid=null,[FromQuery] string? queryApplication=null,[FromQuery] string? queryDatabaseName=null	,[FromQuery] string? queryBuildOrder =null){
@@ -27,9 +27,10 @@ public class EP_AppDataBase:IEndPoint{
 			Guid? guid=null;
 			Guid? application=null;
 			string? databaseName=null;
+			string? databaseDescription=null;
 			int? buildOrder =null;
 
-			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,guid, application, databaseName	,buildOrder);
+			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,guid, application, databaseName,databaseDescription	,buildOrder);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
@@ -40,10 +41,11 @@ public class EP_AppDataBase:IEndPoint{
 	public IResult AppDataBasesAPI_Get(HttpRequest request){
 		try{
 
-			Guid? ApplicationIDX=getHeaderGuidValues(request.Headers,"ApplicationIDX");
+			Guid? ApplicationIDX=getHeaderGuidValues(request.Headers,"Application");
 			Guid? SystemIDX=getHeaderGuidValues(request.Headers,"SystemIDX");
 			String? Name=getHeaderStringValues(request.Headers,"Name");
 			String? Description=getHeaderStringValues(request.Headers,"Description");
+			int? buildOrder=getHeaderIntValues(request.Headers,"buildOrder");
 
 			String? columnsOrderBy=getHeaderStringValues(request.Headers,"columnsOrderBy");
 			Int32? pageNumber = getHeaderIntValues(request.Headers,"pageNumber");
@@ -51,7 +53,7 @@ public class EP_AppDataBase:IEndPoint{
 
 			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 
-			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,SystemIDX,ApplicationIDX,Name,null,columnsOrderBy,pageNumber,pageRowCount);
+			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,SystemIDX,ApplicationIDX,Name,Description,buildOrder,columnsOrderBy,pageNumber,pageRowCount);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
@@ -77,9 +79,10 @@ public class EP_AppDataBase:IEndPoint{
 	}
 
 	[Authorize]
-	public IResult AppDataBasesAPI_Delete(HttpRequest request){
+	public IResult AppDataBasesAPI_Delete([FromRoute] string IDX,HttpRequest request){
 		try{
-			Guid? SystemIDX=getHeaderGuidValues(request.Headers,"SystemIDX");
+			Guid SystemIDX;
+			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});

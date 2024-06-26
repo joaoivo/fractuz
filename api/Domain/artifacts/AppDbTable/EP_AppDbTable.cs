@@ -16,7 +16,7 @@ public class EP_AppDbTable:IEndPoint{
 			 new apiMethodParam{handle=AppDbTableAPI_Get 	, httpMethods=new HttpMethod[]{HttpMethod.Get }}
 			,new apiMethodParam{handle=AppDbTableAPI_Post	, httpMethods=new HttpMethod[]{HttpMethod.Post}}
 			,new apiMethodParam{handle=AppDbTableAPI_Put		, httpMethods=new HttpMethod[]{HttpMethod.Put}}
-			,new apiMethodParam{handle=AppDbTableAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete}}
+			,new apiMethodParam{handle=AppDbTableAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete},routeComplement="/{IDX}"}
 		};
 	}
 
@@ -50,8 +50,10 @@ public class EP_AppDbTable:IEndPoint{
 	}
 
 	[Authorize]
-	public IResult AppDbTableAPI_Delete([FromBody] Guid SystemIDX,HttpRequest request){
+	public IResult AppDbTableAPI_Delete([FromRoute] string IDX,HttpRequest request){
 		try{
+			Guid SystemIDX;
+			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});

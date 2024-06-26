@@ -2,19 +2,20 @@ USE fractuz
 GO
 -- exec pr_ManagerUsers_sel
 CREATE OR ALTER PROCEDURE pr_AppDataBases_sel
-	 @pGuid 					uniqueidentifier 	= NULL
-	,@pApplication			uniqueidentifier	= NULL
-	,@pDatabaseName		NVARCHAR (max) 	= NULL
-	,@pBuildOrder			INT					= NULL
+	 @pGuid 						uniqueidentifier 	= NULL
+	,@pApplication				uniqueidentifier	= NULL
+	,@pDatabaseName			NVARCHAR (max) 	= NULL
+	,@pDatabaseDescripton	NVARCHAR (max) 	= NULL
+	,@pBuildOrder				INT					= NULL
 
-	,@pColumnsOrderBy		NVARCHAR(MAX)		= NULL
-	,@pPageNumber			INT					= NULL 	OUTPUT
-	,@pPageRowCount		INT					= NULL 	OUTPUT
+	,@pColumnsOrderBy			NVARCHAR(MAX)		= NULL
+	,@pPageNumber				INT					= NULL 	OUTPUT
+	,@pPageRowCount			INT					= NULL 	OUTPUT
 
-	,@rTotalRowCount		INT					= 0		OUTPUT --- quantas linhas totais a pesquisa trouxe
-	,@rSeachRowCount		INT					= 0		OUTPUT --- quantas linhas serão exibidas
-	,@pSearchPageCount	INT					= NULL 	OUTPUT
-	,@rQuery					NVARCHAR(MAX)		= NULL 	OUTPUT --- instrução SQL que trouxe estes dados (DEbug apenas)
+	,@rTotalRowCount			INT					= 0		OUTPUT --- quantas linhas totais a pesquisa trouxe
+	,@rSeachRowCount			INT					= 0		OUTPUT --- quantas linhas serão exibidas
+	,@pSearchPageCount		INT					= NULL 	OUTPUT
+	,@rQuery						NVARCHAR(MAX)		= NULL 	OUTPUT --- instrução SQL que trouxe estes dados (DEbug apenas)
 
 AS BEGIN 
 DECLARE @query nvarchar(max)='
@@ -44,7 +45,13 @@ DECLARE @query nvarchar(max)='
 	IF @pDatabaseName IS NOT NULL 
 		BEGIN
 		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
-		SET @where = CONCAT(@where,'([DatabaseName] = ''',@pDatabaseName,''')')
+		SET @where = CONCAT(@where,'([DatabaseName] like ''%',@pDatabaseName,'%'')')
+		END
+
+	IF @pDatabaseDescripton IS NOT NULL 
+		BEGIN
+		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
+		SET @where = CONCAT(@where,'([DatabaseDescription] like ''%',@pDatabaseDescripton,'%'')')
 		END
 
 	IF @pBuildOrder IS NOT NULL 

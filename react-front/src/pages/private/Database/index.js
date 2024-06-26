@@ -81,8 +81,9 @@ export default function Database () {
 				toggleDisplayType:	()=>{setDisplayType((displayType!==0?0:1));}
 				,searchDatabases : async ()=>{
 					try{
-						
-						const databaseSearchFieldsValues = {Name:refSeachName.current.value, Description:refSeachDesc.current.value}
+						let guidApplication 	= getCaesarDecrypt(idApp);
+						//const response = apiDatabase.httpGet({});
+						const databaseSearchFieldsValues = {Application:guidApplication,Name:refSeachName.current.value}//, Description:refSeachDesc.current.value
 						const response = await apiDatabase.httpGet(databaseSearchFieldsValues);
 						gridRef.current.setGridList(response);
 						
@@ -194,15 +195,19 @@ export default function Database () {
 
 	if(displayType!==1 && !!!idDatabase){
 		return(
-			<LayoutPrivateBody title="Database> Consulta" ref={layoutFormRef}>
-				<DatabaseDisplayType.Search/>
-			</LayoutPrivateBody>
+			<div className="wtdhGeneral_duz24vw_20">
+				<LayoutPrivateBody title="Database> Consulta" ref={layoutFormRef}>
+					<DatabaseDisplayType.Search/>
+				</LayoutPrivateBody>
+			</div>
 		)
 	}else{
 		return(
-			<LayoutPrivateBody title="Database> Cadastro" ref={layoutFormRef}>
-				<DatabaseDisplayType.Register/>
-			</LayoutPrivateBody>
+			<div className="wtdhGeneral_duz24vw_20">
+				<LayoutPrivateBody title="Database> Cadastro" ref={layoutFormRef}>
+					<DatabaseDisplayType.Register/>
+				</LayoutPrivateBody>
+			</div>
 		)
 	}
 }

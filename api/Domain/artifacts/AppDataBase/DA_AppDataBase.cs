@@ -7,23 +7,24 @@ using Microsoft.Data.SqlClient;
 namespace Fractuz.Domain.AppDataBase.DataAccess;
 public static class DA_AppDataBase{
 	public static IEnumerable<EN_AppDataBase> Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,Guid? application=null,string? databaseName=null	,int? buildOrder =null){
+		,Guid? guid=null,Guid? application=null,string? databaseName=null,string? databaseDescription=null	,int? buildOrder =null){
 
 		IEnumerable<EN_AppDataBase> appDataBase_lst = new List<EN_AppDataBase>();
 		DynamicParameters parameters = new DynamicParameters();
-		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pApplication"		, application		, DbType.Guid		, ParameterDirection.Input);
-		parameters.Add("@pDatabaseName"		, databaseName		, DbType.String	, ParameterDirection.Input,150);
-		parameters.Add("@pBuildOrder"			, buildOrder		, DbType.Int32		, ParameterDirection.Input);
+		parameters.Add("@pGuid"					, guid					, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pApplication"		, application			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pDatabaseName"		, databaseName			, DbType.String	, ParameterDirection.Input,150);
+		parameters.Add("@pDatabaseName"		, databaseDescription, DbType.String	, ParameterDirection.Input,150);
+		parameters.Add("@pBuildOrder"			, buildOrder			, DbType.Int32		, ParameterDirection.Input);
 
-		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy	, DbType.String	, ParameterDirection.Input,4000);
-		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@pPageRowCount"		, pageRowCount		, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy		, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pPageNumber"			, pageNumber			, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@pPageRowCount"		, pageRowCount			, DbType.Int32		, ParameterDirection.Output);
 
-		parameters.Add("@rTotalRowCount"		, null				, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@rSeachRowCount"		, null				, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@pSearchPageCount"	, null				, DbType.Int32		, ParameterDirection.Output);
-		parameters.Add("@rQuery"				, null				, DbType.String	, ParameterDirection.Output,4000);
+		parameters.Add("@rTotalRowCount"		, null					, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@rSeachRowCount"		, null					, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@pSearchPageCount"	, null					, DbType.Int32		, ParameterDirection.Output);
+		parameters.Add("@rQuery"				, null					, DbType.String	, ParameterDirection.Output,4000);
 
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			appDataBase_lst = db.Query<EN_AppDataBase>("[dbo].[pr_AppDataBases_sel]",parameters);

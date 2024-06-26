@@ -16,7 +16,13 @@ export const useApiDefault = () => {
 
 		if(bodyData===undefined){bodyData=null;}
 		const myHeaders = new Headers();
-		Object.keys(headerData).forEach((key)=>{myHeaders.append(key, headerData[key]);});
+		Object.keys(headerData).forEach((key)=>{
+			if (key.toLowerCase() === "authorization") {
+				myHeaders.append(key, headerData[key]);
+			} else {
+				myHeaders.append(key, encodeURIComponent(headerData[key]));
+			}
+		});
 
 		const requestOptions = {
 			method: method,

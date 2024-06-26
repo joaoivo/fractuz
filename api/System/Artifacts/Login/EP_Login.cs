@@ -17,8 +17,8 @@ public class EP_Login:IEndPoint{
 
 	public IResult SystemLogin_Get(HttpRequest request){
 		try{
-			string particMail = request.Headers["mail"].ToString();
-			string particPass = request.Headers["pass"].ToString();
+			string particMail = getHeaderStringValues(request.Headers,"mail");
+			string particPass = getHeaderStringValues(request.Headers,"pass");
 			List<EN_ManagerUser>? managerUser_lst = BP_ManagerUser.Login(Config,particMail,particPass);
 			if(managerUser_lst==null){return ApiRoutePressets.returnResults(new EN_Return{isSuccess=false,isError=false,tittle="Login de Usuário",description="Sem resultado de login", dataList = {}});}
 			if(managerUser_lst.Count!=1){

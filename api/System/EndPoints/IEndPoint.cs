@@ -1,5 +1,6 @@
 namespace Fractuz.System.Defaults.EndPoint;
 
+using global::System.Net;
 using Microsoft.AspNetCore.Http;
 public abstract class IEndPoint{
 	protected IConfiguration Config;
@@ -10,8 +11,8 @@ public abstract class IEndPoint{
 	}
 	public string? getHeaderStringValues(IHeaderDictionary headers, string key){
 		if(headers.ContainsKey(key)){
-			if(headers[key].Count() == 1){return headers[key].ToString();}
-			else{return headers[key][0]?.ToString();}
+			if(headers[key].Count() == 1){return WebUtility.UrlDecode(headers[key].ToString());}
+			else{return WebUtility.UrlDecode(headers[key][0]?.ToString());}
 		}
 		return null;
 	}
