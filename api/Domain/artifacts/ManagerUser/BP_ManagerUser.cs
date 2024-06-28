@@ -1,6 +1,5 @@
 using Fractuz.Domain.Users.Entities;
 using Fractuz.Domain.Users.DataAccess;
-using Microsoft.CodeAnalysis;
 
 namespace Fractuz.Domain.Users.BussinesPlan;
 public static class BP_ManagerUser{
