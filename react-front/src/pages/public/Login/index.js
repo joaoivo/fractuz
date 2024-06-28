@@ -11,13 +11,10 @@ import { TreatmentExceptions } from "../../../components/exception";
 import useValidationsDefaults from "../../../system/Components/Validations";
 
 import { LayoutPrivateBody } from "../../../elements/layouts/Private/Body";
-import { TextFieldDefault,PassFieldDefault } from "../../../elements/forms/Fields/TextFields";
+import { TextFieldDefault, PassFieldDefault } from '../../../system/Elements/forms/Fields/TextFields';
 import { LayoutButtonDefault } from "../../../elements/forms/Buttons";
 
 export default function Login(){
-
-	// const [email,setEmail]=useState('jims_ibr@yahoo.com.br');
-	// const [password,setPassword]=useState('a1b2c3d4');
 	const { getLoginToken } = useApiFractuzUsers();
 	const { isFieldsValid } = useValidationsDefaults();
 

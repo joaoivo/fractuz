@@ -35,37 +35,38 @@ public static class JWTTokensManager{
 		return new JwtSecurityTokenHandler().WriteToken(jwtToken);
 	}
 	public static EN_ManagerUser GetUserByBearerToken(HttpRequest request,IConfiguration config){
-		EN_ManagerUser user = new EN_ManagerUser();
+
 		var authorizationHeader = request.Headers["Authorization"].FirstOrDefault();
-		if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer ")){
-			var token = authorizationHeader.Substring("Bearer ".Length).Trim();
-			var handler = new JwtSecurityTokenHandler();
-			var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-			if (jsonToken == null){ throw new JwtTokenInvalidException("json Token nulo"); }
+		if (authorizationHeader == null || !authorizationHeader.StartsWith("Bearer ")){ throw new JwtTokenNotFoundException("Token nulo ou "); }
 
-			Guid guid;
-			Int16 IsAdm;
+		var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+		var handler = new JwtSecurityTokenHandler();
+		var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+		if (jsonToken == null){ throw new JwtTokenInvalidException("json Token nulo"); }
 
-			string currentUTC =(jsonToken.Payload["DateTime"] ?? "").ToString();
-			//,new Claim("DateTime", currentUTC)
-			SimpleCrypto crypto = new SimpleCrypto(currentUTC,config);
-			string userIDDecrypted = crypto.Decrypt(jsonToken.Payload[ClaimTypes.NameIdentifier].ToString());
+		Guid guid;
+		Int16 IsAdm;
 
-			if(Guid.TryParse( userIDDecrypted, out guid)){user.SystemIDX = guid;}
-			if(Int16.TryParse( jsonToken.Payload["IsAdm"].ToString(), out IsAdm)){user.IsAdm = IsAdm==1;}
-			user.ParticName = jsonToken.Payload[ClaimTypes.Name].ToString();
-			user.ParticMail = jsonToken.Payload[ClaimTypes.Email].ToString();
+		string currentUTC =(jsonToken.Payload["DateTime"] ?? "").ToString();
+		//,new Claim("DateTime", currentUTC)
+		SimpleCrypto crypto = new SimpleCrypto(currentUTC,config);
+		string userIDDecrypted = crypto.Decrypt(jsonToken.Payload[ClaimTypes.NameIdentifier].ToString());
 
-			double expiryUnixTimestamp = Convert.ToDouble(jsonToken.Payload["exp"]);
-			DateTimeOffset expiryDateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(expiryUnixTimestamp));
-			if(expiryDateTimeOffset.UtcDateTime < DateTime.UtcNow		){throw new JwtTokenLoadingErrorException("Prazo do bearer expirado.");}
+		EN_ManagerUser user = new EN_ManagerUser();
+		if(Guid.TryParse( userIDDecrypted, out guid)){user.SystemIDX = guid;}
+		if(Int16.TryParse( jsonToken.Payload["IsAdm"].ToString(), out IsAdm)){user.IsAdm = IsAdm==1;}
+		user.ParticName = jsonToken.Payload[ClaimTypes.Name].ToString();
+		user.ParticMail = jsonToken.Payload[ClaimTypes.Email].ToString();
 
-			if(user.SystemIDX == null || user.SystemIDX == Guid.Empty){throw new JwtTokenLoadingErrorException("Sem um ID de usuário Válido");}
-			if(user.IsAdm == null 												){throw new JwtTokenLoadingErrorException("Definição de Admin inválida");}
-			if(string.IsNullOrWhiteSpace(user.ParticName) 				){throw new JwtTokenLoadingErrorException("Nome de usuário do bearer inválido");}
-			if(string.IsNullOrWhiteSpace(user.ParticMail) 				){throw new JwtTokenLoadingErrorException("E-mail do bearer inválido");}
+		double expiryUnixTimestamp = Convert.ToDouble(jsonToken.Payload["exp"]);
+		DateTimeOffset expiryDateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(expiryUnixTimestamp));
+		if(expiryDateTimeOffset.UtcDateTime < DateTime.UtcNow		){throw new JwtTokenLoadingErrorException("Prazo do bearer expirado.");}
 
-		}else{ throw new JwtTokenNotFoundException(); }
+		if(user.SystemIDX == null || user.SystemIDX == Guid.Empty){throw new JwtTokenLoadingErrorException("Sem um ID de usuário Válido");}
+		if(user.IsAdm == null 												){throw new JwtTokenLoadingErrorException("Definição de Admin inválida");}
+		if(string.IsNullOrWhiteSpace(user.ParticName) 				){throw new JwtTokenLoadingErrorException("Nome de usuário do bearer inválido");}
+		if(string.IsNullOrWhiteSpace(user.ParticMail) 				){throw new JwtTokenLoadingErrorException("E-mail do bearer inválido");}
+
 		return user;
 	}
 }
