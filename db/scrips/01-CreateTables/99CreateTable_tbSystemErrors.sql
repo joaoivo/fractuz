@@ -3,15 +3,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[tbSystemErrors](
-	[SystemIdx] 		[uniqueidentifier] NOT NULL,
-	[AppLanguage] 		[nvarchar](10) NULL,
-	[AppMessage] 		[text] NOT NULL,
-	[AppStackTrace] 	[nvarchar](max) NULL,
-	[AppID] 				[uniqueidentifier] NULL,
-	[AppUserID] 		[uniqueidentifier] NULL,
-	[PrevErrorID] 		[uniqueidentifier] NULL,
-	[PageURL] 			[nvarchar](200) NULL,
-	[ExtraData] 		[nvarchar](max) NULL
+	[SystemIdx] 		[uniqueidentifier] 	NOT NULL,
+	[AppProcessDesc]	NVARCHAR (200)			NOT NULL,
+	[AppLanguage] 		[nvarchar](10) 		NULL,
+	[AppMessage] 		[text] 					NOT NULL,
+	[AppStackTrace] 	[nvarchar](max) 		NULL,
+	[AppID] 				[uniqueidentifier] 	NULL,
+	[AppUserID] 		[uniqueidentifier] 	NULL,
+	[PrevErrorID] 		[uniqueidentifier] 	NULL,
+	[PageURL] 			[nvarchar](200) 		NULL,
+	[ExtraData] 		[nvarchar](max) 		NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[tbSystemErrors] ADD  CONSTRAINT [PK_tbSystemErrors] PRIMARY KEY CLUSTERED 

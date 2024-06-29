@@ -2,6 +2,7 @@ USE fractuz
 GO
 CREATE OR ALTER PROCEDURE pr_SystemErrors_ins
 	 @pAppLanguage		NVARCHAR (10) 		= NULL
+	,@pAppProcessDesc	NVARCHAR (200) 	= NULL
 	,@pAppMessage		NVARCHAR (400) 	= NULL
 	,@pAppStackTrace	NVARCHAR(MAX)		= NULL
 	,@pAppID				uniqueidentifier 	= NULL
@@ -25,9 +26,9 @@ BEGIN TRY
 	SET @rIsOK =0
 
 	INSERT INTO [fractuz].[dbo].[tbSystemErrors](--
-		[SystemIDX]	,[AppLanguage]	,[AppMessage]	,[AppStackTrace]	,[AppUserID]	,[AppID]	,[PrevErrorID]	,[PageURL] 	,[ExtraData] 
+		[SystemIDX]	,[AppProcessDesc],[AppLanguage]	,[AppMessage]	,[AppStackTrace]	,[AppUserID]	,[AppID]	,[PrevErrorID]	,[PageURL] 	,[ExtraData] 
 	) VALUES(
-		@rGuid		,@pAppLanguage	,@pAppMessage	,@pAppStackTrace	,@pAppUserID	,@pAppID	,@pPrevErrorID	,@pPageURL	,@pExtraData
+		@rGuid		,@pAppProcessDesc,@pAppLanguage	,@pAppMessage	,@pAppStackTrace	,@pAppUserID	,@pAppID	,@pPrevErrorID	,@pPageURL	,@pExtraData
 	)
 
 	--- Verificar se houve erro durante a atualização

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using api.System.jwt;
 using Fractuz.Domain.Users.Entities;
+using Fractuz.System.Errors.BussinesPlan;
 
 namespace Fractuz.Domain.AppDbTableFields.EndPoints;
 public class EP_AppDbTableField:IEndPoint{
@@ -23,41 +24,48 @@ public class EP_AppDbTableField:IEndPoint{
 
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Get(HttpRequest request){
+		EN_ManagerUser userAuthor=null;
 		try{
-			EN_ManagerUser userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
+			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
 			List<EN_AppDbTableField>? application_lst = BP_AppDbTableField.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true,tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Campos",ex,userAuthor);
 		}
 	}
 
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Post([FromBody] EN_AppDbTableField application,HttpRequest request){
+		EN_ManagerUser userAuthor=null;
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTableField.Insert(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
+			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
+			return ApiRoutePressets.returnResults(BP_AppDbTableField.Insert(Config,application,userAuthor));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Campos",ex,userAuthor);
 		}
 	}
 
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Put([FromBody] EN_AppDbTableField application,HttpRequest request){
+		EN_ManagerUser userAuthor=null;
 		try{
-			return ApiRoutePressets.returnResults(BP_AppDbTableField.Update(Config,application,JWTTokensManager.GetUserByBearerToken(request,Config)));
+			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
+			return ApiRoutePressets.returnResults(BP_AppDbTableField.Update(Config,application,userAuthor));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Atualização de Campos",ex,userAuthor);
 		}
 	}
 
 	[Authorize]
 	public IResult AppDbTableFieldAPI_Delete([FromRoute] string IDX,HttpRequest request){
+		EN_ManagerUser userAuthor=null;
 		try{
+			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
 			Guid SystemIDX;
 			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
-			return ApiRoutePressets.returnResults(BP_AppDbTableField.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
+			return ApiRoutePressets.returnResults(BP_AppDbTableField.Delete(Config,SystemIDX,userAuthor));
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=false,isError=true, tittle="Erro de Runtime",description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusão de Campos",ex,userAuthor);
 		}
 	}
 }

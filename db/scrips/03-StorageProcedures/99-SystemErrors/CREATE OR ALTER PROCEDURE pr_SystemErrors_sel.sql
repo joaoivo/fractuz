@@ -3,6 +3,7 @@ GO
 -- exec pr_SystemErrors_sel
 CREATE OR ALTER PROCEDURE pr_SystemErrors_sel
 	 @pGuid 					uniqueidentifier 	= NULL
+	,@pAppProcessDesc		NVARCHAR (200) 	= NULL
 	,@pAppLanguage			NVARCHAR (10) 		= NULL
 	,@pAppMessage			NVARCHAR (400) 	= NULL
 	,@pAppUserID			uniqueidentifier 	= NULL
@@ -22,6 +23,7 @@ CREATE OR ALTER PROCEDURE pr_SystemErrors_sel
 AS BEGIN 
 DECLARE @query nvarchar(max)='
 	SELECT [SystemIdx]
+			,[AppProcessDesc]
 			,[AppLanguage]
 			,[AppMessage]
 			,[AppStackTrace]
@@ -36,6 +38,12 @@ DECLARE @query nvarchar(max)='
 	DECLARE @where nvarchar(max)=null
 
 	IF @pGuid IS NOT NULL SET @where = CONCAT(' ([SystemIDX]=''',@pGuid,''') ')
+
+	IF @pAppProcessDesc IS NOT NULL 
+		BEGIN
+		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
+		SET @where = CONCAT(@where,'([AppProcessDesc] like ''%',@pAppProcessDesc,'%'')')
+		END
 
 	IF @pAppLanguage IS NOT NULL 
 		BEGIN

@@ -7,21 +7,19 @@ namespace Fractuz.System.Errors.DataAccess;
 
 public static class DA_Errors{
 	public static IEnumerable<EN_Error> Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,string? appLanguage=null,string? appMessage=null,Guid? appUserID=null,Guid? appID=null,Guid? prevErrorID=null
+		,Guid? guid=null,string? appProcessDesc=null,string? appLanguage=null,string? appMessage=null,Guid? appUserID=null,Guid? appID=null,Guid? prevErrorID=null
 		,Boolean? isAdm =null){
 
 		IEnumerable<EN_Error> managerUser_lst = new List<EN_Error>();
 		DynamicParameters parameters = new DynamicParameters();
 		parameters.Add("@pGuid"					, guid				, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pAppProcessDesc"	, appProcessDesc	, DbType.String	, ParameterDirection.Input,200);
 		parameters.Add("@pAppLanguage"		, appLanguage		, DbType.String	, ParameterDirection.Input,10);
 		parameters.Add("@pAppMessage"			, appMessage		, DbType.String	, ParameterDirection.Input,400);
 
 		parameters.Add("@pAppUserID"			, appUserID			, DbType.Guid	, ParameterDirection.Input);
 		parameters.Add("@pAppID"				, appID				, DbType.Guid	, ParameterDirection.Input);
 		parameters.Add("@pPrevErrorID"		, prevErrorID		, DbType.Guid	, ParameterDirection.Input);
-
-		parameters.Add("@pPageURL"				, appLanguage		, DbType.String	, ParameterDirection.Input,200);
-		parameters.Add("@pExtraData"			, appMessage		, DbType.String	, ParameterDirection.Input,4000);
 
 		parameters.Add("@pColumnsOrderBy"	, columnsOrderBy	, DbType.String	, ParameterDirection.Input,4000);
 		parameters.Add("@pPageNumber"			, pageNumber		, DbType.Int32		, ParameterDirection.Output);
@@ -50,6 +48,7 @@ public static class DA_Errors{
 		DynamicParameters parameters = new DynamicParameters();
 
 		parameters.Add("@pAppLanguage"		, error.AppLanguage		, DbType.String	, ParameterDirection.Input,10);
+		parameters.Add("@pAppProcessDesc"	, error.AppProcessDesc	, DbType.String	, ParameterDirection.Input,200);
 		parameters.Add("@pAppMessage"			, error.AppMessage		, DbType.String	, ParameterDirection.Input,400);
 		parameters.Add("@pAppStackTrace"		, error.AppStackTrace	, DbType.String	, ParameterDirection.Input,4000);
 
@@ -82,6 +81,7 @@ public static class DA_Errors{
 		DynamicParameters parameters = new DynamicParameters();
 
 		parameters.Add("@pGuid"					, error.SystemIDX			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pAppProcessDesc"	, error.AppProcessDesc	, DbType.String	, ParameterDirection.Input,200);
 		parameters.Add("@pAppLanguage"		, error.AppLanguage		, DbType.String	, ParameterDirection.Input,10);
 		parameters.Add("@pAppMessage"			, error.AppMessage		, DbType.String	, ParameterDirection.Input,400);
 		parameters.Add("@pAppStackTrace"		, error.AppStackTrace	, DbType.String	, ParameterDirection.Input,4000);

@@ -3,6 +3,7 @@ using api.System.jwt;
 using Fractuz.Domain.Users.BussinesPlan;
 using Fractuz.Domain.Users.Entities;
 using Fractuz.System.Defaults.EndPoint;
+using Fractuz.System.Errors.BussinesPlan;
 
 namespace Fractuz.System.Login.EndPoints;
 public class EP_Login:IEndPoint{
@@ -34,7 +35,7 @@ public class EP_Login:IEndPoint{
 				}
 			}});
 		}catch(Exception ex){
-			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=false,isError=true,tittle="Erro de Runtime", description="Comando não executado: "+ex.Message + " em \n " +ex.StackTrace});
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Login de Usuário",ex);
 		}
 	}
 }

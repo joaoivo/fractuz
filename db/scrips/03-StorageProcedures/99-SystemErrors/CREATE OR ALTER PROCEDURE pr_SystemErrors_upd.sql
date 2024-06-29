@@ -2,6 +2,7 @@ USE fractuz
 GO
 CREATE OR ALTER PROCEDURE pr_SystemErrors_upd
 	 @pGuid 				uniqueidentifier 	= NULL
+	,@pAppProcessDesc	NVARCHAR (200) 	= NULL
 	,@pAppLanguage		NVARCHAR (10) 		= NULL
 	,@pAppMessage		NVARCHAR (400) 	= NULL
 	,@pAppStackTrace	NVARCHAR(MAX)		= NULL
@@ -29,16 +30,17 @@ BEGIN TRY
 
 	UPDATE [fractuz].[dbo].[tbSystemErrors]
 		SET
-			 [AppLanguage]				= isNull(@pAppLanguage	,[AppLanguage])
-			,[AppMessage]				= isNull(@pAppMessage	,[AppMessage])
-			,[AppStackTrace]			= isNull(@pAppStackTrace,[AppStackTrace])
+			 [AppLanguage]		= isNull(@pAppLanguage	,[AppLanguage])
+			,[AppProcessDesc]	= isNull(@pAppProcessDesc	,[AppProcessDesc])
+			,[AppMessage]		= isNull(@pAppMessage	,[AppMessage])
+			,[AppStackTrace]	= isNull(@pAppStackTrace,[AppStackTrace])
 			
-			,[AppUserID]				= isNull(@pAppUserID		,[AppUserID])
-			,[AppID]						= isNull(@pAppID			,[AppID])
-			,[PrevErrorID]				= isNull(@pPrevErrorID	,[PrevErrorID])
+			,[AppUserID]		= isNull(@pAppUserID		,[AppUserID])
+			,[AppID]				= isNull(@pAppID			,[AppID])
+			,[PrevErrorID]		= isNull(@pPrevErrorID	,[PrevErrorID])
 
-			,[PageURL]					= isNull(@pPageURL		,[PageURL])
-			,[ExtraData]				= isNull(@pExtraData		,[ExtraData])
+			,[PageURL]			= isNull(@pPageURL		,[PageURL])
+			,[ExtraData]		= isNull(@pExtraData		,[ExtraData])
 
 		WHERE
 			[SystemIDX] = @pGuid
