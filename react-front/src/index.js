@@ -10,6 +10,7 @@ import {
 import { DevEnvAssist } from './system/DevEnvAssist';
 import { ContextAuthProvider		} from './system/Contexts/Auth';
 import { ContextConsoleProvider	} from './system/Contexts/Console';
+import { ContextPanelMessageProvider } from './system/Contexts/Message';
 
 import { getRoutesForPrivatePages, getRoutesForPublicPages, getRoutesForSystemPages } from './pages/routes';
 
@@ -21,11 +22,13 @@ root.render(
 		<BrowserRouter>
 			<ContextConsoleProvider>
 				<ContextAuthProvider>
-					<Routes>
-						{getRoutesForPublicPages()}
-						{getRoutesForPrivatePages()}
-						{getRoutesForSystemPages()}
-					</Routes>
+					<ContextPanelMessageProvider>
+						<Routes>
+							{getRoutesForPublicPages()}
+							{getRoutesForPrivatePages()}
+							{getRoutesForSystemPages()}
+						</Routes>
+					</ContextPanelMessageProvider>
 				</ContextAuthProvider>
 			</ContextConsoleProvider>
 		</BrowserRouter>
