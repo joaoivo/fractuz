@@ -6,6 +6,21 @@ export const LayoutPrivateBody = forwardRef(({children, ...props}, ref) => {
 	const { addHistoryLog } = useContextConsole();
 	const [formMessages, setFormMessages	] = useState([]);
 
+	React.useEffect(() => {
+		document.addEventListener("keydown", function (event) {
+			if (event.keyCode !== 13 || (event.target.nodeName !== "INPUT" && event.target.nodeName !== "BUTTON")) {return;}
+			var divForm = document.getElementById("divForm");
+			var form = [... divForm.querySelectorAll('input'),
+							... divForm.querySelectorAll('button')];
+			if(form.length <=1){return;}
+
+			var index = Array.prototype.indexOf.call(form, event.target);
+			index++;
+			if(index>=form.length){index=(form.length % (index));}
+			form[index].focus();
+		});
+	}, [])
+
 	function MessagesToPanel_get 	(){return formMessages}
 	function MessagesToPanel_clean(){setFormMessages([])}
 	function MessagesToPanel_set 	(val){
@@ -41,7 +56,7 @@ export const LayoutPrivateBody = forwardRef(({children, ...props}, ref) => {
 	}));
 
 	return (
-		<div className="wtdhGeneral_duz24pc_24" style={{border :"1px solid gray", borderRadius: "10px", padding: "5px" }}>
+		<div id="divForm" className="wtdhGeneral_duz24pc_24" style={{border :"1px solid gray", borderRadius: "10px", padding: "5px" }}>
 			<h1>{props && props.title && props.title}</h1>
 			<hr/>
 			<div style={{width:"100%"}}>

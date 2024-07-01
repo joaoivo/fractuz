@@ -10,8 +10,8 @@ import useValidationsDefaults from '../../../system/Components/Validations';
 
 import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 import { TextFieldDefault } from '../../../system/Elements/forms/Fields/TextFields';
-import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
-import { Grid } from '../../../elements/forms/Grids';
+import { LayoutButtonDefault } from '../../../system/Elements/forms/Buttons';
+import { Grid } from '../../../system/Elements/forms/Grids';
 import { DatabaseGridDataViewer } from './DatabaseGridDataViewer';
 
 import { TreatmentExceptions } from '../../../components/exception';

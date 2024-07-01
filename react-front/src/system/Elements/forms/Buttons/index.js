@@ -1,4 +1,4 @@
-import { isObjectEmpty } from "../../../system/Libs/Objects"
+import { isObjectEmpty } from '../../../../system/Libs/Objects';
 
 
 export const defaultButtonProperties = {

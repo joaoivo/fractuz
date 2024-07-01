@@ -2,7 +2,7 @@ import { useState, useRef , useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 
 import { TextFieldDefault } from '../../../system/Elements/forms/Fields/TextFields';
-import { LayoutButtonDefault } from '../../../elements/forms/Buttons';
+import { LayoutButtonDefault } from '../../../system/Elements/forms/Buttons';
 import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 import useValidationsDefaults from '../../../system/Components/Validations';
 
@@ -10,7 +10,7 @@ import { useApiFractuzTables } from '../../../components/api/fractus/Tables';
 
 import { TreatmentExceptions } from '../../../components/exception';
 
-import { Grid } from '../../../elements/forms/Grids';
+import { Grid } from '../../../system/Elements/forms/Grids';
 import { TableGridDataViewer } from './TableGridDataViewer';
 import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
 import { goToAddress } from '../../../system/Libs/Urls';
