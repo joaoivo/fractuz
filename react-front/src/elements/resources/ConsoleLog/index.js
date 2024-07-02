@@ -41,10 +41,9 @@ export default function ConsoleLog() {
 		setInputValue("");
 		setHistories(getHistoryLog());
 	};
-
 	useEffect(() => {
-		// No additional action needed, this effect just ensures re-rendering when logUpdated changes
-  }, [histories]);
+		setHistories(getHistoryLog());
+	}, []);
 
 	return (
 		<pre>

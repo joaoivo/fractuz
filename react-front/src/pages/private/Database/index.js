@@ -5,12 +5,13 @@ import { goToAddress,goToRoutes } from '../../../system/Libs/Urls';
 import { routesPrivatePages } from '../../routes';
 
 import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
-import { useApiFractuzDatabases } from '../../../components/api/fractus/Database';
+import { useApiFractuzDatabases } from '../../../components/api/fractus/Databases';
 import { useContextPanelMessage } from '../../../system/Contexts/Message';
 import useValidationsDefaults from '../../../system/Components/Validations';
 
 import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 import { TextFieldDefault } from '../../../system/Elements/forms/Fields/TextFields';
+import { formTools } from '../../../system/Elements/forms/Tools';
 import { LayoutButtonDefault } from '../../../system/Elements/forms/Buttons';
 import { Grid } from '../../../system/Elements/forms/Grids';
 import { DatabaseGridDataViewer } from './DatabaseGridDataViewer';
@@ -72,21 +73,23 @@ export default function Database () {
 		seachForm:{
 			fields:{
 				dbaseName:{
-					labelText:"Nome da Base de Dados"
+					 labelText:"Nome da Base de Dados"
 					,fieldID:"Name"
+					,refValue:refSeachName
 				}
 				,dbaseDesc:{
-					labelText:"Descrição"
+					 labelText:"Descrição"
 					,fieldID:"Description"
+					,refValue:refSeachDesc
 				}
 			}
 			,commands:{
 				toggleDisplayType:	()=>{setDisplayType((displayType!==0?0:1));}
 				,searchDatabases : async ()=>{
 					try{
-						let guidApplication 	= getCaesarDecrypt(idApp);
-						//const response = apiDatabase.httpGet({});
-						const databaseSearchFieldsValues = {Application:guidApplication,Name:refSeachName.current.value}//, Description:refSeachDesc.current.value
+						const databaseSearchFieldsValues =  formTools.getObjectFromFormData(databaseConfig.seachForm.fields);
+						databaseSearchFieldsValues.Application = getCaesarDecrypt(idApp);
+						
 						const response = await apiDatabase.httpGet(databaseSearchFieldsValues);
 						gridRef.current.setGridList(response);
 						
@@ -147,11 +150,9 @@ export default function Database () {
 							layoutFormRef.current.MessagesToPanel_set("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
 							return;
 						}
-						const databaseRegisterFieldsValues = {Application:getCaesarDecrypt(idApp)
-							, DatabaseName			:refRegisName.current.value
-							, DatabaseDescription:refRegisDesc.current.value
-							, BuildOrder 			:refRegisOrder.current.value
-						};
+						const databaseRegisterFieldsValues =  formTools.getObjectFromFormData(databaseConfig.registerForm.fields);
+						databaseRegisterFieldsValues.Application=getCaesarDecrypt(idApp);
+
 						let response;
 						if(isStringEmptyOrSpaces(idDatabase)){
 							response = await apiDatabase.httpInsert({},databaseRegisterFieldsValues);

@@ -2,6 +2,7 @@ import { useState, useRef , useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 
 import { TextFieldDefault } from '../../../system/Elements/forms/Fields/TextFields';
+import { CheckboxFieldDefault } from '../../../system/Elements/forms/Fields/BoolFields';
 import { LayoutButtonDefault } from '../../../system/Elements/forms/Buttons';
 import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
 import useValidationsDefaults from '../../../system/Components/Validations';
@@ -17,6 +18,7 @@ import { goToAddress } from '../../../system/Libs/Urls';
 import { routesPrivatePages } from '../../routes';
 
 import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
+import { formTools } from '../../../system/Elements/forms/Tools';
 
 import './../../../style/dimensions/dimensions_widthDozens.css'
 import './../../../style/aligns/disposition.css'
@@ -27,7 +29,7 @@ export default function Tables(){
 	const { isFieldsValid } = useValidationsDefaults();
 	
 	const [displayType	, setDisplayType] = useState(0);
-	const { id } = useParams();
+	const { idDatabase,idTable } = useParams();
 
 	const layoutFormRef = useRef(null);
 	const gridRef = useRef(null);
@@ -38,14 +40,14 @@ export default function Tables(){
 	const refRegisBuiltOrder	= useRef("");
 	const refRegisName			= useRef("");
 	const refRegisDesc			= useRef("");
-	const refRegisDescription	= useRef("");
 	const refRegisPrefix			= useRef("");
 	const refRegisHistory		= useRef("");
 
+	//"/Table/:idDatabase/:idTable"
 	useEffect(
 		()=>{
-			if(!!!id){return;}
-			let guid = getCaesarDecrypt(id);
+			if(!!!idDatabase){return;}
+			let guid = getCaesarDecrypt(idDatabase);
 			const response = apiTable.httpGet({guid:guid});
 			if(response instanceof Promise){
 				response.then(result => {
@@ -55,7 +57,7 @@ export default function Tables(){
 				})
 			}
 		}
-		,[id,apiTable]
+		,[idDatabase,idTable,apiTable]
 	)
 
 	const tableConfig ={
@@ -96,7 +98,7 @@ export default function Tables(){
 			fields:{
 				appName:{
 					labelText:"Nome da Tabela"
-					,fieldID:"Name"
+					,fieldID:"TableName"
 					,refValue:refRegisName
 					,Validation:{
 						lengthMin:3
@@ -106,7 +108,7 @@ export default function Tables(){
 				}
 				,appDesc:{
 					labelText:"Descrição"
-					,fieldID:"Description"
+					,fieldID:"TableDescription"
 					,refValue:refRegisDesc
 					,Validation:{
 						lengthMin:5
@@ -114,10 +116,33 @@ export default function Tables(){
 						,basicRules:["NotNull"]
 					}
 				}
+				,appBuiltOrder:{
+					labelText:"Ordem de Criação"
+					,fieldID:"TableBuiltOrder"
+					,refValue:refRegisBuiltOrder
+					,Validation:{
+						lengthMin:1
+						,lengthMax:10
+						,basicRules:["NotNull"]
+					}
+				}
+				,appFieldPrefix:{
+					labelText:"Prefixo de Campo"
+					,fieldID:"FieldPrefix"
+					,refValue:refRegisPrefix
+					,Validation:{
+						lengthMax:10
+					}
+				}
+				,appTableHistory:{
+					labelText:"Histórico de Tabela?"
+					,fieldID:"TableHistory"
+					,refValue:refRegisHistory
+				}
 			}
 			,commands:{
 				toggleDisplayType:	()=>{
-					if(!!id){goToAddress(routesPrivatePages.Table.path);}
+					if(!!idTable){goToAddress(routesPrivatePages.Table.path);}
 					else{setDisplayType((displayType!==0?0:1));}
 				}
 				,addTables : async ()=>{
@@ -126,14 +151,14 @@ export default function Tables(){
 							layoutFormRef.current.MessagesToPanel_set("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
 							return;
 						}
-						const tableRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisDesc.current.value}
+						const tableRegisterFieldsValues = formTools(tableConfig.registerForm.fields);//{Name:refRegisName.current.value, Description:refRegisDesc.current.value}
 						let response;
-						if(isStringEmptyOrSpaces(id)){
+						if(isStringEmptyOrSpaces(idTable)){
 							response = await apiTable.httpInsert({},tableRegisterFieldsValues);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.isSuccess){setDisplayType(0);}
 						}else{
-							tableRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
+							tableRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(idTable);
 							response = await apiTable.httpUpdate({},tableRegisterFieldsValues);
 							alert(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
@@ -162,24 +187,30 @@ export default function Tables(){
 		)
 		,Register : ()=>(
 			<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
-				<TextFieldDefault params={tableConfig.registerForm.fields.appName} ref={refRegisName}/>
-				<TextFieldDefault params={tableConfig.registerForm.fields.appDesc} ref={refRegisDesc}/>
-				<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.addApplications}>Salvar</LayoutButtonDefault>
+				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+					<TextFieldDefault params={tableConfig.registerForm.fields.appName} ref={refRegisName}/>
+					<TextFieldDefault params={tableConfig.registerForm.fields.appDesc} ref={refRegisDesc}/>
+				</div>
+				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+					<TextFieldDefault params={tableConfig.registerForm.fields.appBuiltOrder } ref={refRegisBuiltOrder}/>
+					<TextFieldDefault params={tableConfig.registerForm.fields.appFieldPrefix} ref={refRegisPrefix}/>
+					<CheckboxFieldDefault params={tableConfig.registerForm.fields.appTableHistory} ref={refRegisHistory}/>
+				</div>
+				<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.addTables}>Salvar</LayoutButtonDefault>
 				<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
 			</div>
 		)
 	}
 
-
-	if(displayType!==1 && !!!id){
+	if(displayType!==1 && !!!idTable){
 		return(
-			<LayoutPrivateBody title="Tables> Consulta" ref={layoutFormRef}>
+			<LayoutPrivateBody title="Tables > Consulta" ref={layoutFormRef}>
 				<TableDisplayTypes.Search/>
 			</LayoutPrivateBody>
 		)
 	}else{
 		return(
-			<LayoutPrivateBody title="Tables> Cadastro" ref={layoutFormRef}>
+			<LayoutPrivateBody title="Tables > Cadastro" ref={layoutFormRef}>
 				<TableDisplayTypes.Register/>
 			</LayoutPrivateBody>
 		)

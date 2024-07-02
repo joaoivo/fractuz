@@ -27,9 +27,9 @@ export function ContextPanelMessageProvider({ children }) {
 		
 		setTimeout(() => {
 			if (divMessageBoxRef.current) {
-				divMessageBoxRef.current.style.opacity = 1;
+				divMessageBoxRef.current.style.opacity = 0.9;
 			}
-		}, 300); // Duration of the transition
+		}, 300);
 
 		if(message===undefined		){message="";}
 		if(details===undefined		){details="";}
@@ -53,12 +53,11 @@ export function ContextPanelMessageProvider({ children }) {
 	const messageBoxClose = () => {
 		if (!divMessageBoxRef.current) {return;}
 		divMessageBoxRef.current.style.opacity = 0;
-		//divMessageBoxRef.current.style.display = "none";
 		setTimeout(() => {
 			if (divMessageBoxRef.current) {
 				divMessageBoxRef.current.style.display = "none";
 			}
-		}, 300); // Duration of the transition
+		}, 300);
 	};
 
 	function messageBoxOpen_ok			(message,tittle,details){messageBoxOpen(jsonMessageType.ok		,message,tittle,details);}
@@ -74,7 +73,7 @@ export function ContextPanelMessageProvider({ children }) {
 			{children}
 			<div ref={divMessageBoxRef} className="messageBackground wtdhGeneral_dec10pc_10 generalDisposition_horizDisp_center generalDisposition_verticDisp_center hghtGeneral_dec10pc_10"  style={{opacity:"0", transition: "opacity 0.5s" }}>
 
-				<div id="divMessageBoxPanel" className="generalDisposition_horizDisp_center border" style={{border:"1px solid black",borderRadius: "15px", backgroundColor:"#0055ffdd", padding:"10px"}}>
+				<div id="divMessageBoxPanel" className="generalDisposition_horizDisp_center border" style={{border:"1px solid black",borderRadius: "15px", backgroundColor:"#ffffff", padding:"10px"}}>
 					<div style={{width:"20%"}}>
 						<img ref={imgMessageBoxRef} className="wtdhGeneral_dec10pc_10" style={{maxWidth:"100%"}}/>
 					</div>

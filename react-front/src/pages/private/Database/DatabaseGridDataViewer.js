@@ -1,4 +1,4 @@
-import { useApiFractuzDatabases } from "../../../components/api/fractus/Database";
+import { useApiFractuzDatabases } from "../../../components/api/fractus/Databases";
 import { TreatmentExceptions } 	from "../../../components/exception";
 import { getCaesarEncrypt } 		from "../../../system/Libs/Crypto";
 import { goToAddress,goToRoutes } 				from "../../../system/Libs/Urls";
@@ -28,7 +28,7 @@ export const DatabaseGridDataViewer =(props)=>{
 		}
 	}
 	const database_table=()=>{
-		goToRoutes(routesPrivatePages.DatabaseView.path+"/","idApp", getCaesarEncrypt(props.Data.SystemIDX));
+		goToRoutes(routesPrivatePages.TableView.path+"/","idDatabase", getCaesarEncrypt(props.Data.SystemIDX));
 	}
 
 	return(
@@ -49,7 +49,7 @@ export const DatabaseGridDataViewer =(props)=>{
 			</div>
 			<div style={{display:"flex", flexDirection:"column", margin:"5px"}}>
 				<button onClick={database_edit	}>Editar</button>
-				<button onClick={database_table	}>Databases</button>
+				<button onClick={database_table	}>Tabelas</button>
 				<button onClick={database_delete	}>Excluir</button>
 			</div>
 

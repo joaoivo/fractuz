@@ -13,6 +13,7 @@ import useValidationsDefaults from "../../../system/Components/Validations";
 
 import { LayoutPrivateBody } from "../../../elements/layouts/Private/Body";
 import { TextFieldDefault, PassFieldDefault } from '../../../system/Elements/forms/Fields/TextFields';
+import { formTools } from "../../../system/Elements/forms/Tools";
 import { LayoutButtonDefault } from "../../../system/Elements/forms/Buttons";
 
 export default function Login(){
@@ -21,7 +22,7 @@ export default function Login(){
 
 	const {login, isUserAuthenticated} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
-	const {messageBoxOpen_ok,messageBoxOpen_warning,messageBoxOpen_waiting,messageBoxOpen_error} = useContextPanelMessage();
+	const {messageBoxOpen_ok,messageBoxOpen_warning,messageBoxOpen_error} = useContextPanelMessage();
 	const {treatExceptions} = TreatmentExceptions();
 
 	const layoutFormRef = useRef(null);
@@ -60,7 +61,9 @@ export default function Login(){
 							return;
 						}
 
-						const response = await getLoginToken({mail:refLoginMail.current.value, pass:refLoginPass.current.value});
+						const requestData = formTools.getObjectFromFormData(loginConfig.loginForm.fields);
+						const response = await getLoginToken(requestData);
+
 						if(!response.isSuccess){
 							let message =`Login não autorizado: ${response.description}`
 							messageBoxOpen_warning(message, "Login não efetuado");

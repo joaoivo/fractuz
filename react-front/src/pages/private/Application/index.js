@@ -5,6 +5,7 @@ import { useParams } 						from 'react-router-dom';
 import { TextFieldDefault } 				from '../../../system/Elements/forms/Fields/TextFields'; ///'../../../elements/forms/Fields/TextFields';
 import { LayoutButtonDefault } 			from '../../../system/Elements/forms/Buttons';
 import { Grid } 								from '../../../system/Elements/forms/Grids';
+import { formTools } from '../../../system/Elements/forms/Tools';
 
 import { useApiFractuzApplications } 	from '../../../components/api/fractus/Applications';
 import useValidationsDefaults 			from '../../../system/Components/Validations';
@@ -60,10 +61,12 @@ export default function Application(){
 				appName:{
 					 labelText:"Nome da Aplicação"
 					,fieldID:"Name"
+					,refValue:refSeachName
 				}
 				,appDesc:{
 					 labelText:"Descrição"
 					,fieldID:"Description"
+					,refValue:refSeachDesc
 				}
 			}
 			,commands:{
@@ -71,7 +74,7 @@ export default function Application(){
 				,searchApplications : async ()=>{
 					try{
 						
-						const applicationSearchFieldsValues = {Name:refSeachName.current.value, Description:refSeachDesc.current.value}
+						const applicationSearchFieldsValues =formTools.getObjectFromFormData(applicationConfig.seachForm.fields);
 						const response = await apiApplication.httpGet(applicationSearchFieldsValues);
 						gridRef.current.setGridList(response);
 						
@@ -122,7 +125,7 @@ export default function Application(){
 							layoutFormRef.current.MessagesToPanel_set("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
 							return;
 						}
-						const applicationRegisterFieldsValues = {Name:refRegisName.current.value, Description:refRegisDesc.current.value}
+						const applicationRegisterFieldsValues = formTools.getObjectFromFormData(applicationConfig.registerForm.fields);//{Name:refRegisName.current.value, Description:refRegisDesc.current.value}
 						let response;
 						if(isStringEmptyOrSpaces(id)){
 							response = await apiApplication.httpInsert({},applicationRegisterFieldsValues);
