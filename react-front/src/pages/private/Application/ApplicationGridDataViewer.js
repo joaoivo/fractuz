@@ -3,11 +3,13 @@ import { TreatmentExceptions } 			from "../../../components/exception";
 import { getCaesarEncrypt } 				from "../../../system/Libs/Crypto";
 import { goToAddress,goToRoutes } 		from "../../../system/Libs/Urls";
 import { routesPrivatePages } 			from "../../routes";
+import { useContextPanelMessage }		from "../../../system/Contexts/Message";
 
 export const ApplicationGridDataViewer =(props)=>{
 
 	const { httpDelete} = useApiFractuzApplications();
 	const { treatExceptions	} = TreatmentExceptions();
+	const {messageBoxOpen_ok} = useContextPanelMessage();
 
 	const application_edit=()=>{goToAddress(routesPrivatePages.Application.path+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
 	const application_delete=async ()=>{
@@ -18,7 +20,7 @@ export const ApplicationGridDataViewer =(props)=>{
 			let list = props.gridFunctions.getGridList().filter(item => item.SystemIDX !== props.Data.SystemIDX);
 			props.gridFunctions.setGridList(list);
 			let message ="Applicação excluída com Sucesso!";
-			alert(message);
+			messageBoxOpen_ok(message);
 			props.layoutFormRef.current.MessagesToPanel_set(message);
 		}catch(ex){
 			treatExceptions(ex,"Exclusão de Aplicações");

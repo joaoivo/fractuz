@@ -297,7 +297,7 @@ export default function useValidationsDefaults(){
 						let validationTmpResult = enumValidationBasicRules[functionName](thisFieldValue);
 						if(validationTmpResult.length>0){
 							resultField = resultField.concat(validationTmpResult);
-							if(!isFirstInvalidFieldFocused){
+							if(!isFirstInvalidFieldFocused && fieldsName.length >1){
 								isFirstInvalidFieldFocused=true;
 								thisFieldRef.current.setFocus();
 								thisFieldRef.current.scrollIntoView();

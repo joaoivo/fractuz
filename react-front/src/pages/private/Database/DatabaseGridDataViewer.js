@@ -3,11 +3,13 @@ import { TreatmentExceptions } 	from "../../../components/exception";
 import { getCaesarEncrypt } 		from "../../../system/Libs/Crypto";
 import { goToAddress,goToRoutes } 				from "../../../system/Libs/Urls";
 import { routesPrivatePages } 	from "../../routes";
+import { useContextPanelMessage } from "../../../system/Contexts/Message";
 
 export const DatabaseGridDataViewer =(props)=>{
 
 	const { httpDelete} = useApiFractuzDatabases();
 	const { treatExceptions	} = TreatmentExceptions();
+	const {messageBoxOpen_ok} = useContextPanelMessage();
 
 	const database_edit=()=>{goToAddress(routesPrivatePages.Database.path+getCaesarEncrypt(props.Data.Application)+"/"+ getCaesarEncrypt(props.Data.SystemIDX));}
 	const database_delete=async ()=>{
@@ -18,7 +20,7 @@ export const DatabaseGridDataViewer =(props)=>{
 			let list = props.gridFunctions.getGridList().filter(item => item.SystemIDX !== props.Data.SystemIDX);
 			props.gridFunctions.setGridList(list);
 			let message ="Base de dados excluída com Sucesso!";
-			alert(message);
+			messageBoxOpen_ok(message);
 			props.layoutFormRef.current.MessagesToPanel_set(message);
 		}catch(ex){
 			treatExceptions(ex,"Exclusão de Base de Dados");

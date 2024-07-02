@@ -71,8 +71,7 @@ function PublicRoute() {
 export function getRoutes(rout,LayoutComponent){
 	return(
 		<Route element={<LayoutComponent />}>
-			{
-				Object.entries(rout).map(([key, rt]) => (
+			{	Object.entries(rout).map(([key, rt]) => (
 					<Route key={key} path={rt.path} element={<article className='body'><rt.app /></article>} />
 				))
 			}

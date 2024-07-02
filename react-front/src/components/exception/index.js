@@ -1,11 +1,12 @@
 import { ExceptionUserDefault } from "../../system/Components/Exceptions";
 import { treatExceptionDefaultsByTypes, treatDefaultError } from "../../system/Libs/Exceptions";
 import { useContextConsole } from "../../system/Contexts/Console";
-
-
+import { useContextPanelMessage } from "../../system/Contexts/Message";
 
 export const TreatmentExceptions=()=>{
 	const { addHistoryLog } = useContextConsole();
+	const {messageBoxOpen_error} = useContextPanelMessage();
+
 
 	const treatExceptionUser = (error, processDesc) =>{
 	
@@ -14,7 +15,7 @@ export const TreatmentExceptions=()=>{
 			return;
 		}
 		const message = `${error}!`;
-		alert(message);
+		messageBoxOpen_error(message,"Erro ao "+processDesc);
 		addHistoryLog(message);
 	}
 
@@ -22,7 +23,7 @@ export const TreatmentExceptions=()=>{
 		try{
 			treatExceptionDefaultsByTypes(error, processDesc, treatExceptionUser);
 		}catch(ex){
-			alert(`Erro no processo interno. O tratamento de erro não pode agir. `);
+			messageBoxOpen_error(`Erro no processo interno. O tratamento de erro não pode agir.`,"Erro ao "+processDesc);
 			console.error("Process Error Object",error);
 			console.error("ErrorTreating Error Object",ex);
 			return;

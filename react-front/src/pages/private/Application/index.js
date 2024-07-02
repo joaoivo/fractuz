@@ -7,7 +7,8 @@ import { LayoutButtonDefault } 			from '../../../system/Elements/forms/Buttons';
 import { Grid } 								from '../../../system/Elements/forms/Grids';
 
 import { useApiFractuzApplications } 	from '../../../components/api/fractus/Applications';
-import useValidationsDefaults from '../../../system/Components/Validations';
+import useValidationsDefaults 			from '../../../system/Components/Validations';
+import { useContextPanelMessage } 		from '../../../system/Contexts/Message';
 import { LayoutPrivateBody } 				from '../../../elements/layouts/Private/Body';
 
 import { TreatmentExceptions } 			from '../../../components/exception';
@@ -24,6 +25,7 @@ export default function Application(){
 	const apiApplication = useApiFractuzApplications();
 	const { treatExceptions	} = TreatmentExceptions();
 	const { isFieldsValid } = useValidationsDefaults();
+	const {messageBoxOpen_ok} = useContextPanelMessage();
 	
 	const [applicationDisplayType	, setApplicationDisplayType] = useState(0);
 	const { id } = useParams();
@@ -129,7 +131,7 @@ export default function Application(){
 						}else{
 							applicationRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
 							response = await apiApplication.httpUpdate({},applicationRegisterFieldsValues);
-							alert(response.description);
+							messageBoxOpen_ok(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.isSuccess){goToAddress(routesPrivatePages.Application.path);}
 						}

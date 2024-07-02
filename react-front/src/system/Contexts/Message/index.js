@@ -44,8 +44,8 @@ export function ContextPanelMessageProvider({ children }) {
 			else if(!("header" in obj)){divBoxMessageHeadersRef.current.innerHTML=obj.header;}
 		}
 
-		if(divBoxMessageMessageRef.current && message			){divBoxMessageMessageRef.current.innerHTML=message;}
-		if(divBoxMessageDetailsRef.current && details			){divBoxMessageDetailsRef.current.innerHTML=details;}
+		if(divBoxMessageMessageRef.current){divBoxMessageMessageRef.current.innerHTML=message;}
+		if(divBoxMessageDetailsRef.current){divBoxMessageDetailsRef.current.innerHTML=details;}
 
 		if(divBoxMessageButtomsRef.current	){divBoxMessageButtomsRef.current.style.display=obj.pnlButtoms?"flex":"none";}
 	};
@@ -72,7 +72,6 @@ export function ContextPanelMessageProvider({ children }) {
 		<ContextPanelMessage.Provider value={{messageBoxClose, messageBoxOpen_ok, messageBoxOpen_waiting ,messageBoxOpen_warning
 				,messageBoxOpen_alert,messageBoxOpen_prompt,messageBoxOpen_error}}>
 			{children}
-			<button onClick={()=>messageBoxOpen_ok("mensagem de vitória","deu certo","foi dificil mas chegamos la")}>teste</button>
 			<div ref={divMessageBoxRef} className="messageBackground wtdhGeneral_dec10pc_10 generalDisposition_horizDisp_center generalDisposition_verticDisp_center hghtGeneral_dec10pc_10"  style={{opacity:"0", transition: "opacity 0.5s" }}>
 
 				<div id="divMessageBoxPanel" className="generalDisposition_horizDisp_center border" style={{border:"1px solid black",borderRadius: "15px", backgroundColor:"#0055ffdd", padding:"10px"}}>

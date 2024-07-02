@@ -43,14 +43,16 @@ export const LayoutFieldDefault= forwardRef(({children, ...props}, ref)=>{
 
 	const getFieldDivMessageStyle= () =>{
 		let result = stylesThemes[fieldStyleTheme].message;
-		result["fontSize"]="12px"
-		result["padding"]="3px"
-		result["borderBottomLeftRadius"]="8px"
-		result["borderBottomRightRadius"]="8px"
-		result["marginTop"]="2px"
-		result["maxHeight"]="40px"
-		result["overflowY"]=statusMessage.length<=0?"hidden":"scroll"
-		result["display"]="block"
+		result["fontSize"]="12px";
+		result["padding"]="3px";
+		result["borderBottomLeftRadius"]="8px";
+		result["borderBottomRightRadius"]="8px";
+		result["marginTop"]="2px";
+		result["maxHeight"]="40px";
+		result["overflowY"]=statusMessage.length<=0?"hidden":"scroll";
+		result["display"]="block";
+		result["transition"]="background-color 0.4s, height 0.3s";
+
 		return result;
 	}
 
@@ -90,6 +92,7 @@ export const LayoutFieldDefault= forwardRef(({children, ...props}, ref)=>{
 
 			,margin:"3px"
 			,padding:"3px"
+			,transition: "background-color 0.4s"
 		};
 
 		if(!isObjectEmpty(props) && 'params' in props){

@@ -6,6 +6,7 @@ import { routesPrivatePages } from '../../routes';
 
 import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
 import { useApiFractuzDatabases } from '../../../components/api/fractus/Database';
+import { useContextPanelMessage } from '../../../system/Contexts/Message';
 import useValidationsDefaults from '../../../system/Components/Validations';
 
 import { LayoutPrivateBody } from '../../../elements/layouts/Private/Body';
@@ -20,6 +21,8 @@ import { isObjectEmpty } from '../../../system/Libs/Objects';
 
 export default function Database () {
 	const apiDatabase = useApiFractuzDatabases();
+	const {messageBoxOpen_ok} = useContextPanelMessage();
+
 	const [displayType	, setDisplayType] = useState(0);
 	const { treatExceptions	} = TreatmentExceptions();
 	const { isFieldsValid } = useValidationsDefaults();
@@ -157,7 +160,7 @@ export default function Database () {
 						}else{
 							databaseRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(idDatabase);
 							response = await apiDatabase.httpUpdate({},databaseRegisterFieldsValues);
-							alert(response.description);
+							messageBoxOpen_ok(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
 							if(response.isSuccess){goToRoutes(routesPrivatePages.DatabaseView.path,"idApp",idApp);}
 						}

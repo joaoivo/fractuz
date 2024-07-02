@@ -1,6 +1,7 @@
 import React,{ useRef} from "react";
 import { useContextAuth } from '../../../system/Contexts/Auth';
 import { useContextConsole } from "../../../system/Contexts/Console";
+import { useContextPanelMessage } from "../../../system/Contexts/Message";
 
 import { useApiFractuzUsers } from "../../../components/api/fractus/Users";
 
@@ -20,6 +21,7 @@ export default function Login(){
 
 	const {login, isUserAuthenticated} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
+	const {messageBoxOpen_ok,messageBoxOpen_warning,messageBoxOpen_waiting,messageBoxOpen_error} = useContextPanelMessage();
 	const {treatExceptions} = TreatmentExceptions();
 
 	const layoutFormRef = useRef(null);
@@ -52,26 +54,29 @@ export default function Login(){
 				handleLogin : async ()=>{
 					try {
 						if(!isFieldsValid(loginConfig.loginForm.fields)){
-							layoutFormRef.current.MessagesToPanel_set("O login não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
+							let message ="O login não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.";
+							messageBoxOpen_warning(message, "Login não efetuado");
+							layoutFormRef.current.MessagesToPanel_set(message);
 							return;
 						}
 
 						const response = await getLoginToken({mail:refLoginMail.current.value, pass:refLoginPass.current.value});
 						if(!response.isSuccess){
-							alert(`Login não autorizado: ${response.description}`)
-							addHistoryLog(`Login não autorizado: ${response.description}`);
+							let message =`Login não autorizado: ${response.description}`
+							messageBoxOpen_warning(message, "Login não efetuado");
+							addHistoryLog(message);
 							return;
 						}
 			
 						let messages = login(response.dataList[0]);
 						if(messages.length>0){ 
-							alert("Dados de resposta de login não válidos. Verifique status no LOG!")
+							messageBoxOpen_error("Dados de resposta de login não válidos. Verifique status no LOG!")
 							addHistoryLog("Dados de resposta de login não válidos:["+messages.join("<br/>")+"]");
 							return;
 						}
 			
 						if(!isUserAuthenticated()){
-							alert("para tudo! que não gravou o login direito")
+							messageBoxOpen_ok("para tudo! que não gravou o login direito")
 							addHistoryLog(`o safado não guardou a variavel de sessão`);
 							return
 						}
@@ -87,7 +92,7 @@ export default function Login(){
 		}
 	}
 	return(
-		<div className="wtdhGeneral_duz24vw_05">
+		<div className="wtdhGeneral_duz24vw_07">
 			<LayoutPrivateBody title="Login de Usuário" ref={layoutFormRef}>
 				<div>
 					<TextFieldDefault params={loginConfig.loginForm.fields.email} ref={refLoginMail}/>
