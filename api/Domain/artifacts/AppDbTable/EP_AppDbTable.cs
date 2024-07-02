@@ -29,7 +29,7 @@ public class EP_AppDbTable:IEndPoint{
 			List<EN_AppDbTable>? application_lst = BP_AppDbTable.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Tabelas",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Tabelas",ex,userAuthor,request);
 		}
 	}
 
@@ -40,7 +40,7 @@ public class EP_AppDbTable:IEndPoint{
 			userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Insert(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Tabelas",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Tabelas",ex,userAuthor,request);
 		}
 	}
 
@@ -51,7 +51,7 @@ public class EP_AppDbTable:IEndPoint{
 			userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Update(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Tabelas",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Tabelas",ex,userAuthor,request);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class EP_AppDbTable:IEndPoint{
 			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_AppDbTable.Delete(Config,SystemIDX,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusão de Tabelas",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusão de Tabelas",ex,userAuthor,request);
 		}
 	}
 }

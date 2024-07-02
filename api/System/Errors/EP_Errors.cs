@@ -44,7 +44,7 @@ public class EP_Errors:IEndPoint{
 				columnsOrderBy,pageNumber,pageRowCount);
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=true,isError=false, tittle="Pesquisa de Usuário", dataList = error_lst});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Erros",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Erros",ex,userAuthor,request);
 		}
 	}
 
@@ -53,7 +53,7 @@ public class EP_Errors:IEndPoint{
 		try{
 			return ApiRoutePressets.returnResults(BP_Errors.Insert(Config,error));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Erros",ex);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Erros",ex,null,request);
 		}
 	}
 
@@ -66,7 +66,7 @@ public class EP_Errors:IEndPoint{
 
 			return ApiRoutePressets.returnResults(BP_Errors.Update(Config,error));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Erros",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Erros",ex,userAuthor,request);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class EP_Errors:IEndPoint{
 			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_Errors.Delete(Config,SystemIDX));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Erros",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Erros",ex,userAuthor,request);
 		}
 	}
 }

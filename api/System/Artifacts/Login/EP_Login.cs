@@ -35,7 +35,7 @@ public class EP_Login:IEndPoint{
 				}
 			}});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Login de Usuário",ex);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Login de Usuário",ex,null,request);
 		}
 	}
 }

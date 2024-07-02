@@ -30,7 +30,7 @@ public class EP_AppDbTableField:IEndPoint{
 			List<EN_AppDbTableField>? application_lst = BP_AppDbTableField.Select(Config);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Campos",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Campos",ex,userAuthor,request);
 		}
 	}
 
@@ -41,7 +41,7 @@ public class EP_AppDbTableField:IEndPoint{
 			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
 			return ApiRoutePressets.returnResults(BP_AppDbTableField.Insert(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Campos",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Campos",ex,userAuthor,request);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class EP_AppDbTableField:IEndPoint{
 			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
 			return ApiRoutePressets.returnResults(BP_AppDbTableField.Update(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Atualização de Campos",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Atualização de Campos",ex,userAuthor,request);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class EP_AppDbTableField:IEndPoint{
 			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_AppDbTableField.Delete(Config,SystemIDX,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusão de Campos",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusão de Campos",ex,userAuthor,request);
 		}
 	}
 }

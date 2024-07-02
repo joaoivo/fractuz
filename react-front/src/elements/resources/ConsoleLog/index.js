@@ -7,7 +7,6 @@ export default function ConsoleLog() {
 	const [ histories, setHistories] = useState([]);
 	const [ inputValue, setInputValue] = useState('');
 	const { getHistoryLog, addHistoryLog,clearHistoryLog} = useContextConsole();
-	//const [logUpdated, setLogUpdated] = useState(false);
 
 	const getHistoriesTable=()=>{
 		if(!histories || histories.length<=0){

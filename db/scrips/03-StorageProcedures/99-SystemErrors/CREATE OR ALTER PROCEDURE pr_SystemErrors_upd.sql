@@ -11,6 +11,8 @@ CREATE OR ALTER PROCEDURE pr_SystemErrors_upd
 	,@pPrevErrorID		uniqueidentifier 	= NULL
 	,@pPageURL			NVARCHAR (200) 	= NULL
 	,@pExtraData		NVARCHAR(MAX)		= NULL
+	,@pRequest			NVARCHAR(MAX)		= NULL
+	,@pSystemCreationDt	DATETIME			= NULL
 	
 	,@pSystemActive			BIT					= 1
 	,@pSystemLastUpdateUser	uniqueidentifier 	= NULL
@@ -41,6 +43,9 @@ BEGIN TRY
 
 			,[PageURL]			= isNull(@pPageURL		,[PageURL])
 			,[ExtraData]		= isNull(@pExtraData		,[ExtraData])
+
+			,[Request]			= isNull(@pRequest		,[Request])
+			,[SystemCreationDt]	= isNull(@pSystemCreationDt		,[SystemCreationDt])
 
 		WHERE
 			[SystemIDX] = @pGuid

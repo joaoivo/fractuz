@@ -12,7 +12,9 @@ CREATE TABLE [dbo].[tbSystemErrors](
 	[AppUserID] 		[uniqueidentifier] 	NULL,
 	[PrevErrorID] 		[uniqueidentifier] 	NULL,
 	[PageURL] 			[nvarchar](200) 		NULL,
-	[ExtraData] 		[nvarchar](max) 		NULL
+	[Request] 			[nvarchar](MAX) 		NULL,
+	[ExtraData] 		[nvarchar](max) 		NULL,
+	[SystemCreationDt] DATETIME		 		NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[tbSystemErrors] ADD  CONSTRAINT [PK_tbSystemErrors] PRIMARY KEY CLUSTERED 

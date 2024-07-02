@@ -6,15 +6,20 @@ using Fractuz.Domain.Users.Entities;
 namespace Fractuz.System.Errors.BussinesPlan;
 public static class BP_Errors{
 	public static IResult registerInnerExceptionAndTreat(IConfiguration config,
-			string? appProcessDesc, Exception ex, EN_ManagerUser? user=null){
+			string? appProcessDesc, Exception ex, EN_ManagerUser? user=null, HttpRequest? request = null){
 
 		try{
+			RequestData requestData = new RequestData(request);
+
 			EN_Error error = new EN_Error{
-				AppProcessDesc=appProcessDesc
+				  AppProcessDesc=appProcessDesc
 				, AppLanguage ="c#"
 				, AppMessage=ex.Message
 				, AppStackTrace = ex.StackTrace
+				, PageURL = request==null?"": request.Path.Value
+				, Request = requestData.XMLSerialize
 			};
+
 			if(user != null){error.AppUserID = user.SystemIDX;}
 			EN_Return resultIsert =Insert(config,error);
 

@@ -27,11 +27,13 @@ DECLARE @query nvarchar(max)='
 			,[AppLanguage]
 			,[AppMessage]
 			,[AppStackTrace]
-			,[AppUserID]
 			,[AppID]
+			,[AppUserID]
 			,[PrevErrorID]
 			,[PageURL]
+			,[Request]
 			,[ExtraData]
+			,[SystemCreationDt]
 		FROM [fractuz].[dbo].[tbSystemErrors]'
 
 	----- where

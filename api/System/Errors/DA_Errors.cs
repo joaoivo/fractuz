@@ -51,6 +51,8 @@ public static class DA_Errors{
 		parameters.Add("@pAppProcessDesc"	, error.AppProcessDesc	, DbType.String	, ParameterDirection.Input,200);
 		parameters.Add("@pAppMessage"			, error.AppMessage		, DbType.String	, ParameterDirection.Input,400);
 		parameters.Add("@pAppStackTrace"		, error.AppStackTrace	, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pRequest"				, error.Request			, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pSystemCreationDt"	, error.SystemCreationDt, DbType.DateTime	, ParameterDirection.Input);
 
 		parameters.Add("@pAppUserID"			, error.AppUserID			, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pAppID"				, error.AppID				, DbType.Guid		, ParameterDirection.Input);
@@ -85,6 +87,8 @@ public static class DA_Errors{
 		parameters.Add("@pAppLanguage"		, error.AppLanguage		, DbType.String	, ParameterDirection.Input,10);
 		parameters.Add("@pAppMessage"			, error.AppMessage		, DbType.String	, ParameterDirection.Input,400);
 		parameters.Add("@pAppStackTrace"		, error.AppStackTrace	, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pRequest"				, error.Request			, DbType.String	, ParameterDirection.Input,4000);
+		parameters.Add("@pSystemCreationDt"	, error.SystemCreationDt, DbType.DateTime	, ParameterDirection.Input);
 
 		parameters.Add("@pAppUserID"			, error.AppUserID			, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pAppID"				, error.AppID				, DbType.Guid		, ParameterDirection.Input);

@@ -34,7 +34,7 @@ public class EP_AppDataBase:IEndPoint{
 			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,guid, application, databaseName,databaseDescription	,buildOrder);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa avançada de bases de dados",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa avançada de bases de dados",ex,userAuthor,request);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class EP_AppDataBase:IEndPoint{
 			List<EN_AppDataBase>? application_lst = BP_AppDataBase.Select(Config,SystemIDX,ApplicationIDX,Name,Description,buildOrder,columnsOrderBy,pageNumber,pageRowCount);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de bases de dados",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de bases de dados",ex,userAuthor,request);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class EP_AppDataBase:IEndPoint{
 			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Insert(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de bases de dados",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de bases de dados",ex,userAuthor,request);
 		}
 	}
 
@@ -80,7 +80,7 @@ public class EP_AppDataBase:IEndPoint{
 			userAuthor= JWTTokensManager.GetUserByBearerToken(request,Config);
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Update(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de bases de dados",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de bases de dados",ex,userAuthor,request);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class EP_AppDataBase:IEndPoint{
 			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_AppDataBase.Delete(Config,SystemIDX,JWTTokensManager.GetUserByBearerToken(request,Config)));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de bases de dados",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de bases de dados",ex,userAuthor,request);
 		}
 	}
 }

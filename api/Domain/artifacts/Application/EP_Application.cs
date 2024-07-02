@@ -37,7 +37,7 @@ public class EP_Application:IEndPoint{
 			List<EN_Application>? application_lst = BP_Application.Select(Config,SystemIDX, Name, Description, columnsOrderBy, pageNumber, pageRowCount);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Aplicações", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Aplicações",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Aplicações",ex,userAuthor,request);
 		}
 	}
 	[Authorize]
@@ -48,7 +48,7 @@ public class EP_Application:IEndPoint{
 
 			return ApiRoutePressets.returnResults(BP_Application.Insert(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Aplicações",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Adição de Aplicações",ex,userAuthor,request);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class EP_Application:IEndPoint{
 
 			return ApiRoutePressets.returnResults(BP_Application.Update(Config,application,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Aplicações",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Alteração de Aplicações",ex,userAuthor,request);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class EP_Application:IEndPoint{
 			if(!Guid.TryParse(IDX, out SystemIDX)){throw new Exception("ID inválido");}
 			return ApiRoutePressets.returnResults(BP_Application.Delete(Config,SystemIDX,userAuthor));
 		}catch(Exception ex){
-			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusões de Aplicações",ex,userAuthor);
+			return BP_Errors.registerInnerExceptionAndTreat(Config,"Exclusões de Aplicações",ex,userAuthor,request);
 		}
 	}
 }
