@@ -48,10 +48,10 @@ export function ContextConsoleProvider({ children }) {
 	}
 
 	function getHistoryLog() {return JSON.parse(localStorage.getItem(ConsoleLocalStorageID)) || [];}
-	function clearActionHistory() {localStorage.removeItem(ConsoleLocalStorageID);}
+	function clearHistoryLog() {localStorage.removeItem(ConsoleLocalStorageID);}
   
 	return (
-		<ContextConsole.Provider value={{ getHistoryLog,addHistoryLog,clearActionHistory}}>
+		<ContextConsole.Provider value={{ getHistoryLog,addHistoryLog,clearHistoryLog}}>
 			{children}
 		</ContextConsole.Provider>
 	);
