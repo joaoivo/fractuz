@@ -1,12 +1,16 @@
 
 import { isObjectEmpty } from "../../Libs/Objects";
+import { isStringJson } from "../../Libs/Strings";
 import { ExceptionSystemDefault } from "../Exceptions";
 
 export class ExceptionSystemApiDefault extends ExceptionSystemDefault {
 	constructor(mensagem) {
 		super(mensagem);
 		this.name = this.constructor.name;
-		this.data = { mensagem };
+		if(arguments.length>1){
+			this.data = Array.prototype.slice.call(arguments,1)[0];
+		}
+		
 	}
 }
 
@@ -48,8 +52,26 @@ export const useApiDefault = () => {
 			}
 		}
 
-		if(!response.ok){	throw new ExceptionSystemApiDefault(`Server Response NOK. Status ${response.status}; ${response.statusText}`);}
 		const result 	= await response.text();
+		if(!response.ok){	throw new ExceptionSystemApiDefault(`Server Response NOK. Status ${response.status}; ${response.statusText}`
+			,{	 result:isStringJson(result)?  JSON.parse(result):result
+				,response:{
+					 bodyUsed: response.bodyUsed
+					,ok: response.ok
+					,redirected: response.redirected
+					,status: response.status
+					,statusText: response.statusText
+					,type: response.type
+					,url: response.url
+				}
+				,headerData:headerData
+				,url:url
+				,requestOptions:requestOptions
+				,bodyData:bodyData
+				,method: method
+				,redirect: "follow"
+			}
+		);}
 		return JSON.parse(result);
 	}
 

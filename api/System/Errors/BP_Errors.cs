@@ -19,9 +19,9 @@ public static class BP_Errors{
 				, AppStackTrace = ex.StackTrace
 				, PageURL = request==null?"": request.Path.Value
 				, Request = JsonSerializer.Serialize(requestData)
+				, AppUserID = user == null? null: user.SystemIDX
 			};
 
-			if(user != null){error.AppUserID = user.SystemIDX;}
 			EN_Return resultIsert =Insert(config,error);
 
 			return ApiRoutePressets.returnResults(
@@ -29,7 +29,7 @@ public static class BP_Errors{
 					 isSuccess=false
 					,isError=true
 					,tittle="Erro no seguinte Processo: "+appProcessDesc
-					,description="Comando não executado: "+ex.Message+". Dados armazenados pelo ID "+resultIsert.id.ToString()
+					,description="{message:'"+ex.Message+"',erroID: '"+resultIsert.id.ToString()+"'}"
 				}
 				, appProcessDesc);
 		}catch(Exception){
