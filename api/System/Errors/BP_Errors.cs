@@ -2,6 +2,7 @@ using Fractuz.System.Errors.EndPoints;
 using Fractuz.System.Errors.DataAccess;
 using Fractuz.System.Defaults.EndPoint;
 using Fractuz.Domain.Users.Entities;
+using System.Text.Json;
 
 namespace Fractuz.System.Errors.BussinesPlan;
 public static class BP_Errors{
@@ -17,7 +18,7 @@ public static class BP_Errors{
 				, AppMessage=ex.Message
 				, AppStackTrace = ex.StackTrace
 				, PageURL = request==null?"": request.Path.Value
-				, Request = requestData.XMLSerialize
+				, Request = JsonSerializer.Serialize(requestData)
 			};
 
 			if(user != null){error.AppUserID = user.SystemIDX;}

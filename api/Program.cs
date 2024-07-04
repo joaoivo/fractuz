@@ -9,6 +9,7 @@ using Fractuz.System.Defaults.EndPoint;
 using Fractuz.System.Errors.EndPoints;
 using Fractuz.System.Login.EndPoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,14 @@ builder.Services.AddCors(options =>{
 				.AllowAnyMethod()
 				.AllowAnyHeader();
 	});
+});
+
+builder.Services.Configure<KestrelServerOptions>(options =>{
+	options.AllowSynchronousIO = true;
+});
+
+builder.Services.Configure<IISServerOptions>(options =>{
+	options.AllowSynchronousIO = true;
 });
 
 WebApplication app = builder.Build();

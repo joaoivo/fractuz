@@ -1,6 +1,3 @@
-
-using System.Xml.Serialization;
-
 namespace Fractuz.System.Errors.EndPoints;
 public class EN_Error{
 	public Guid? SystemIDX {get; set;}=null;
@@ -39,15 +36,4 @@ public class RequestData{
 	public Dictionary<string, string> Headers { get; set; }
 	public string Body { get; set; }
 
-	public string XMLSerialize {
-		get {
-			if(this==null){return "";}
-			XmlSerializer xmlSerializer = new XmlSerializer(typeof(RequestData));
-			using (var stringWriter = new StringWriter()){
-				xmlSerializer.Serialize(stringWriter, this);
-				var xml = stringWriter.ToString();
-				return (xml);
-			}
-		}
-	}
 }
