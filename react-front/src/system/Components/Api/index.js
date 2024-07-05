@@ -2,6 +2,7 @@
 import { isObjectEmpty } from "../../Libs/Objects";
 import { isStringJson } from "../../Libs/Strings";
 import { ExceptionSystemDefault } from "../Exceptions";
+import { useContextAuth } from "../../Contexts/Auth";
 
 export class ExceptionSystemApiDefault extends ExceptionSystemDefault {
 	constructor(mensagem) {
@@ -15,6 +16,7 @@ export class ExceptionSystemApiDefault extends ExceptionSystemDefault {
 }
 
 export const useApiDefault = () => {
+	const { isUserAuthenticated, getUserLogged} = useContextAuth();
 
 	const methodExecute = async (method,headerData,url,bodyData) => {
 
@@ -53,25 +55,25 @@ export const useApiDefault = () => {
 		}
 
 		const result 	= await response.text();
-		if(!response.ok){	throw new ExceptionSystemApiDefault(`Server Response NOK. Status ${response.status}; ${response.statusText}`
-			,{	 result:isStringJson(result)?  JSON.parse(result):result
-				,response:{
-					 bodyUsed: response.bodyUsed
-					,ok: response.ok
-					,redirected: response.redirected
-					,status: response.status
-					,statusText: response.statusText
-					,type: response.type
-					,url: response.url
-				}
-				,headerData:headerData
-				,url:url
-				,requestOptions:requestOptions
-				,bodyData:bodyData
-				,method: method
-				,redirect: "follow"
+		const data = {	 result:isStringJson(result)?  JSON.parse(result):result
+			,response:{
+				 bodyUsed: response.bodyUsed
+				,ok: response.ok
+				,redirected: response.redirected
+				,status: response.status
+				,statusText: response.statusText
+				,type: response.type
+				,url: response.url
 			}
-		);}
+			,headerData:headerData
+			,url:url
+			,requestOptions:requestOptions
+			,bodyData:bodyData
+			,method: method
+			,redirect: "follow"
+		};
+		if(isUserAuthenticated()){data["user"]= getUserLogged();}
+		if(!response.ok){	throw new ExceptionSystemApiDefault(`Server Response NOK. Status ${response.status}; ${response.statusText}`,data);}
 		return JSON.parse(result);
 	}
 

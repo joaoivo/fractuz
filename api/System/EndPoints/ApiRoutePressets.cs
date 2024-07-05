@@ -25,7 +25,7 @@ public static class ApiRoutePressets{
 		if(result_en==null){
 			return Results.BadRequest("Operação não efetuada: "+operation);
 		}else if(result_en.isError==null?false:result_en.isError==true){
-			return Results.Problem(result_en.description,null,500,result_en.tittle + " " + result_en.description);
+			return Results.Problem(result_en.description,null,500,result_en.tittle,null,new Dictionary<string,object?>(){ {"errorId",result_en.errorID} });
 		}else{
 			JsonSerializerOptions jsonOptions =new JsonSerializerOptions { WriteIndented = true, IgnoreReadOnlyFields =true, AllowTrailingCommas =false };
 			string data = JsonSerializer.Serialize<EN_Return>(result_en,jsonOptions);

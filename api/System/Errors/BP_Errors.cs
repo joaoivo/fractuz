@@ -29,7 +29,8 @@ public static class BP_Errors{
 					 isSuccess=false
 					,isError=true
 					,tittle="Erro no seguinte Processo: "+appProcessDesc
-					,description="{message:'"+ex.Message+"',erroID: '"+resultIsert.id.ToString()+"'}"
+					,description=ex.Message
+					,errorID = resultIsert.id
 				}
 				, appProcessDesc);
 		}catch(Exception){

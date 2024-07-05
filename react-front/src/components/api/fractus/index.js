@@ -15,4 +15,5 @@ export const apiFractuzEndPoint={
 	,appDataBase:"/AppDataBase"
 	,appDbTable:"/AppDbTable"
 	,appDbTableField:"/AppDbTableField"
+	,SystemError:"/System/Error"
 }

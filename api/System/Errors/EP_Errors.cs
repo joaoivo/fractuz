@@ -1,12 +1,11 @@
 
 using Fractuz.System.Defaults.EndPoint;
-
+using Fractuz.Domain.Users.Entities;
 using Fractuz.System.Errors.BussinesPlan;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using api.System.jwt;
-using Fractuz.Domain.Users.Entities;
 
 namespace Fractuz.System.Errors.EndPoints;
 public class EP_Errors:IEndPoint{

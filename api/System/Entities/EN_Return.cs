@@ -10,6 +10,7 @@ public class EN_Return{
 	public string? description {get; set;} = null;
 	public DateTime? timeStamp {get; set;} = DateTime.Now;
 	public IEnumerable<object>? dataList {get; set;} =null;
+	public Guid? errorID {get; set;}= null ;
 	public EN_ManagerUser author{
 		set{
 			this.authorName = value.ParticName;
