@@ -1,19 +1,17 @@
 import { ExceptionApplicationDefault, ExceptionSystemDefault, ExceptionUserDefault } from "../../Components/Exceptions";
-import { isStringEmptyOrSpaces } from "../Strings";
+import { isStringEmptyOrSpaces, isStringJson } from "../Strings";
 import { systemConfig } from "../../../configs";
 
 export const treatDefaultError = (error, processDesc)=>{
 	if(process.env.NODE_ENV === "development"){alert(`Erro ao ${processDesc}. Verifique status no Console do Navegador.\n ${error.message}`);}
-	
-	console.error('Exception capturada:', error.message);
-	console.error('Dados adicionais:', error);
+	console.error('Exception capturada:', error);
 	return;
 }
 
 export const RegisterException = async (error, processDesc)=>{
 	try{
 		
-		let errorRegisterFieldsValues = {};		
+		let errorRegisterFieldsValues = {};
 		let properties = ["columnNumber","fileName","lineNumber","message","name","stack"];
 		properties.forEach((prop)=>{if(prop in error){errorRegisterFieldsValues[prop]=error[prop];}})
 
@@ -40,20 +38,24 @@ export const RegisterException = async (error, processDesc)=>{
 			,body : JSON.stringify(errorRegisterFieldsValues)
 		};
 		let response = await fetch(systemConfig.urls.PUBLIC_API_URL +"/System/Error", requestOptions);
+		let resultText = await response.text();
+		let result = null;
+		if(isStringJson(resultText)){result = JSON.parse(resultText);}
 
-		console.log("errorRegisterFieldsValues",errorRegisterFieldsValues);
+		return result.id;
 	}catch(ex){
 		console.log("Erro ao Registrar uma exceção no front-end", ex);
+		return null;
 	}
 }
 
-export const treatExceptionDefaultsByTypes =(error, processDesc
+export const treatExceptionDefaultsByTypes =async (error, processDesc
 		,callBackExceptionUser
 		,callBackExceptionApplication
 		,callBackExceptionSystem
 		,callBackExceptionGeneral) => {
 
-	RegisterException(error, processDesc);
+	let errorID = await RegisterException(error, processDesc);
 
 	if((!!!(error)) || !(error instanceof Error)) {return;}
 	if(isStringEmptyOrSpaces(processDesc)){processDesc="[Processo não especificado]";}
@@ -68,4 +70,5 @@ export const treatExceptionDefaultsByTypes =(error, processDesc
 	else if((error instanceof ExceptionSystemDefault)) 		{callBackExceptionSystem(error,processDesc);}
 	else 																		{callBackExceptionGeneral(error,processDesc);}
 
+	return errorID;
 }
