@@ -1,9 +1,8 @@
-import React,{ useRef} from "react";
+import React,{ useRef,useEffect} from "react";
 import { useContextAuth } from '../../../system/Contexts/Auth';
 import { useContextConsole } from "../../../system/Contexts/Console";
 import { useContextPanelMessage } from "../../../system/Contexts/Message";
 
-import { useApiFractuzUsers } from "../../../components/api/fractus/Users";
 
 import { routesPrivatePages } from "../../routes";
 import { goToAddress } from "../../../system/Libs/Urls";
@@ -17,10 +16,9 @@ import { formTools } from "../../../system/Elements/forms/Tools";
 import { LayoutButtonDefault } from "../../../system/Elements/forms/Buttons";
 
 export default function Login(){
-	const { getLoginToken } = useApiFractuzUsers();
 	const { isFieldsValid } = useValidationsDefaults();
 
-	const {login, isUserAuthenticated} = useContextAuth();
+	const {login} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
 	const {messageBoxOpen_ok,messageBoxOpen_warning,messageBoxOpen_error} = useContextPanelMessage();
 	const {treatExceptions} = TreatmentExceptions();
@@ -28,6 +26,10 @@ export default function Login(){
 	const layoutFormRef = useRef(null);
 	const refLoginMail= useRef("");
 	const refLoginPass= useRef("");
+
+	useEffect(() => {
+		addHistoryLog("Acessada página de login");
+	}, []);
 
 	const loginConfig={
 		loginForm:{
@@ -62,31 +64,16 @@ export default function Login(){
 						}
 
 						const requestData = formTools.getObjectFromFormData(loginConfig.loginForm.fields);
-						const response = await getLoginToken(requestData);
-
-						if(!response.isSuccess){
-							let message =`Login não autorizado: ${response.description}`
-							messageBoxOpen_warning(message, "Login não efetuado");
-							addHistoryLog(message);
-							return;
-						}
-			
-						let messages = login(response.dataList[0]);
+						let messages = await login(requestData);
 						if(messages.length>0){ 
 							messageBoxOpen_error("Dados de resposta de login não válidos. Verifique status no LOG!")
 							addHistoryLog("Dados de resposta de login não válidos:["+messages.join("<br/>")+"]");
 							return;
 						}
-			
-						if(!isUserAuthenticated()){
-							messageBoxOpen_ok("para tudo! que não gravou o login direito")
-							addHistoryLog(`o safado não guardou a variavel de sessão`);
-							return
-						}
-			
-						addHistoryLog(`Usuário ${response.dataList[0].name} devidamente logado, redirecionando para a Home`);
+
+						addHistoryLog(`Usuário ${requestData.Mail} devidamente logado, redirecionando para a Home`);
 						goToAddress(routesPrivatePages.Home.path);
-			
+
 					} catch (error) {
 						treatExceptions(error,"Autênticação de Usuário");
 					}

@@ -84,8 +84,8 @@ export default function Application(){
 						layoutFormRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada: "+complement);
 
 					} catch (error) {
-						treatExceptions(error,"Pesquisa de Aplicações");
-						layoutFormRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações: "+error);
+						let errorID = await treatExceptions(error,"Pesquisa de Aplicações");
+						layoutFormRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações: '"+error+"'. \nDetalhes do erro foram registrados sob o ID '"+errorID+"'");
 					}
 				}
 			}

@@ -21,7 +21,7 @@ export const TreatmentExceptions=()=>{
 
 	const treatExceptions =(error, processDesc)=>{
 		try{
-			treatExceptionDefaultsByTypes(error, processDesc, treatExceptionUser);
+			return treatExceptionDefaultsByTypes(error, processDesc, treatExceptionUser);
 		}catch(ex){
 			messageBoxOpen_error(`Erro no processo interno. O tratamento de erro não pode agir.`,"Erro ao "+processDesc);
 			console.error("Process Error Object",error);
