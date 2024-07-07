@@ -6,6 +6,7 @@ import { isObjectEmpty,getObectPropertiesFilter } from '../../Libs/Objects';
 import { getCaesarDecrypt, getCaesarEncrypt } from '../../Libs/Crypto';
 
 import { ExceptionSystemDefault } from '../../Components/Exceptions';
+import { useApiFractuzUsers } from '../../../components/api/fractus/Users';
 
 const ContextAuth = createContext();
 export 	class ExceptionSystemContextAuth extends ExceptionSystemDefault {
@@ -17,12 +18,13 @@ export 	class ExceptionSystemContextAuth extends ExceptionSystemDefault {
 }
 
 export function ContextAuthProvider({ children }) {
+	const { getLoginToken } = useApiFractuzUsers();
 
 	const sessionUserIDKey = 'user';
 	const sessionUserCaesarShift = 3;
 
 	const setUserLogged = (userRawData)=>{
-		const user = getObectPropertiesFilter(userRawData,["name","mail","token","userID"]);
+		const user = getObectPropertiesFilter(userRawData,["name","mail","token","userID","tokenRenovation"]);
 		if(isObjectEmpty(userRawData)){return;}
 
 		sessionStorage.setItem(sessionUserIDKey, getCaesarEncrypt(JSON.stringify(user),sessionUserCaesarShift));
@@ -98,8 +100,14 @@ export function ContextAuthProvider({ children }) {
 		return (getUserValidationList(userData).length<=0);
 	}
 
-	const login = (user) => {
+	const login = async (requestData) => {
+		const response = await getLoginToken(requestData);
+
+		logout();
 		if(isUserAuthenticated()){return ["Já existe uma autênticação"];}
+
+		if(!response.isSuccess){return [`Login não autorizado: ${response.description}`];}
+		let user = response.dataList[0];
 
 		const messages = getUserValidationList(user);
 		if(messages.length>0){ return messages;}
