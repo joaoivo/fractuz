@@ -8,6 +8,8 @@ using Fractuz.System.Security;
 namespace api.System.jwt;
 
 public static class JWTTokensManager{
+	public const int CNT_TOKEN_EXPIRATIONHOURS = 2;
+	public const int CNT_TOKEN_RENOVATIONMINUTES = 60;
 	public static string  GenerateJWTToken(EN_ManagerUser user,IConfiguration config) {
 		string currentUTC =DateTime.UtcNow.ToString("yyyyMMddHHmmss");
 
@@ -25,7 +27,7 @@ public static class JWTTokensManager{
 		JwtSecurityToken jwtToken = new JwtSecurityToken(
 			claims: claims,
 			notBefore: DateTime.UtcNow,
-			expires: DateTime.UtcNow.AddHours(2),
+			expires: DateTime.UtcNow.AddHours(CNT_TOKEN_EXPIRATIONHOURS),
 			signingCredentials: new SigningCredentials(
 				new SymmetricSecurityKey(
 					Encoding.UTF8.GetBytes(config["ApplicationSettings:JWT_Secret"]??"")
@@ -37,7 +39,7 @@ public static class JWTTokensManager{
 	public static EN_ManagerUser GetUserByBearerToken(HttpRequest request,IConfiguration config){
 
 		var authorizationHeader = request.Headers["Authorization"].FirstOrDefault();
-		if (authorizationHeader == null || !authorizationHeader.StartsWith("Bearer ")){ throw new JwtTokenNotFoundException("Token nulo ou "); }
+		if (authorizationHeader == null || !authorizationHeader.StartsWith("Bearer ")){ throw new JwtTokenNotFoundException("Token nulo"); }
 
 		var token = authorizationHeader.Substring("Bearer ".Length).Trim();
 		var handler = new JwtSecurityTokenHandler();

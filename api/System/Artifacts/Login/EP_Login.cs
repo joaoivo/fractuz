@@ -28,10 +28,13 @@ public class EP_Login:IEndPoint{
 			}
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = new List<Object>{
 				new {
-					 token	=	JWTTokensManager.GenerateJWTToken(managerUser_lst[0],Config)
-					,name		=	managerUser_lst[0].ParticName
-					,mail		=	managerUser_lst[0].ParticMail
-					,userID 	=	managerUser_lst[0].SystemIDX
+					 token				=	JWTTokensManager.GenerateJWTToken(managerUser_lst[0],Config)
+					,tokenRenovation 	=	DateTime.UtcNow
+						.AddHours	(+JWTTokensManager.CNT_TOKEN_EXPIRATIONHOURS)
+						.AddMinutes	(-JWTTokensManager.CNT_TOKEN_RENOVATIONMINUTES).ToString("yyyyMMddHHmm")
+					,name					=	managerUser_lst[0].ParticName
+					,mail					=	managerUser_lst[0].ParticMail
+					,userID 				=	managerUser_lst[0].SystemIDX
 				}
 			}});
 		}catch(Exception ex){

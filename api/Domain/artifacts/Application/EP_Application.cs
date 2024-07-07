@@ -24,7 +24,6 @@ public class EP_Application:IEndPoint{
 	public IResult ApplicationAPI_Get(HttpRequest request){
 		EN_ManagerUser userAuthor=null;
 		try{
-			throw new Exception("error test");
 			userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 
 			Guid? SystemIDX=getHeaderGuidValues(request.Headers,"SystemIDX");
