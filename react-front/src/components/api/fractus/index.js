@@ -10,6 +10,7 @@ export class ExceptionSystemApiFractuz extends ExceptionSystemApiDefault {
 
 export const apiFractuzEndPoint={
 	 login: "/Login"
+	,loginRenovation:"/Login/renovation"
 	,adminUsers:"/Admin/User"
 	,application:"/Application"
 	,appDataBase:"/AppDataBase"

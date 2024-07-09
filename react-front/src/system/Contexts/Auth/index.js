@@ -7,6 +7,7 @@ import { getCaesarDecrypt, getCaesarEncrypt } from '../../Libs/Crypto';
 
 import { ExceptionSystemDefault } from '../../Components/Exceptions';
 import { useApiFractuzUsers } from '../../../components/api/fractus/Users';
+import { getCurrentDateTimeStamp } from '../../Libs/DateTimes';
 
 const ContextAuth = createContext();
 export 	class ExceptionSystemContextAuth extends ExceptionSystemDefault {
@@ -18,7 +19,7 @@ export 	class ExceptionSystemContextAuth extends ExceptionSystemDefault {
 }
 
 export function ContextAuthProvider({ children }) {
-	const { getLoginToken } = useApiFractuzUsers();
+	const { getLoginToken,getTokenRenovation } = useApiFractuzUsers();
 
 	const sessionUserIDKey = 'user';
 	const sessionUserCaesarShift = 3;
@@ -49,8 +50,32 @@ export function ContextAuthProvider({ children }) {
 		return user;
 	}
 
-	const isUserAuthenticated = ()=>{
-		const user = getUserLogged();
+	const renovateToken = async (user)=>{
+		if("tokenRenovation" in user){
+			try{
+				let tokenRenovation = parseInt(user.tokenRenovation)/100;
+				let dateTimeValidation = parseInt(getCurrentDateTimeStamp())/100;
+
+				if(dateTimeValidation>tokenRenovation){
+					const jsonResponse = await getTokenRenovation(user.token);
+					if(jsonResponse.isSuccess){
+						user = jsonResponse.dataList[0];
+						setUserLogged(user);
+						console.log("token renovated");
+					}
+				}
+			}catch(ex){
+				console.log("Error on token Renovation",ex);
+			}
+		}
+		return user;
+	}
+
+	const isUserAuthenticated = async ()=>{
+		let user = getUserLogged();
+		if(!!!user){return false;}
+
+		user = renovateToken(user);
 		return (!!user)
 	}
 
