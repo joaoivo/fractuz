@@ -2,9 +2,18 @@ import { ExceptionApplicationDefault, ExceptionSystemDefault, ExceptionUserDefau
 import { isStringEmptyOrSpaces, isStringJson } from "../Strings";
 import { systemConfig } from "../../../configs";
 
+import { ExceptionSystemApiUnauthorized } from "../../Components/Api";
+import { goToAddress } from "../Urls";
+import { routesPublicPages } from "../../../pages/routes";
+
 export const treatDefaultError = (error, processDesc)=>{
-	if(process.env.NODE_ENV === "development"){alert(`Erro ao ${processDesc}. Verifique status no Console do Navegador.\n ${error.message}`);}
 	console.error('Exception capturada:', error);
+	if((error instanceof ExceptionSystemApiUnauthorized)) {
+		alert("Operação não autorizada. Redirecionando para a página de login.");
+		goToAddress(routesPublicPages.Login.path);
+	}else{
+		if(process.env.NODE_ENV === "development"){alert(`Erro ao ${processDesc}. Verifique status no Console do Navegador.\n ${error.message}`);}
+	}
 	return;
 }
 
@@ -24,8 +33,11 @@ export const RegisterException = async (error, processDesc)=>{
 		errorRegisterFieldsValues["ExtraData"]			= JSON.stringify(error);
 
 		const errorExtraData0 = error.data;
-		if(!("result" in errorExtraData0) || !("errorId" in errorExtraData0.result)){return;}
-		errorRegisterFieldsValues["PrevErrorID"]= errorExtraData0.result.errorId;
+		if(!("result" in errorExtraData0) && (errorExtraData0.result)){
+			if("errorId" in errorExtraData0.result){
+				errorRegisterFieldsValues["PrevErrorID"]= errorExtraData0.result.errorId;
+			}
+		}
 
 		const myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
