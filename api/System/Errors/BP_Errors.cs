@@ -16,6 +16,7 @@ public static class BP_Errors{
 				  AppProcessDesc=appProcessDesc
 				, AppLanguage ="c#"
 				, AppMessage=ex.Message
+				, AppExceptionType = ex.GetType().ToString()
 				, AppStackTrace = ex.StackTrace
 				, PageURL = request==null?"": request.Path.Value
 				, Request = JsonSerializer.Serialize(requestData)
@@ -38,7 +39,7 @@ public static class BP_Errors{
 		}
 	}
 	public static List<EN_Error>? Select(IConfiguration config
-		,Guid? guid=null,string? appProcessDesc=null,string? appLanguage=null,string? appMessage=null,Guid? appUserID=null,Guid? appID=null,Guid? prevErrorID=null
+		,Guid? guid=null,string? appProcessDesc=null,string? appLanguage=null,string? appMessage=null,Guid? appUserID=null,Guid? appID=null,Guid? prevErrorID=null,string? AppExceptionType=null
 		,String? columnsOrderBy=null, int? pageNumber = null, int? pageRowCount=null ){
 
 		int? totalRowCount=null;
@@ -47,13 +48,13 @@ public static class BP_Errors{
 		string? query = null;
 
 		return (List<EN_Error>?)DA_Errors.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query , ref pageNumber , ref pageRowCount, columnsOrderBy
-		,guid,appProcessDesc, appLanguage, appMessage	,appUserID,appID,prevErrorID );
+		,guid,appProcessDesc, appLanguage, appMessage	,appUserID,appID,prevErrorID,AppExceptionType );
 	}
 	public static List<EN_Error>? Select(IConfiguration config, out int? totalRowCount, out int? seachRowCount, out int? searchPageCount, out string? query, ref int? pageNumber, ref int? pageRowCount, String? columnsOrderBy=null
-		,Guid? guid=null,string? appProcessDesc=null,string? appLanguage=null,string? appMessage=null,Guid? appUserID=null,Guid? appID=null,Guid? prevErrorID=null){
+		,Guid? guid=null,string? appProcessDesc=null,string? appLanguage=null,string? appMessage=null,Guid? appUserID=null,Guid? appID=null,Guid? prevErrorID=null,string? AppExceptionType=null){
 
 		List<EN_Error>? error_lst = (List<EN_Error>?)DA_Errors.Select(config,out totalRowCount, out seachRowCount, out searchPageCount, out query, ref pageNumber , ref pageRowCount, columnsOrderBy
-			,guid,appProcessDesc, appLanguage, appMessage,appUserID,appID,prevErrorID );
+			,guid,appProcessDesc, appLanguage, appMessage,appUserID,appID,prevErrorID,AppExceptionType );
 		return error_lst;
 	}
 

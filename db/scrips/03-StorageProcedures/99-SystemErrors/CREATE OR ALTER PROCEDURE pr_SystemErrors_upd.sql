@@ -3,6 +3,7 @@ GO
 CREATE OR ALTER PROCEDURE pr_SystemErrors_upd
 	 @pGuid 				uniqueidentifier 	= NULL
 	,@pAppProcessDesc	NVARCHAR (200) 	= NULL
+	,@pAppExceptionType	NVARCHAR	(100)	= NULL
 	,@pAppLanguage		NVARCHAR (10) 		= NULL
 	,@pAppMessage		NVARCHAR (400) 	= NULL
 	,@pAppStackTrace	NVARCHAR(MAX)		= NULL
@@ -34,6 +35,8 @@ BEGIN TRY
 		SET
 			 [AppLanguage]		= isNull(@pAppLanguage	,[AppLanguage])
 			,[AppProcessDesc]	= isNull(@pAppProcessDesc	,[AppProcessDesc])
+			,[AppExceptionType]= isNull(@pAppExceptionType	,[AppExceptionType])
+
 			,[AppMessage]		= isNull(@pAppMessage	,[AppMessage])
 			,[AppStackTrace]	= isNull(@pAppStackTrace,[AppStackTrace])
 			

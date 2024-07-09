@@ -4,6 +4,7 @@ GO
 CREATE OR ALTER PROCEDURE pr_SystemErrors_sel
 	 @pGuid 					uniqueidentifier 	= NULL
 	,@pAppProcessDesc		NVARCHAR (200) 	= NULL
+	,@pAppExceptionType	NVARCHAR	(100)		= NULL
 	,@pAppLanguage			NVARCHAR (10) 		= NULL
 	,@pAppMessage			NVARCHAR (400) 	= NULL
 	,@pAppUserID			uniqueidentifier 	= NULL
@@ -24,6 +25,7 @@ AS BEGIN
 DECLARE @query nvarchar(max)='
 	SELECT [SystemIdx]
 			,[AppProcessDesc]
+			,[AppExceptionType]
 			,[AppLanguage]
 			,[AppMessage]
 			,[AppStackTrace]
@@ -81,6 +83,12 @@ DECLARE @query nvarchar(max)='
 		BEGIN
 		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
 		SET @where = CONCAT(@where,'([PageURL] like ''%',@pPageURL,'%'')')
+		END
+
+	IF @pAppExceptionType IS NOT NULL 
+		BEGIN
+		IF @where IS NOT NULL set @where = CONCAT(@where, ' and ')
+		SET @where = CONCAT(@where,'([AppExceptionType] like ''%',@pAppExceptionType,'%'')')
 		END
 	
 	IF @where IS NOT NULL set @query = CONCAT(@query , ' where ',@where)

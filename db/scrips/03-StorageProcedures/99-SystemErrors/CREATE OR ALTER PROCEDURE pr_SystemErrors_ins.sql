@@ -3,6 +3,7 @@ GO
 CREATE OR ALTER PROCEDURE pr_SystemErrors_ins
 	 @pAppLanguage		NVARCHAR (10) 		= NULL
 	,@pAppProcessDesc	NVARCHAR (200) 	= NULL
+	,@pAppExceptionType	NVARCHAR	(100)	= NULL
 	,@pAppMessage		NVARCHAR (400) 	= NULL
 	,@pAppStackTrace	NVARCHAR(MAX)		= NULL
 	,@pAppID				uniqueidentifier 	= NULL
@@ -28,9 +29,9 @@ BEGIN TRY
 	SET @rIsOK =0
 
 	INSERT INTO [fractuz].[dbo].[tbSystemErrors](--
-		[SystemIDX]	,[AppProcessDesc],[AppLanguage]	,[AppMessage]	,[AppStackTrace]	,[AppUserID]	,[AppID]	,[PrevErrorID]	,[PageURL] 	,[ExtraData] 	,[Request], [SystemCreationDt]
+		[SystemIDX]	,[AppProcessDesc],[AppLanguage]	,[AppMessage]	,[AppStackTrace]	,[AppUserID]	,[AppID]	,[PrevErrorID]	,[PageURL] 	,[ExtraData] 	,[Request], [AppExceptionType],[SystemCreationDt]
 	) VALUES(
-		@rGuid		,@pAppProcessDesc,@pAppLanguage	,@pAppMessage	,@pAppStackTrace	,@pAppUserID	,@pAppID	,@pPrevErrorID	,@pPageURL	,@pExtraData	,@pRequest, @pSystemCreationDt
+		@rGuid		,@pAppProcessDesc,@pAppLanguage	,@pAppMessage	,@pAppStackTrace	,@pAppUserID	,@pAppID	,@pPrevErrorID	,@pPageURL	,@pExtraData	,@pRequest, @pAppExceptionType, @pSystemCreationDt
 	)
 
 	--- Verificar se houve erro durante a atualização

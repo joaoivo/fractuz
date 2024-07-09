@@ -20,10 +20,14 @@ public class EP_Application:IEndPoint{
 			,new apiMethodParam{handle=ApplicationAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete},routeComplement="/{IDX}"}
 		};
 	}
+	class ExceptionTest : Exception{
+		public ExceptionTest(string message):base(message){}
+	}
 	[Authorize]
 	public IResult ApplicationAPI_Get(HttpRequest request){
 		EN_ManagerUser userAuthor=null;
 		try{
+			throw new ExceptionTest("");
 			userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
 
 			Guid? SystemIDX=getHeaderGuidValues(request.Headers,"SystemIDX");

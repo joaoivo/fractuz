@@ -29,6 +29,7 @@ export const RegisterException = async (error, processDesc)=>{
 		if("stack" in error){errorRegisterFieldsValues["AppStackTrace"]	= error.stack;}
 
 		errorRegisterFieldsValues["AppProcessDesc"]	= processDesc;
+		errorRegisterFieldsValues["AppExceptionType"]	= error.name;
 		errorRegisterFieldsValues["AppLanguage"]		= "reactjs";
 		errorRegisterFieldsValues["ExtraData"]			= JSON.stringify(error);
 

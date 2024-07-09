@@ -5,6 +5,7 @@ GO
 CREATE TABLE [dbo].[tbSystemErrors](
 	[SystemIdx] 		[uniqueidentifier] 	NOT NULL,
 	[AppProcessDesc]	NVARCHAR (200)			NOT NULL,
+	[AppExceptionType] NVARCHAR (100)			NULL,
 	[AppLanguage] 		[nvarchar](10) 		NULL,
 	[AppMessage] 		[text] 					NOT NULL,
 	[AppStackTrace] 	[nvarchar](max) 		NULL,

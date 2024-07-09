@@ -34,13 +34,14 @@ public class EP_Errors:IEndPoint{
 			Guid? appUserID			=getHeaderGuidValues(request.Headers,"appUserID");
 			Guid? appID					=getHeaderGuidValues(request.Headers,"appID");
 			Guid? prevErrorID			=getHeaderGuidValues(request.Headers,"prevErrorID");
+			string? AppExceptionType=getHeaderStringValues(request.Headers,"AppExceptionType");
 
 			String? columnsOrderBy=getHeaderStringValues(request.Headers,"columnsOrderBy");
 			Int32? pageNumber = getHeaderIntValues(request.Headers,"pageNumber");
 			Int32? pageRowCount=getHeaderIntValues(request.Headers,"pageRowCount");
 
 			List<EN_Error>? error_lst = BP_Errors.Select(Config,SystemIDX,appProcessDesc,appLanguage, appMessage, appUserID,appID,prevErrorID,
-				columnsOrderBy,pageNumber,pageRowCount);
+				columnsOrderBy,AppExceptionType,pageNumber,pageRowCount);
 			return ApiRoutePressets.returnResults( new EN_Return{isSuccess=true,isError=false, tittle="Pesquisa de Usuário", dataList = error_lst});
 		}catch(Exception ex){
 			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Erros",ex,userAuthor,request);
