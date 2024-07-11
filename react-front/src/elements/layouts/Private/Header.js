@@ -19,6 +19,11 @@ function Header() {
 		goToAddress(routesPublicPages.Login.path);
 	}
 
+	useEffect(
+		 ()=>{setUserLogged(getUserLogged());}
+		,[getUserLogged]
+	)
+
 	return (
 		<header>
 			<h1>Fractuz</h1>
