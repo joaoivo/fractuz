@@ -49,7 +49,7 @@ function PrivateRoute() {
 	const { addHistoryLog } 	= useContextConsole();
 	const location = useLocation();
 
-	if(isUserAuthenticated()){
+	if( isUserAuthenticated()){
 		return <LayoutPrivate><Outlet/></LayoutPrivate> 
 	}else{
 		alert(`Sem permissão de acesso ao endereço '${location.pathname}'`);
@@ -60,7 +60,6 @@ function PrivateRoute() {
 
 function PublicRoute() {
 	const { isUserAuthenticated } 	= useContextAuth();
-
 	if(isUserAuthenticated()){
 		return <LayoutPrivate><Outlet/></LayoutPrivate> 
 	}else{

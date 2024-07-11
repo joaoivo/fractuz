@@ -50,32 +50,36 @@ export function ContextAuthProvider({ children }) {
 		return user;
 	}
 
-	const renovateToken = async (user)=>{
-		if("tokenRenovation" in user){
-			try{
-				let tokenRenovation = parseInt(user.tokenRenovation)/100;
-				let dateTimeValidation = parseInt(getCurrentDateTimeStamp())/100;
+	const renovateToken = (user)=>{
+		if(isObjectEmpty(user)){return user;}
+		if(!("tokenRenovation" in user)){return user;}
 
-				if(dateTimeValidation>tokenRenovation){
-					const jsonResponse = await getTokenRenovation(user.token);
-					if(jsonResponse.isSuccess){
-						user = jsonResponse.dataList[0];
-						setUserLogged(user);
-						console.log("token renovated");
-					}
+		try{
+			let tokenRenovation = parseInt(user.tokenRenovation)/100;
+			let dateTimeValidation = parseInt(getCurrentDateTimeStamp())/100;
+
+			if(dateTimeValidation>tokenRenovation){
+				let jsonResponse;
+				getTokenRenovation(user.token)
+					.then((result)=>{jsonResponse = result;})
+					.catch((error)=>{throw error;});
+				if(jsonResponse.isSuccess){
+					user = jsonResponse.dataList[0];
+					setUserLogged(user);
+					console.log("token renovated");
 				}
-			}catch(ex){
-				console.log("Error on token Renovation",ex);
 			}
+		}catch(ex){
+			console.log("Error on token Renovation",ex);
 		}
+
 		return user;
 	}
 
-	const isUserAuthenticated = async ()=>{
+	const isUserAuthenticated = ()=>{
 		let user = getUserLogged();
-		if(!!!user){return false;}
-
 		user = renovateToken(user);
+		if(isObjectEmpty(user)){return false;}
 		return (!!user)
 	}
 

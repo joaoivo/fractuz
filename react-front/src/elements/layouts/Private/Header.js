@@ -5,6 +5,7 @@ import { routesPublicPages, routesPrivatePages } 	from '../../../pages/routes';
 import { useContextAuth } 									from '../../../system/Contexts/Auth';
 import { useContextConsole } 								from '../../../system/Contexts/Console';
 import { goToAddress } 										from '../../../system/Libs/Urls';
+import { isObjectEmpty } from '../../../system/Libs/Objects';
 
 function Header() {
 	const {logout, getUserLogged} = useContextAuth();
@@ -17,11 +18,6 @@ function Header() {
 		addHistoryLog("Usuário deslogou-se do sistema")
 		goToAddress(routesPublicPages.Login.path);
 	}
-
-	useEffect(
-		 ()=>{setUserLogged(getUserLogged());}
-		,[getUserLogged]
-	)
 
 	return (
 		<header>
@@ -37,9 +33,7 @@ function Header() {
 					|	<Link onClick={logoffUser}								>Logoff</Link> 
 				</nav>
 			</div>
-			<div>
-				Bem-vindo {userLogged.name} <i>({userLogged.mail})</i>
-			</div>
+			{(!isObjectEmpty(userLogged) ) && (<div>Bem-vindo {userLogged.name} <i>({userLogged.mail})</i></div>)}
 		</header>
 	);
 }

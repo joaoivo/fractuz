@@ -18,12 +18,15 @@ import { getCaesarDecrypt } 				from '../../../system/Libs/Crypto';
 import { goToAddress } 						from '../../../system/Libs/Urls';
 import { routesPrivatePages } 			from '../../routes';
 
+import { useContextConsole } from '../../../system/Contexts/Console';
+
 import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 
 export default function Application(){
 	const apiApplication = useApiFractuzApplications();
+	const { addHistoryLog } 	= useContextConsole();
 	const { treatExceptions	} = TreatmentExceptions();
 	const { isFieldsValid } = useValidationsDefaults();
 	const {messageBoxOpen_ok} = useContextPanelMessage();
@@ -38,6 +41,11 @@ export default function Application(){
 	const refSeachDesc= useRef("");
 	const refRegisName= useRef("");
 	const refRegisDesc= useRef("");
+
+	const addHistory = (message)=>{
+		addHistoryLog(message);
+		layoutFormRef.current.MessagesToPanel_set(message);
+	}
 
 	useEffect(
 		()=>{
@@ -81,11 +89,11 @@ export default function Application(){
 						let complement = 	response.length<= 0 ? "Não houve registros nestes critérios":
 												response.length===1 ? "1 aplicação encontrada":
 																			 response.length.toString()+ " Aplicações encontradas"
-						layoutFormRef.current.MessagesToPanel_set("Pesquisa de Aplicações executada: "+complement);
+						addHistory("Pesquisa de Aplicações executada: "+complement);
 
 					} catch (error) {
 						let errorID = await treatExceptions(error,"Pesquisa de Aplicações");
-						layoutFormRef.current.MessagesToPanel_set("Erro na Pesquisa de Aplicações: '"+error+"'. \nDetalhes do erro foram registrados sob o ID '"+errorID+"'");
+						addHistory("Erro na Pesquisa de Aplicações: '"+error+"'. \nDetalhes do erro foram registrados sob o ID '"+errorID+"'");
 					}
 				}
 			}
@@ -122,25 +130,25 @@ export default function Application(){
 				,addApplications : async ()=>{
 					try{
 						if(!isFieldsValid(applicationConfig.registerForm.fields)){
-							layoutFormRef.current.MessagesToPanel_set("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
+							addHistory("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
 							return;
 						}
 						const applicationRegisterFieldsValues = formTools.getObjectFromFormData(applicationConfig.registerForm.fields);//{Name:refRegisName.current.value, Description:refRegisDesc.current.value}
 						let response;
 						if(isStringEmptyOrSpaces(id)){
 							response = await apiApplication.httpInsert({},applicationRegisterFieldsValues);
-							layoutFormRef.current.MessagesToPanel_set(response.description);
+							addHistory(response.description);
 							if(response.isSuccess){setApplicationDisplayType(0);}
 						}else{
 							applicationRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
 							response = await apiApplication.httpUpdate({},applicationRegisterFieldsValues);
 							messageBoxOpen_ok(response.description);
-							layoutFormRef.current.MessagesToPanel_set(response.description);
+							addHistory(response.description);
 							if(response.isSuccess){goToAddress(routesPrivatePages.Application.path);}
 						}
 					} catch (error) {
 						treatExceptions(error,"Salvar Aplicações");
-						layoutFormRef.current.MessagesToPanel_set("Erro ao Gravar Aplicações: "+error);
+						addHistory("Erro ao Gravar Aplicações: "+error);
 					}
 				}
 			}
