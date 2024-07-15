@@ -24,7 +24,6 @@ export const RegisterException = async (error, processDesc)=>{
 		let properties = ["columnNumber","fileName","lineNumber","message","name","stack"];
 		properties.forEach((prop)=>{if(prop in error){errorRegisterFieldsValues[prop]=error[prop];}})
 
-		if(!("data" in error)){return;}
 		if("message" in error){errorRegisterFieldsValues["AppMessage"]		= error.message;}
 		if("stack" in error){errorRegisterFieldsValues["AppStackTrace"]	= error.stack;}
 
@@ -33,10 +32,12 @@ export const RegisterException = async (error, processDesc)=>{
 		errorRegisterFieldsValues["AppLanguage"]		= "reactjs";
 		errorRegisterFieldsValues["ExtraData"]			= JSON.stringify(error);
 
-		const errorExtraData0 = error.data;
-		if(!("result" in errorExtraData0) && (errorExtraData0.result)){
-			if("errorId" in errorExtraData0.result){
-				errorRegisterFieldsValues["PrevErrorID"]= errorExtraData0.result.errorId;
+		if("data" in error){
+			const errorExtraData0 = error.data;
+			if(("result" in errorExtraData0) && (errorExtraData0.result)){
+				if("errorId" in errorExtraData0.result){
+					errorRegisterFieldsValues["PrevErrorID"]= errorExtraData0.result.errorId;
+				}
 			}
 		}
 

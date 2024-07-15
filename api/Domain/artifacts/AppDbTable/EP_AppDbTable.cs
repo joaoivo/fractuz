@@ -25,8 +25,12 @@ public class EP_AppDbTable:IEndPoint{
 	public IResult AppDbTableAPI_Get(HttpRequest request){
 		EN_ManagerUser userAuthor=null;
 		try{
+			Guid? guid				=getHeaderGuidValues		(request.Headers,"SystemIDX");;
+			Guid? tableDatabase	=getHeaderGuidValues		(request.Headers,"tableDatabase");;
+			string? tableName		=getHeaderStringValues	(request.Headers,"tableName");
+
 			userAuthor = JWTTokensManager.GetUserByBearerToken(request,Config);
-			List<EN_AppDbTable>? application_lst = BP_AppDbTable.Select(Config);
+			List<EN_AppDbTable>? application_lst = BP_AppDbTable.Select(Config,guid,tableDatabase,tableName);
 			return ApiRoutePressets.returnResults(new EN_Return{isSuccess=true,isError=false,tittle="Pesquisa de Usuário", dataList = application_lst, author = userAuthor});
 		}catch(Exception ex){
 			return BP_Errors.registerInnerExceptionAndTreat(Config,"Pesquisa de Tabelas",ex,userAuthor,request);

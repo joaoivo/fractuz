@@ -13,6 +13,7 @@ export const Grid = forwardRef(({children, ...props}, ref)=>{
 		}
 	},[]);
 
+	if(!Array.isArray(list)){return <></>}
 	if(list.length <= 0){return <></>}
 	return(
 		<div 		className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">

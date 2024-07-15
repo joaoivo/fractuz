@@ -22,6 +22,7 @@ import { formTools } from '../../../system/Elements/forms/Tools';
 
 import './../../../style/dimensions/dimensions_widthDozens.css'
 import './../../../style/aligns/disposition.css'
+import { isObjectEmpty } from '../../../system/Libs/Objects';
 
 export default function Tables(){
 	const apiTable = useApiFractuzTables();
@@ -43,19 +44,36 @@ export default function Tables(){
 	const refRegisPrefix			= useRef("");
 	const refRegisHistory		= useRef("");
 
-	//"/Table/:idDatabase/:idTable"
+
 	useEffect(
 		()=>{
-			if(!!!idDatabase){return;}
-			let guid = getCaesarDecrypt(idDatabase);
-			const response = apiTable.httpGet({guid:guid});
-			if(response instanceof Promise){
-				response.then(result => {
-					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
-					refRegisName.current.setValue(result[0].Name);
-					refRegisDesc.current.setValue(result[0].Description);
-				})
+			if(!!!idDatabase){
+				goToAddress(routesPrivatePages.Application.path);
+				return;
 			}
+			let guidDatabase	= getCaesarDecrypt(idDatabase);
+
+			if(!!idTable){
+				let guid = getCaesarDecrypt(idTable);
+
+				const response = apiTable.httpGet({guid:guid});
+				if(response instanceof Promise){
+					response.then(result => {
+						if (!(result && Array.isArray(result) && result.length > 0)) {return;}
+						refRegisBuiltOrder.current.setValue(result[0].TableBuiltOrder);
+						refRegisName.current.setValue(result[0].TableName);
+						refRegisDesc.current.setValue(result[0].TableDescription);
+						refRegisPrefix.current.setValue(result[0].FieldPrefix);
+						refRegisHistory.current.setValue(result[0].TableHistory);
+					})
+				}
+			}else{
+				let response= apiTable.httpGet({tableDatabase: guidDatabase})
+				if(response instanceof Promise && !isObjectEmpty(gridRef.current)){
+					response.then(result => {gridRef.current.setGridList(result);})
+				}
+			}
+
 		}
 		,[idDatabase,idTable,apiTable]
 	)
@@ -151,7 +169,8 @@ export default function Tables(){
 							layoutFormRef.current.MessagesToPanel_set("A gravação não pode acontecer devido a dados inválidos. Por favor revise-os para prosseguir.");
 							return;
 						}
-						const tableRegisterFieldsValues = formTools(tableConfig.registerForm.fields);//{Name:refRegisName.current.value, Description:refRegisDesc.current.value}
+						const tableRegisterFieldsValues = formTools.getObjectFromFormData(tableConfig.registerForm.fields);//{Name:refRegisName.current.value, Description:refRegisDesc.current.value}
+						tableRegisterFieldsValues.TableDatabase = getCaesarDecrypt(idDatabase);
 						let response;
 						if(isStringEmptyOrSpaces(idTable)){
 							response = await apiTable.httpInsert({},tableRegisterFieldsValues);
@@ -179,7 +198,7 @@ export default function Tables(){
 				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween" style={{padding:"5px"}}>
 					<TextFieldDefault params={tableConfig.seachForm.fields.appName} ref={refSeachName}/>
 					<TextFieldDefault params={tableConfig.seachForm.fields.appDesc} ref={refSeachDesc}/>
-					<LayoutButtonDefault onClickEvent={tableConfig.seachForm.commands.searchApplications}>Pesquisar</LayoutButtonDefault>
+					<LayoutButtonDefault onClickEvent={tableConfig.seachForm.commands.searchTables}>Pesquisar</LayoutButtonDefault>
 					<LayoutButtonDefault onClickEvent={tableConfig.seachForm.commands.toggleDisplayType}>Novo</LayoutButtonDefault>
 				</div>
 				<Grid ref={gridRef} viewer={TableGridDataViewer} layoutFormRef={layoutFormRef}/>

@@ -10,6 +10,7 @@ export const formTools ={
 			if(!("refValue" in fields[fieldName])){return;}
 			if(!("fieldID" in fields[fieldName])){return;}
 
+			console.log("fields[fieldName].refValue.current.type",fields[fieldName].refValue.current.type.toUpperCase());
 			resultGeneral[fields[fieldName].fieldID] = fields[fieldName].refValue.current.value;
 		});
 		return resultGeneral;
