@@ -79,7 +79,7 @@ public static class DA_AppDbTable{
 		IEnumerable<EN_AppDbTable> appDbTable_lst = new List<EN_AppDbTable>();
 		DynamicParameters parameters = new DynamicParameters();
 
-		parameters.Add("@pGuid"						, AppDbTable.SystemActive			, DbType.Guid		, ParameterDirection.Input);
+		parameters.Add("@pGuid"						, AppDbTable.SystemIDX				, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pTableDatabase"			, AppDbTable.TableDatabase			, DbType.Guid		, ParameterDirection.Input);
 		parameters.Add("@pTableBuiltOrder"		, AppDbTable.TableBuiltOrder		, DbType.Int32		, ParameterDirection.Input);
 		parameters.Add("@pTableName"				, AppDbTable.TableName				, DbType.String	, ParameterDirection.Input,050);
