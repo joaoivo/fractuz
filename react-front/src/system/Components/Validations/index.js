@@ -269,7 +269,7 @@ export default function useValidationsDefaults(){
 			if(!("refValue" in fields[fieldName])){return;}
 			let thisField = fields[fieldName];
 			let thisFieldRef = thisField.refValue;
-			let thisFieldValue = thisFieldRef.current.value;
+			let thisFieldValue = thisFieldRef.current.inputRef.current.value;
 
 			if(!("Validation" in thisField) || isObjectEmpty(thisField.Validation)){return;}
 			let fieldValidation = thisField.Validation;

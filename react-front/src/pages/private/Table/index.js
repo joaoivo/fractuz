@@ -14,7 +14,7 @@ import { TreatmentExceptions } from '../../../components/exception';
 import { Grid } from '../../../system/Elements/forms/Grids';
 import { TableGridDataViewer } from './TableGridDataViewer';
 import { getCaesarDecrypt } from '../../../system/Libs/Crypto';
-import { goToAddress } from '../../../system/Libs/Urls';
+import { goToAddress,goToRoutes } from '../../../system/Libs/Urls';
 import { routesPrivatePages } from '../../routes';
 
 import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
@@ -44,39 +44,6 @@ export default function Tables(){
 	const refRegisPrefix			= useRef("");
 	const refRegisHistory		= useRef("");
 
-
-	useEffect(
-		()=>{
-			if(!!!idDatabase){
-				goToAddress(routesPrivatePages.Application.path);
-				return;
-			}
-			let guidDatabase	= getCaesarDecrypt(idDatabase);
-
-			if(!!idTable){
-				let guid = getCaesarDecrypt(idTable);
-
-				const response = apiTable.httpGet({guid:guid});
-				if(response instanceof Promise){
-					response.then(result => {
-						if (!(result && Array.isArray(result) && result.length > 0)) {return;}
-						refRegisBuiltOrder.current.setValue(result[0].TableBuiltOrder);
-						refRegisName.current.setValue(result[0].TableName);
-						refRegisDesc.current.setValue(result[0].TableDescription);
-						refRegisPrefix.current.setValue(result[0].FieldPrefix);
-						refRegisHistory.current.setValue(result[0].TableHistory);
-					})
-				}
-			}else{
-				let response= apiTable.httpGet({tableDatabase: guidDatabase})
-				if(response instanceof Promise && !isObjectEmpty(gridRef.current)){
-					response.then(result => {gridRef.current.setGridList(result);})
-				}
-			}
-
-		}
-		,[idDatabase,idTable,apiTable]
-	)
 
 	const tableConfig ={
 		seachForm:{
@@ -160,7 +127,10 @@ export default function Tables(){
 			}
 			,commands:{
 				toggleDisplayType:	()=>{
-					if(!!idTable){goToAddress(routesPrivatePages.Table.path);}
+					if(!!idTable){
+						//goToAddress(routesPrivatePages.Table.path);
+						goToRoutes(routesPrivatePages.TableView.path+"/","idDatabase", getCaesarDecrypt(idDatabase));
+					}
 					else{setDisplayType((displayType!==0?0:1));}
 				}
 				,addTables : async ()=>{
@@ -181,7 +151,7 @@ export default function Tables(){
 							response = await apiTable.httpUpdate({},tableRegisterFieldsValues);
 							alert(response.description);
 							layoutFormRef.current.MessagesToPanel_set(response.description);
-							if(response.isSuccess){goToAddress(routesPrivatePages.Table.path);}
+							if(response.isSuccess){goToRoutes(routesPrivatePages.TableView.path+"/","idDatabase", getCaesarDecrypt(idDatabase));}
 						}
 					} catch (error) {
 						treatExceptions(error,"Salvar Tabelas");
@@ -220,6 +190,36 @@ export default function Tables(){
 			</div>
 		)
 	}
+
+
+	useEffect(
+		()=>{
+			if(!!!idDatabase){
+				goToAddress(routesPrivatePages.Application.path);
+				return;
+			}
+			let guidDatabase	= getCaesarDecrypt(idDatabase);
+
+			if(!!idTable){
+				let guid = getCaesarDecrypt(idTable);
+
+				const response = apiTable.httpGet({guid:guid});
+				if(response instanceof Promise){
+					response.then(result => {
+						if (!(result && Array.isArray(result) && result.length > 0)) {return;}
+						formTools.loadDataObjectToForm(tableConfig.registerForm.fields,result[0]);
+					})
+				}
+			}else{
+				let response= apiTable.httpGet({tableDatabase: guidDatabase})
+				if(response instanceof Promise && !isObjectEmpty(gridRef.current)){
+					response.then(result => {gridRef.current.setGridList(result);})
+				}
+			}
+
+		}
+		,[idDatabase,idTable,apiTable]
+	)
 
 	if(displayType!==1 && !!!idTable){
 		return(

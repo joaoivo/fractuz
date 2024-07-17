@@ -5,7 +5,7 @@ import { useParams } 						from 'react-router-dom';
 import { TextFieldDefault } 				from '../../../system/Elements/forms/Fields/TextFields'; ///'../../../elements/forms/Fields/TextFields';
 import { LayoutButtonDefault } 			from '../../../system/Elements/forms/Buttons';
 import { Grid } 								from '../../../system/Elements/forms/Grids';
-import { formTools } from '../../../system/Elements/forms/Tools';
+import { formTools } 						from '../../../system/Elements/forms/Tools';
 
 import { useApiFractuzApplications } 	from '../../../components/api/fractus/Applications';
 import useValidationsDefaults 			from '../../../system/Components/Validations';
@@ -47,22 +47,6 @@ export default function Application(){
 		layoutFormRef.current.MessagesToPanel_set(message);
 	}
 
-	useEffect(
-		()=>{
-			if(!!!id){return;}
-			let guid = getCaesarDecrypt(id);
-			const response = apiApplication.httpGet({guid:guid});
-			if(response instanceof Promise){
-				response.then(result => {
-					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
-					refRegisName.current.setValue(result[0].Name);
-					refRegisDesc.current.setValue(result[0].Description);
-				})
-			}
-		}
-		,[id,apiApplication]
-	)
-
 	const applicationConfig ={
 		 seachForm:{
 			fields:{
@@ -78,7 +62,7 @@ export default function Application(){
 				}
 			}
 			,commands:{
-				toggleDisplayType:	()=>{setApplicationDisplayType((applicationDisplayType!==0?0:1));}
+				 toggleDisplayType:	()=>{setApplicationDisplayType((applicationDisplayType!==0?0:1));}
 				,searchApplications : async ()=>{
 					try{
 						
@@ -176,6 +160,29 @@ export default function Application(){
 			</div>
 		)
 	}
+
+	useEffect(
+		()=>{
+			if(gridRef!==null){
+				if(gridRef.current!==null){
+					if(gridRef.current.getGridList().length<=0){
+						applicationConfig.seachForm.commands.searchApplications();
+					}
+				}
+			}
+
+			if(!!!id){return;}
+			let guid = getCaesarDecrypt(id);
+			const response = apiApplication.httpGet({SystemIDX:guid});
+			if(response instanceof Promise){
+				response.then(result => {
+					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
+					formTools.loadDataObjectToForm(applicationConfig.registerForm.fields,result[0]);
+				})
+			}
+		}
+		,[id,apiApplication,applicationConfig.seachForm.commands]
+	)
 
 	if(applicationDisplayType!==1 && !!!id){
 		return(

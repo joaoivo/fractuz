@@ -5,22 +5,22 @@ import LayoutPrivate from '../../elements/layouts/Private'
 import LayoutPublic 	from '../../elements/layouts/Public';
 
 //Public Pages
-import Index 			from '../../pages/public/Index';
-import About 			from '../../pages/public/About';
-import Login 			from '../../pages/public/Login';
+import Index 			from '../public/Index';
+import About 			from '../public/About';
+import Login 			from '../public/Login';
 
 // User Pages
 import Database 		from '../private/Database';
-import Application	from '../../pages/private/Application'
+import Application	from '../private/Application'
 import Tables 			from '../private/Table';
-import Home 			from '../../pages/private/Home';
+import Home 			from '../private/Home';
 
 //system Pages
-import PageNotFound 	from '../../pages/system/PageNotFound';
+import PageNotFound 	from '../system/PageNotFound';
 
-import { useContextAuth } from '../../system/Contexts/Auth';
-import { useContextConsole } from '../../system/Contexts/Console';
-import { goToAddress } from '../../system/Libs/Urls';
+import { useContextAuth } 		from '../../system/Contexts/Auth';
+import { useContextConsole } 	from '../../system/Contexts/Console';
+import { goToAddress } 			from '../../system/Libs/Urls';
 
 export const routesPublicPages = {
 	 Index:{ path:"/"			, app:Index ,name:"Página Inicial"}
@@ -38,6 +38,9 @@ export const routesPrivatePages = {
 	,Table:				{ path:"/Table/"								, app:Tables 		,name:"Tabelas"}
 	,TableView:			{ path:"/Table/:idDatabase"				, app:Tables 		,name:"Tabelas"}
 	,TableEdit:			{ path:"/Table/:idDatabase/:idTable"	, app:Tables 		,name:"Tabelas"}
+	,Field:				{ path:"/Field/"								, app:Tables 		,name:"Campos das tabelas"}
+	,FieldView:			{ path:"/Field/:idTable"					, app:Tables 		,name:"Campos das tabelas"}
+	,FieldEdit:			{ path:"/Field/:idTable/:idField"		, app:Tables 		,name:"Campos das tabelas"}
 };
 
 export const routesSystemPages = {

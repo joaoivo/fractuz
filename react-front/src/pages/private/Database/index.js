@@ -39,36 +39,6 @@ export default function Database () {
 	const refRegisDesc	= useRef("");
 	const refRegisOrder	= useRef("");
 
-	useEffect(
-		()=>{
-			if(!!!idApp){
-				goToAddress(routesPrivatePages.Application.path);
-				return;
-			}
-			let guidApp 		= getCaesarDecrypt(idApp);
-
-			if(!!idDatabase){
-				let guidDatabase 	= getCaesarDecrypt(idDatabase);
-				const response = apiDatabase.httpGet({SystemIDX:guidDatabase});
-				if(response instanceof Promise){
-					response.then(result => {
-						if (!(result && Array.isArray(result) && result.length > 0)) {return;}
-						refRegisName.current.setValue(result[0].DatabaseName);
-						refRegisDesc.current.setValue(result[0].DatabaseDescription);
-						refRegisOrder.current.setValue(result[0].BuildOrder);
-					})
-				}
-			}else{
-				const response = apiDatabase.httpGet({ApplicationIDX:guidApp});
-				if(response instanceof Promise && !isObjectEmpty(gridRef.current)){
-					response.then(result => {gridRef.current.setGridList(result);})
-				}
-			}
-
-		}
-		,[idApp,apiDatabase,idDatabase]
-	)
-
 	const databaseConfig ={
 		seachForm:{
 			fields:{
@@ -110,7 +80,7 @@ export default function Database () {
 			fields:{
 				dbaseName:{
 					labelText:"Nome da Base de Dados"
-					,fieldID:"Name"
+					,fieldID:"DatabaseName"
 					,refValue:refRegisName
 					,Validation:{
 						lengthMin:3
@@ -120,7 +90,7 @@ export default function Database () {
 				}
 				,dbaseDesc:{
 					labelText:"Descrição"
-					,fieldID:"Description"
+					,fieldID:"DatabaseDescription"
 					,refValue:refRegisDesc
 					,Validation:{
 						lengthMin:5
@@ -130,7 +100,7 @@ export default function Database () {
 				}
 				,dbaseOrder:{
 					labelText:"Ordem"
-					,fieldID:"Order"
+					,fieldID:"BuildOrder"
 					,refValue:refRegisOrder
 					,Validation:{
 						lengthMin:1
@@ -196,6 +166,35 @@ export default function Database () {
 			</div>
 		)
 	}
+
+
+	useEffect(
+		()=>{
+			if(!!!idApp){
+				goToAddress(routesPrivatePages.Application.path);
+				return;
+			}
+			let guidApp 		= getCaesarDecrypt(idApp);
+
+			if(!!idDatabase){
+				let guidDatabase 	= getCaesarDecrypt(idDatabase);
+				const response = apiDatabase.httpGet({SystemIDX:guidDatabase});
+				if(response instanceof Promise){
+					response.then(result => {
+						if (!(result && Array.isArray(result) && result.length > 0)) {return;}
+						formTools.loadDataObjectToForm(databaseConfig.registerForm.fields,result[0]);
+					})
+				}
+			}else{
+				const response = apiDatabase.httpGet({ApplicationIDX:guidApp});
+				if(response instanceof Promise && !isObjectEmpty(gridRef.current)){
+					response.then(result => {gridRef.current.setGridList(result);})
+				}
+			}
+
+		}
+		,[idApp,apiDatabase,idDatabase]
+	)
 
 	if(displayType!==1 && !!!idDatabase){
 		return(
