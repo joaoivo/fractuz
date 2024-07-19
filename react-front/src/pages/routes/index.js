@@ -13,6 +13,7 @@ import Login 			from '../public/Login';
 import Database 		from '../private/Database';
 import Application	from '../private/Application'
 import Tables 			from '../private/Table';
+import Field 			from '../private/Field';
 import Home 			from '../private/Home';
 
 //system Pages
@@ -38,9 +39,9 @@ export const routesPrivatePages = {
 	,Table:				{ path:"/Table/"								, app:Tables 		,name:"Tabelas"}
 	,TableView:			{ path:"/Table/:idDatabase"				, app:Tables 		,name:"Tabelas"}
 	,TableEdit:			{ path:"/Table/:idDatabase/:idTable"	, app:Tables 		,name:"Tabelas"}
-	,Field:				{ path:"/Field/"								, app:Tables 		,name:"Campos das tabelas"}
-	,FieldView:			{ path:"/Field/:idTable"					, app:Tables 		,name:"Campos das tabelas"}
-	,FieldEdit:			{ path:"/Field/:idTable/:idField"		, app:Tables 		,name:"Campos das tabelas"}
+	,Field:				{ path:"/Field/"								, app:Field 		,name:"Campos das tabelas"}
+	,FieldView:			{ path:"/Field/:idTable"					, app:Field 		,name:"Campos das tabelas"}
+	,FieldEdit:			{ path:"/Field/:idTable/:idField"		, app:Field 		,name:"Campos das tabelas"}
 };
 
 export const routesSystemPages = {
