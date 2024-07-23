@@ -164,7 +164,7 @@ export default function Tables(){
 
 	const TableDisplayTypes ={
 		Search: ()=>(
-			<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+			<div className="wtdhGeneral_duz24pc_23 generalDisposition_horizDisp_spaceBetween">
 				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween" style={{padding:"5px"}}>
 					<TextFieldDefault params={tableConfig.seachForm.fields.appName} ref={refSeachName}/>
 					<TextFieldDefault params={tableConfig.seachForm.fields.appDesc} ref={refSeachDesc}/>

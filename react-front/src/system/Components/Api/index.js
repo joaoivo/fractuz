@@ -32,7 +32,7 @@ export const useApiDefault = () => {
 		Object.keys(headerData).forEach((key)=>{
 			if (key.toLowerCase() === "authorization") {
 				myHeaders.append(key, headerData[key]);
-			} else {
+			} else if(headerData[key]){
 				myHeaders.append(key, encodeURIComponent(headerData[key]));
 			}
 		});

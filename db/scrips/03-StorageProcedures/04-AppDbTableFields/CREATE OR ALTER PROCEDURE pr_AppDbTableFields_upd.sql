@@ -14,7 +14,7 @@ CREATE OR ALTER PROCEDURE pr_AppDbTableFields_upd
 	,@pIsInsigned 					bit 					=	NULL
 	,@pFieldDefaultValue 		nvarchar(max) 		=	NULL
 	,@pConstraintField 			uniqueidentifier 	=	NULL
-	,@pAppDataType 				nvarchar(3) 
+	,@pAppDataType 				nvarchar(3) 		=	NULL
 	,@pAppDataNickname 			nvarchar(200) 		=	NULL
 
 	,@pSystemActive			BIT					= 1

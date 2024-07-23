@@ -15,8 +15,8 @@ public class EP_AppDbTableField:IEndPoint{
 	public override string Route (){ return @"/AppDbTableField";}
 	public override List<apiMethodParam> Methods(){
 		return new List<apiMethodParam>{
-			 new apiMethodParam{handle=AppDbTableFieldAPI_Get 	, httpMethods=new HttpMethod[]{HttpMethod.Get }}
-			,new apiMethodParam{handle=AppDbTableFieldAPI_Post	, httpMethods=new HttpMethod[]{HttpMethod.Post}}
+			 new apiMethodParam{handle=AppDbTableFieldAPI_Get 		, httpMethods=new HttpMethod[]{HttpMethod.Get }}
+			,new apiMethodParam{handle=AppDbTableFieldAPI_Post		, httpMethods=new HttpMethod[]{HttpMethod.Post}}
 			,new apiMethodParam{handle=AppDbTableFieldAPI_Put		, httpMethods=new HttpMethod[]{HttpMethod.Put}}
 			,new apiMethodParam{handle=AppDbTableFieldAPI_Delete	, httpMethods=new HttpMethod[]{HttpMethod.Delete},routeComplement="/{IDX}"}
 		};

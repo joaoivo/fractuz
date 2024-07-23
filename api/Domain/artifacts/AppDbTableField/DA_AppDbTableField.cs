@@ -78,6 +78,8 @@ public static class DA_AppDbTableField{
 			appDbTableField_return.id = parameters.Get<Guid?>("@rGuid");
 			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
+			appDbTableField_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			appDbTableField_return.isError = !appDbTableField_return.isSuccess;
 			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
 		}
 		return appDbTableField_return;
@@ -118,6 +120,9 @@ public static class DA_AppDbTableField{
 			db.Execute("[dbo].[pr_AppDbTableFields_upd]",parameters);
 			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
 
+			appDbTableField_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			appDbTableField_return.isError = !appDbTableField_return.isSuccess;
+
 			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
 		}
 		return appDbTableField_return;
@@ -141,6 +146,9 @@ public static class DA_AppDbTableField{
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDbTableFields_del]",parameters);
 			appDbTableField_return.description = parameters.Get<string>("@rProcessMessage");
+
+			appDbTableField_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			appDbTableField_return.isError = !appDbTableField_return.isSuccess;
 
 			appDbTableField_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
 		}

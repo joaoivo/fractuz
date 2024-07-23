@@ -33,7 +33,7 @@ export default function Field(){
 	const {messageBoxOpen_ok} = useContextPanelMessage();
 	
 	const [fieldDisplayType	, setFieldDisplayType] = useState(0);
-	const { id } = useParams();
+	const { idTable, idField } = useParams();
 
 	const layoutFormRef = useRef(null);
 	const gridRef = useRef(null);
@@ -195,7 +195,7 @@ export default function Field(){
 			}
 			,commands:{
 				toggleDisplayType:	()=>{
-					if(!!id){goToAddress(routesPrivatePages.Field.path);}
+					if(!!idTable){goToAddress(routesPrivatePages.Field.path+"/"+idTable, idField);}
 					else{setFieldDisplayType((fieldDisplayType!==0?0:1));}
 				}
 				,addFields : async ()=>{
@@ -205,13 +205,14 @@ export default function Field(){
 							return;
 						}
 						const fieldRegisterFieldsValues = formTools.getObjectFromFormData(fieldConfig.registerForm.fields);
+						fieldRegisterFieldsValues["FieldTable"]=getCaesarDecrypt(idTable);
 						let response;
-						if(isStringEmptyOrSpaces(id)){
+						if(isStringEmptyOrSpaces(idField)){
 							response = await apiField.httpInsert({},fieldRegisterFieldsValues);
 							addHistory(response.description);
 							if(response.isSuccess){setFieldDisplayType(0);}
 						}else{
-							fieldRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(id);
+							fieldRegisterFieldsValues["SystemIDX"]=getCaesarDecrypt(idField);
 							response = await apiField.httpUpdate({},fieldRegisterFieldsValues);
 							messageBoxOpen_ok(response.description);
 							addHistory(response.description);
@@ -246,7 +247,6 @@ export default function Field(){
 				<TextFieldDefault params={fieldConfig.registerForm.fields.DataType} 				ref={refRegisFieldDbDataType}/>
 				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSize} 				ref={refRegisFieldDbDataSize}/>
 				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSizeDecimel} 	ref={refRegisFieldDbDataSizeDecimel}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSizeDecimel} 	ref={refRegisFieldDbDataSizeDecimel}/>
 
 				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsPrimaryKey} 	ref={refRegisIsPrimaryKey}/>
 				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsAllowNull} 	ref={refRegisIsAllowNull}/>
@@ -266,28 +266,29 @@ export default function Field(){
 
 	useEffect(
 		()=>{
-			if(gridRef!==null){
-				if(gridRef.current!==null){
-					if(gridRef.current.getGridList().length<=0){
-						fieldConfig.seachForm.commands.searchFields();
+			if(fieldDisplayType!==1 && !!!idField){
+				if(gridRef!==null){
+					if(gridRef.current!==null){
+						if(gridRef.current.getGridList().length<=0){
+							fieldConfig.seachForm.commands.searchFields();
+						}
 					}
 				}
-			}
-
-			if(!!!id){return;}
-			let guid = getCaesarDecrypt(id);
-			const response = apiField.httpGet({SystemIDX:guid});
-			if(response instanceof Promise){
-				response.then(result => {
-					if (!(result && Array.isArray(result) && result.length > 0)) {return;}
-					formTools.loadDataObjectToForm(fieldConfig.registerForm.fields,result[0]);
-				})
+			}else{
+				let guid = getCaesarDecrypt(idField);
+				const response = apiField.httpGet({SystemIDX:guid});
+				if(response instanceof Promise){
+					response.then(result => {
+						if (!(result && Array.isArray(result) && result.length > 0)) {return;}
+						formTools.loadDataObjectToForm(fieldConfig.registerForm.fields,result[0]);
+					})
+				}
 			}
 		}
-		,[id,apiField,fieldConfig.seachForm.commands]
+		,[idField,apiField,fieldConfig.seachForm.commands,fieldDisplayType]
 	)
 
-	if(fieldDisplayType!==1 && !!!id){
+	if(fieldDisplayType!==1 && !!!idField){
 		return(
 			<div className="wtdhGeneral_duz24vw_20">
 				<LayoutPrivateBody title="Fields> Consulta" ref={layoutFormRef}>

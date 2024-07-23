@@ -81,6 +81,9 @@ public static class DA_ManagerUser{
 			managerUser_return.id = parameters.Get<Guid?>("@rGuid");
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
 
+			managerUser_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			managerUser_return.isError = !managerUser_return.isSuccess;
+
 			managerUser_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
 		}
 		return managerUser_return;
@@ -109,6 +112,9 @@ public static class DA_ManagerUser{
 			db.Execute("[dbo].[pr_ManagerUsers_upd]",parameters);
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
 
+			managerUser_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			managerUser_return.isError = !managerUser_return.isSuccess;
+
 			managerUser_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
 		}
 		return managerUser_return;
@@ -132,6 +138,9 @@ public static class DA_ManagerUser{
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_ManagerUsers_del]",parameters);
 			managerUser_return.description = parameters.Get<string>("@rProcessMessage");
+
+			managerUser_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			managerUser_return.isError = !managerUser_return.isSuccess;
 
 			managerUser_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
 		}

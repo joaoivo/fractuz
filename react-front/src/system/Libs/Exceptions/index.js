@@ -28,13 +28,13 @@ export const RegisterException = async (error, processDesc)=>{
 		if("stack" in error){errorRegisterFieldsValues["AppStackTrace"]	= error.stack;}
 
 		errorRegisterFieldsValues["AppProcessDesc"]	= processDesc;
-		errorRegisterFieldsValues["AppExceptionType"]	= error.name;
+		errorRegisterFieldsValues["AppExceptionType"]= error.name;
 		errorRegisterFieldsValues["AppLanguage"]		= "reactjs";
 		errorRegisterFieldsValues["ExtraData"]			= JSON.stringify(error);
 
 		if("data" in error){
 			const errorExtraData0 = error.data;
-			if(("result" in errorExtraData0) && (errorExtraData0.result)){
+			if(("result" in errorExtraData0) && (errorExtraData0.result) && (typeof errorExtraData0.result === "object")){
 				if("errorId" in errorExtraData0.result){
 					errorRegisterFieldsValues["PrevErrorID"]= errorExtraData0.result.errorId;
 				}

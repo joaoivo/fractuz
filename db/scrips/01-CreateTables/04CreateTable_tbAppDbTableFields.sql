@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[tbAppDbTableFields] (
     [IsInsigned]             BIT              NULL,
     [FieldDefaultValue]      NVARCHAR (MAX)   NULL,
     [ConstraintField]        UNIQUEIDENTIFIER NULL,
-    [AppDataType]            NVARCHAR (3)     NOT NULL,
+    [AppDataType]            NVARCHAR (3)     NULL,
     [AppDataNickname]        NVARCHAR (200)   NULL,
     [SystemActive]           BIT              CONSTRAINT [DEFAULT_tbAppDbTableFields_SystemActive] DEFAULT ((1)) NOT NULL,
     [SystemCreationDt]       DATETIME         CONSTRAINT [DEFAULT_tbAppDbTableFields_SystemCreationDt] DEFAULT (getdate()) NOT NULL,

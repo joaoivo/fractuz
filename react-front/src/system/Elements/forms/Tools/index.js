@@ -10,11 +10,20 @@ export const formTools ={
 			if(!("refValue" in fields[fieldName])){return;}
 			if(!("fieldID" in fields[fieldName])){return;}
 
-			// console.log("fields[fieldName].refValue.current.inputRef.current.type.toUpperCase()",fields[fieldName].refValue.current.inputRef.current.type.toUpperCase());
+			let thisField = fields[fieldName];
+
 			if(fields[fieldName].refValue.current.inputRef.current.type.toUpperCase()==="CHECKBOX"){
 				resultGeneral[fields[fieldName].fieldID] = fields[fieldName].refValue.current.inputRef.current.checked;
 			}else{
-				resultGeneral[fields[fieldName].fieldID] = fields[fieldName].refValue.current.inputRef.current.value;
+				if(	("Validation" in thisField) 
+					&& (isObjectEmpty(thisField.Validation))
+					&& ("basicRules" in thisField.Validation)
+					&& (thisField.Validation.basicRules.includes("NotNull"))){
+					
+					resultGeneral[fields[fieldName].fieldID] = fields[fieldName].refValue.current.inputRef.current.value;
+				}else{
+					resultGeneral[fields[fieldName].fieldID] = !fields[fieldName].refValue.current.inputRef.current.value?null:fields[fieldName].refValue.current.inputRef.current.value
+				}
 			}
 		});
 		return resultGeneral;

@@ -66,6 +66,9 @@ public static class DA_Application{
 			application_return.id = parameters.Get<Guid?>("@rGuid");
 			application_return.description = parameters.Get<string>("@rProcessMessage");
 
+			application_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			application_return.isError = !application_return.isSuccess;
+
 			application_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
 		}
 		return application_return;
@@ -94,6 +97,9 @@ public static class DA_Application{
 			db.Execute("[dbo].[pr_Applications_upd]",parameters);
 			application_return.description = parameters.Get<string>("@rProcessMessage");
 
+			application_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			application_return.isError = !application_return.isSuccess;
+
 			application_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
 		}
 		return application_return;
@@ -116,6 +122,9 @@ public static class DA_Application{
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_Applications_del]",parameters);
 			application_return.description = parameters.Get<string>("@rProcessMessage");
+
+			application_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			application_return.isError = !application_return.isSuccess;
 
 			application_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
 		}

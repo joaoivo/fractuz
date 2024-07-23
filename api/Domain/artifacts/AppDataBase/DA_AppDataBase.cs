@@ -68,6 +68,9 @@ public static class DA_AppDataBase{
 			appDataBase_return.id = parameters.Get<Guid?>("@rGuid");
 			appDataBase_return.description = parameters.Get<string>("@rProcessMessage");
 
+			appDataBase_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			appDataBase_return.isError = !appDataBase_return.isSuccess;
+
 			appDataBase_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Inserção efetuada com sucesso":"Erro na tentativa de inserção");
 		}
 		return appDataBase_return;
@@ -99,6 +102,9 @@ public static class DA_AppDataBase{
 			db.Execute("[dbo].[pr_AppDataBases_upd]",parameters);
 			appDataBase_return.description = parameters.Get<string>("@rProcessMessage");
 
+			appDataBase_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			appDataBase_return.isError = !appDataBase_return.isSuccess;
+
 			appDataBase_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Atualização efetuada com sucesso":"Erro na tentativa de atualização");
 		}
 		return appDataBase_return;
@@ -122,6 +128,9 @@ public static class DA_AppDataBase{
 		using (SqlConnection db = new SqlConnection(config["Database:Default"])){
 			db.Execute("[dbo].[pr_AppDataBases_del]",parameters);
 			appDataBase_return.description = parameters.Get<string>("@rProcessMessage");
+
+			appDataBase_return.isSuccess = parameters.Get<Boolean>("@rIsOK");
+			appDataBase_return.isError = !appDataBase_return.isSuccess;
 
 			appDataBase_return.tittle = (parameters.Get<Boolean>("@rIsOK")?"Exclusão efetuada com sucesso":"Erro na tentativa de Exclusão");
 		}
