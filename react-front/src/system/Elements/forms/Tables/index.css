@@ -19,6 +19,7 @@
 .fixTableHead th {
 	background: #bbb;
 }
+.fixTableHead select,
 .fixTableHead input{
 	width:100%;
 	background-color:#ffffff10;

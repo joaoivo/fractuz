@@ -25,15 +25,28 @@ import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 
+const sqlDataTypeOptions =[ "bigint"			,"binary"	,"bit"			,"char"
+	,"date"				,"datetime"	,"datetime2"	,"datetimeoffset"
+	,"decimal"			,"float"		,"image"			,"UNIQUEIDENTIFIER"
+	,"nchar"				,"ntext"		,"numeric"		,"int"
+	,"nvarchar"			,"varchar"	,"real"			,"rowversion"
+	,"smalldatetime"	,"smallint"	,"smallmoney"	,"sql_variant"
+	,"text"				,"time"		,"timestamp"	,"tinyint"
+	,"money"				,"varbinary","varchar"		,"xml"]
+
 export const fieldsTbFieldsConfig = {
 	appName:{
-		labelText:"Nome da Aplicação"
+		labelText:"Nome do Campo"
 		,fieldID:"FieldName"
 		,refValue:createRef("")
 		,Validation:{
 			lengthMin:3
 			,lengthMax:200
 			,basicRules:["NotNull"]
+		}
+		,tinyTable:{
+			 labelText:"Nome"
+			,inputProp:{style:{minWidth:"75px"}}
 		}
 	}
 	,appDesc:{
@@ -44,6 +57,9 @@ export const fieldsTbFieldsConfig = {
 			lengthMin:5
 			,lengthMax:1000
 		}
+		,tinyTable:{
+			 labelText:"Descrição"
+		}
 	}
 	,DataType :{
 		labelText:"Tipo"
@@ -51,16 +67,27 @@ export const fieldsTbFieldsConfig = {
 		,refValue:createRef("")
 		,Validation:{
 			lengthMin:3
-			,lengthMax:1000
+			,lengthMax:30
 			,basicRules:["NotNull"]
 		}
+		,tinyTable:{
+			 labelText:"Tipo"
+			,inputType:"select"
+			,selectOptions:sqlDataTypeOptions
+			,inputProp:{style:{minWidth:"75px"}}
+		}
 	}
+
 	,DataSize :{
 		labelText:"Tamanho"
 		,fieldID:"FieldDbDataSize"
 		,refValue:createRef("")
 		,Validation:{
-			lengthMax:7
+			lengthMax:10
+		}
+		,tinyTable:{
+			 labelText:"Tamanho"
+			,inputProp:{style:{maxWidth:"30px"}}
 		}
 	}
 	,DataSizeDecimel :{
@@ -68,7 +95,10 @@ export const fieldsTbFieldsConfig = {
 		,fieldID:"FieldDbDataSizeDecimel"
 		,refValue:createRef("")
 		,Validation:{
-			lengthMax:30
+			lengthMax:10
+		}
+		,tinyTable:{
+			 labelText:"Dec"
 		}
 	}
 	,IsPrimaryKey :{
@@ -114,21 +144,33 @@ export const fieldsTbFieldsConfig = {
 		,Validation:{
 			lengthMax:1000
 		}
+		,tinyTable:{
+			 labelText:"Padrão"
+		}
 	}
 	,ConstraintField :{
 		labelText:"Relacionamento"
 		,fieldID:"ConstraintField"
 		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"Relacionamento"
+		}
 	}
 	,AppDataType :{
-		labelText:"Aplicação: Type de Dados"
+		labelText:"Aplicação: Tipo de Dados"
 		,fieldID:"AppDataType"
 		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"Dados"
+		}
 	}
 	,AppDataNickname :{
 		labelText:"Aplicação: Legenda Dados"
 		,fieldID:"AppDataNickname"
 		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"Nick"
+		}
 	}
 }
 

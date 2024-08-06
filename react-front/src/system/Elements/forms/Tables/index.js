@@ -21,6 +21,7 @@ const GetHeadersInputs = (props)=>{
 					return (<th key={`header_${fieldIndex}`} >{inputLabel}</th>)
 				})
 			}
+			<th>...</th>
 			</tr>
 		</thead>
 	)
@@ -33,16 +34,37 @@ const GetBodysInputs = (props,datas)=>{
 			{ 	Object.getOwnPropertyNames(props.fields).map((fieldName,fieldIndexX)=>{
 					let inputType = 'text';
 					let fieldProp = props.fields[fieldName];
+					let inputProp = {};
 
-					if(	("tinyTable" in fieldProp) && (!isObjectEmpty(fieldProp.tinyTable)) 
-						&& ("inputType" in fieldProp.tinyTable)){
-							inputType = fieldProp.tinyTable.inputType
+					if(	("tinyTable" in fieldProp) && (!isObjectEmpty(fieldProp.tinyTable)) ){
+						if ("inputType" in fieldProp.tinyTable) {inputType = fieldProp.tinyTable.inputType}
+						if ("inputProp" in fieldProp.tinyTable) {inputProp = fieldProp.tinyTable.inputProp}
 					}
-					return (<th key={`newField_${fieldIndexX}`} >
-						<input key={`newField_${fieldIndexX}_input`} type={inputType}/>
-					</th>)
+
+					if(	("Validation" in fieldProp) && (!isObjectEmpty(fieldProp.Validation))){
+						if("lengthMax" in fieldProp.Validation && (inputType==="text")){inputProp.maxLength = fieldProp.Validation.lengthMax}
+					}
+
+					if(inputType==="select"){
+						return (<th key={`newFieldRow_${fieldIndexX}`} >
+							<select key={`newFieldInput_${fieldIndexX}`} {...inputProp}>
+							<option></option>
+								{ fieldProp.tinyTable.selectOptions &&
+									fieldProp.tinyTable.selectOptions.map((optionVal,optionValIndexZ)=>{
+										return (<option  key={`newFieldOption_${fieldIndexX}_${optionValIndexZ}`} >{optionVal}</option>)
+									})
+								}
+							</select>
+						</th>)
+					}else{
+						return (<th key={`newFieldRow_${fieldIndexX}`} >
+							<input key={`newFieldinput_${fieldIndexX}_input`} type={inputType} {...inputProp}/>
+						</th>)
+					}
 				})
 			}
+
+			<th>x</th>
 			</tr>
 		</tbody>
 	)
