@@ -1,0 +1,29 @@
+.fixTableHead {
+	overflow-y: auto;
+	font-size: 10px;
+	font-family: 'Courier New', Courier, monospace;
+}
+.fixTableHead thead th {
+	position: sticky;
+	top: 0;
+}
+.fixTableHead table {
+	border-collapse: collapse;				
+	width: 100%;
+}
+.fixTableHead th,
+.fixTableHead td {
+	padding: 0px 5px;
+	border: 1px solid #44444422;
+}
+.fixTableHead th {
+	background: #bbb;
+}
+.fixTableHead input{
+	width:100%;
+	background-color:#ffffff10;
+	border:0px solid #ffffff11;
+	border-Radius:2px;
+	padding:1px;
+	outline:none;
+}

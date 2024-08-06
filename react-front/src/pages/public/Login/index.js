@@ -20,7 +20,7 @@ export default function Login(){
 
 	const {login} = useContextAuth();
 	const {addHistoryLog} = useContextConsole();
-	const {messageBoxOpen_ok,messageBoxOpen_warning,messageBoxOpen_error} = useContextPanelMessage();
+	const {messageBoxOpen_ok,messageBoxOpen_warning,messageBoxOpen_error,messageBoxOpen_waiting,messageBoxClose} = useContextPanelMessage();
 	const {treatExceptions} = TreatmentExceptions();
 
 	const layoutFormRef = useRef(null);
@@ -63,6 +63,7 @@ export default function Login(){
 							return;
 						}
 
+						messageBoxOpen_waiting("Comunicando com o servidor para login","Aguarde","Logando");
 						const requestData = formTools.getObjectFromFormData(loginConfig.loginForm.fields);
 						let messages = await login(requestData);
 						if(messages.length>0){ 
@@ -70,8 +71,8 @@ export default function Login(){
 							addHistoryLog("Dados de resposta de login não válidos:["+messages.join("<br/>")+"]");
 							return;
 						}
-
 						addHistoryLog(`Usuário ${requestData.Mail} devidamente logado, redirecionando para a Home`);
+						messageBoxOpen_waiting("Você está sendo redirecionado para a Home","Olá "+requestData.Mail,"Login Efetuado com sucesso")
 						goToAddress(routesPrivatePages.Home.path);
 
 					} catch (error) {

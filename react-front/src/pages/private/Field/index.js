@@ -1,4 +1,4 @@
-import { useState, useRef , useEffect} from 'react';
+import { useState, useRef , useEffect, createRef} from 'react';
 
 import { useParams } 						from 'react-router-dom';
 
@@ -25,6 +25,113 @@ import './../../../style/dimensions/dimensions_widthDozens.css';
 import './../../../style/aligns/disposition.css'
 import { isStringEmptyOrSpaces } from '../../../system/Libs/Strings';
 
+export const fieldsTbFieldsConfig = {
+	appName:{
+		labelText:"Nome da Aplicação"
+		,fieldID:"FieldName"
+		,refValue:createRef("")
+		,Validation:{
+			lengthMin:3
+			,lengthMax:200
+			,basicRules:["NotNull"]
+		}
+	}
+	,appDesc:{
+		labelText:"Descrição"
+		,fieldID:"FieldDescription"
+		,refValue:createRef("")
+		,Validation:{
+			lengthMin:5
+			,lengthMax:1000
+		}
+	}
+	,DataType :{
+		labelText:"Tipo"
+		,fieldID:"FieldDbDataType"
+		,refValue:createRef("")
+		,Validation:{
+			lengthMin:3
+			,lengthMax:1000
+			,basicRules:["NotNull"]
+		}
+	}
+	,DataSize :{
+		labelText:"Tamanho"
+		,fieldID:"FieldDbDataSize"
+		,refValue:createRef("")
+		,Validation:{
+			lengthMax:7
+		}
+	}
+	,DataSizeDecimel :{
+		labelText:"Decimais"
+		,fieldID:"FieldDbDataSizeDecimel"
+		,refValue:createRef("")
+		,Validation:{
+			lengthMax:30
+		}
+	}
+	,IsPrimaryKey :{
+		labelText:"Chave Primária"
+		,fieldID:"IsPrimaryKey"
+		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"pk"
+			,inputType:"checkbox"
+		}
+	}
+	,IsAllowNull :{
+		labelText:"Permite [Null]"
+		,fieldID:"IsAllowNull"
+		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"Null"
+			,inputType:"checkbox"
+		}
+	}
+	,IsUnique :{
+		labelText:"Chave Única"
+		,fieldID:"IsUnique"
+		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"Uniq"
+			,inputType:"checkbox"
+		}
+	}
+	,IsInsigned :{
+		labelText:"Numérico com Sinal"
+		,fieldID:"IsInsigned"
+		,refValue:createRef("")
+		,tinyTable:{
+			 labelText:"Sign"
+			,inputType:"checkbox"
+		}
+	}
+	,FieldDefaultValue :{
+		labelText:"Valor Padrão"
+		,fieldID:"FieldDefaultValue"
+		,refValue:createRef("")
+		,Validation:{
+			lengthMax:1000
+		}
+	}
+	,ConstraintField :{
+		labelText:"Relacionamento"
+		,fieldID:"ConstraintField"
+		,refValue:createRef("")
+	}
+	,AppDataType :{
+		labelText:"Aplicação: Type de Dados"
+		,fieldID:"AppDataType"
+		,refValue:createRef("")
+	}
+	,AppDataNickname :{
+		labelText:"Aplicação: Legenda Dados"
+		,fieldID:"AppDataNickname"
+		,refValue:createRef("")
+	}
+}
+
 export default function Field(){
 	const apiField = useApiFractuzFields();
 	const { addHistoryLog } 	= useContextConsole();
@@ -42,19 +149,19 @@ export default function Field(){
 	const refSeachDesc= useRef("");
 	const refSeachType= useRef("");
 
-	const refRegisFieldName= useRef("");
-	const refRegisFieldDescription= useRef("");
-	const refRegisFieldDbDataType= useRef("");
-	const refRegisFieldDbDataSize= useRef("");
-	const refRegisFieldDbDataSizeDecimel= useRef("");
-	const refRegisFieldDefaultValue= useRef("");
-	const refRegisIsPrimaryKey= useRef("");
-	const refRegisIsAllowNull= useRef("");
-	const refRegisIsUnique= useRef("");
-	const refRegisIsInsigned= useRef("");
-	const refRegisConstraintField= useRef("");
-	const refRegisAppDataType= useRef("");
-	const refRegisAppDataNickname= useRef("");
+	// const refRegisFieldName= useRef("");
+	// const refRegisFieldDescription= useRef("");
+	// const refRegisFieldDbDataType= useRef("");
+	// const refRegisFieldDbDataSize= useRef("");
+	// const refRegisFieldDbDataSizeDecimel= useRef("");
+	// const refRegisFieldDefaultValue= useRef("");
+	// const refRegisIsPrimaryKey= useRef("");
+	// const refRegisIsAllowNull= useRef("");
+	// const refRegisIsUnique= useRef("");
+	// const refRegisIsInsigned= useRef("");
+	// const refRegisConstraintField= useRef("");
+	// const refRegisAppDataType= useRef("");
+	// const refRegisAppDataNickname= useRef("");
 
 	const addHistory = (message)=>{
 		addHistoryLog(message);
@@ -103,96 +210,7 @@ export default function Field(){
 		}
 
 		,registerForm:{
-			fields:{
-				 appName:{
-					 labelText:"Nome da Aplicação"
-					,fieldID:"FieldName"
-					,refValue:refRegisFieldName
-					,Validation:{
-						 lengthMin:3
-						,lengthMax:200
-						,basicRules:["NotNull"]
-					}
-				}
-				,appDesc:{
-					 labelText:"Descrição"
-					,fieldID:"FieldDescription"
-					,refValue:refRegisFieldDescription
-					,Validation:{
-						 lengthMin:5
-						,lengthMax:1000
-					}
-				}
-				,DataType :{
-					 labelText:"Tipo"
-					,fieldID:"FieldDbDataType"
-					,refValue:refRegisFieldDbDataType
-					,Validation:{
-						 lengthMin:3
-						,lengthMax:1000
-						,basicRules:["NotNull"]
-					}
-				}
-				,DataSize :{
-					 labelText:"Tamanho"
-					,fieldID:"FieldDbDataSize"
-					,refValue:refRegisFieldDbDataSize
-					,Validation:{
-						 lengthMax:7
-					}
-				}
-				,DataSizeDecimel :{
-					 labelText:"Decimais"
-					,fieldID:"FieldDbDataSizeDecimel"
-					,refValue:refRegisFieldDbDataSizeDecimel
-					,Validation:{
-						 lengthMax:30
-					}
-				}
-				,IsPrimaryKey :{
-					 labelText:"Chave Primária"
-					,fieldID:"IsPrimaryKey"
-					,refValue:refRegisIsPrimaryKey
-				}
-				,IsAllowNull :{
-					 labelText:"Permite [Null]"
-					,fieldID:"IsAllowNull"
-					,refValue:refRegisIsAllowNull
-				}
-				,IsUnique :{
-					 labelText:"Chave Única"
-					,fieldID:"IsUnique"
-					,refValue:refRegisIsUnique
-				}
-				,IsInsigned :{
-					 labelText:"Numérico com Sinal"
-					,fieldID:"IsInsigned"
-					,refValue:refRegisIsInsigned
-				}
-				,FieldDefaultValue :{
-					 labelText:"Valor Padrão"
-					,fieldID:"FieldDefaultValue"
-					,refValue:refRegisFieldDefaultValue
-					,Validation:{
-						 lengthMax:1000
-					}
-				}
-				,ConstraintField :{
-					 labelText:"Relacionamento"
-					,fieldID:"ConstraintField"
-					,refValue:refRegisConstraintField
-				}
-				,AppDataType :{
-					 labelText:"Aplicação: Type de Dados"
-					,fieldID:"AppDataType"
-					,refValue:refRegisAppDataType
-				}
-				,AppDataNickname :{
-					 labelText:"Aplicação: Legenda Dados"
-					,fieldID:"AppDataNickname"
-					,refValue:refRegisAppDataNickname
-				}
-			}
+			fields:fieldsTbFieldsConfig
 			,commands:{
 				toggleDisplayType:	()=>{
 					if(!!idTable){goToAddress(routesPrivatePages.Field.path+"/"+idTable, idField);}
@@ -242,21 +260,20 @@ export default function Field(){
 		)
 		,Register : ()=>(
 			<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
-				<TextFieldDefault params={fieldConfig.registerForm.fields.appName} 				ref={refRegisFieldName}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.appDesc} 				ref={refRegisFieldDescription}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.DataType} 				ref={refRegisFieldDbDataType}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSize} 				ref={refRegisFieldDbDataSize}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSizeDecimel} 	ref={refRegisFieldDbDataSizeDecimel}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.appName} 				ref={fieldConfig.registerForm.fields.appName.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.appDesc} 				ref={fieldConfig.registerForm.fields.appDesc.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.DataType} 				ref={fieldConfig.registerForm.fields.DataType.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSize} 				ref={fieldConfig.registerForm.fields.DataSize.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.DataSizeDecimel} 	ref={fieldConfig.registerForm.fields.DataSizeDecimel.refValue}/>
 
-				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsPrimaryKey} 	ref={refRegisIsPrimaryKey}/>
-				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsAllowNull} 	ref={refRegisIsAllowNull}/>
-				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsUnique} 		ref={refRegisIsUnique}/>
-				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsInsigned} 		ref={refRegisIsInsigned}/>
-
-				<TextFieldDefault params={fieldConfig.registerForm.fields.FieldDefaultValue} 	ref={refRegisFieldDefaultValue}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.ConstraintField} 	ref={refRegisConstraintField}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.AppDataType} 			ref={refRegisAppDataType}/>
-				<TextFieldDefault params={fieldConfig.registerForm.fields.AppDataNickname} 	ref={refRegisAppDataNickname}/>
+				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsPrimaryKey} 	ref={fieldConfig.registerForm.fields.IsPrimaryKey.refValue}/>
+				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsAllowNull} 	ref={fieldConfig.registerForm.fields.IsAllowNull.refValue}/>
+				<CheckboxFieldDefault params={fieldConfig.registerForm.fields.IsUnique} 		ref={fieldConfig.registerForm.fields.IsUnique.refValue}/>
+				IsInsigned
+				<TextFieldDefault params={fieldConfig.registerForm.fields.FieldDefaultValue} 	ref={fieldConfig.registerForm.fields.FieldDefaultValue.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.ConstraintField} 	ref={fieldConfig.registerForm.fields.ConstraintField.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.AppDataType} 			ref={fieldConfig.registerForm.fields.AppDataType.refValue}/>
+				<TextFieldDefault params={fieldConfig.registerForm.fields.AppDataNickname} 	ref={fieldConfig.registerForm.fields.AppDataNickname.refValue}/>
 
 				<LayoutButtonDefault onClickEvent={fieldConfig.registerForm.commands.addFields}>Salvar</LayoutButtonDefault>
 				<LayoutButtonDefault onClickEvent={fieldConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
@@ -285,7 +302,7 @@ export default function Field(){
 				}
 			}
 		}
-		,[idField,apiField,fieldConfig.seachForm.commands,fieldDisplayType]
+		,[idField,apiField,fieldConfig.seachForm.commands,fieldDisplayType,fieldConfig.registerForm.fields]
 	)
 
 	if(fieldDisplayType!==1 && !!!idField){

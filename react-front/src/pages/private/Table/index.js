@@ -23,6 +23,7 @@ import { formTools } from '../../../system/Elements/forms/Tools';
 import './../../../style/dimensions/dimensions_widthDozens.css'
 import './../../../style/aligns/disposition.css'
 import { isObjectEmpty } from '../../../system/Libs/Objects';
+import { TableDinamoFieldDefault } from '../../../system/Elements/forms/Tables';
 
 export default function Tables(){
 	const apiTable = useApiFractuzTables();
@@ -85,6 +86,7 @@ export default function Tables(){
 					labelText:"Nome da Tabela"
 					,fieldID:"TableName"
 					,refValue:refRegisName
+					,fieldLabelStyle: {width:"200px"}
 					,Validation:{
 						lengthMin:3
 						,lengthMax:200
@@ -95,6 +97,7 @@ export default function Tables(){
 					labelText:"Descrição"
 					,fieldID:"TableDescription"
 					,refValue:refRegisDesc
+					,fieldLabelStyle: {width:"200px"}
 					,Validation:{
 						lengthMin:5
 						,lengthMax:1000
@@ -105,6 +108,7 @@ export default function Tables(){
 					labelText:"Ordem de Criação"
 					,fieldID:"TableBuiltOrder"
 					,refValue:refRegisBuiltOrder
+					,fieldLabelStyle: {width:"100px"}
 					,Validation:{
 						lengthMin:1
 						,lengthMax:10
@@ -115,6 +119,7 @@ export default function Tables(){
 					labelText:"Prefixo de Campo"
 					,fieldID:"FieldPrefix"
 					,refValue:refRegisPrefix
+					,fieldLabelStyle: {width:"100px"}
 					,Validation:{
 						lengthMax:10
 					}
@@ -123,6 +128,7 @@ export default function Tables(){
 					labelText:"Histórico de Tabela?"
 					,fieldID:"TableHistory"
 					,refValue:refRegisHistory
+					,fieldLabelStyle: {width:"100px"}
 				}
 			}
 			,commands:{
@@ -177,16 +183,17 @@ export default function Tables(){
 		,Register : ()=>(
 			<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
 				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
-					<TextFieldDefault params={tableConfig.registerForm.fields.appName} ref={refRegisName}/>
-					<TextFieldDefault params={tableConfig.registerForm.fields.appDesc} ref={refRegisDesc}/>
+					<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
+						<TextFieldDefault params={tableConfig.registerForm.fields.appName} ref={refRegisName}/>
+						<TextFieldDefault params={tableConfig.registerForm.fields.appDesc} ref={refRegisDesc}/>
+						<TextFieldDefault params={tableConfig.registerForm.fields.appBuiltOrder } ref={refRegisBuiltOrder}/>
+						<TextFieldDefault params={tableConfig.registerForm.fields.appFieldPrefix} ref={refRegisPrefix}/>
+						<CheckboxFieldDefault params={tableConfig.registerForm.fields.appTableHistory} ref={refRegisHistory}/>
+					</div>
+					<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.addTables}>Salvar</LayoutButtonDefault>
+					<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
 				</div>
-				<div className="wtdhGeneral_duz24pc_24 generalDisposition_horizDisp_spaceBetween">
-					<TextFieldDefault params={tableConfig.registerForm.fields.appBuiltOrder } ref={refRegisBuiltOrder}/>
-					<TextFieldDefault params={tableConfig.registerForm.fields.appFieldPrefix} ref={refRegisPrefix}/>
-					<CheckboxFieldDefault params={tableConfig.registerForm.fields.appTableHistory} ref={refRegisHistory}/>
-				</div>
-				<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.addTables}>Salvar</LayoutButtonDefault>
-				<LayoutButtonDefault onClickEvent={tableConfig.registerForm.commands.toggleDisplayType}>Cancelar</LayoutButtonDefault>
+				<TableDinamoFieldDefault></TableDinamoFieldDefault>
 			</div>
 		)
 	}
@@ -218,7 +225,7 @@ export default function Tables(){
 			}
 
 		}
-		,[idDatabase,idTable,apiTable]
+		,[idDatabase,idTable,apiTable,tableConfig.registerForm.fields]
 	)
 
 	if(displayType!==1 && !!!idTable){
